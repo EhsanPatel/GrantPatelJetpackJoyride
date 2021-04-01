@@ -32,10 +32,10 @@ public class GrantPatelJetpackJoyride extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    public static void main(String[] args) {
-        EventQueue.invokeLater(() -> {
-            GrantPatelJetpackJoyride ex = new GrantPatelJetpackJoyride();
-            ex.setVisible(true);
-        });
-    }
+//    public static void main(String[] args) {
+//        EventQueue.invokeLater(() -> {
+//            GrantPatelJetpackJoyride ex = new GrantPatelJetpackJoyride();
+//            ex.setVisible(true);
+//        });
+//    }
 }
