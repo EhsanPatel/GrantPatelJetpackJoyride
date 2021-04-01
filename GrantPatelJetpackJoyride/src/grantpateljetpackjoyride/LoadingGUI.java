@@ -14,9 +14,11 @@ import java.io.InputStream;
  */
 
 public class LoadingGUI extends javax.swing.JFrame {
-    InputStream is = LoadingGUI.class.getResourceAsStream("fonts/Abel-Regular.ttf");
-    Font abelFont;
-    Font abelFont12;
+    private InputStream is = LoadingGUI.class.getResourceAsStream("fonts/Abel-Regular.ttf");
+    private Font abelFont;
+    private Font abelFont12;
+    private static GrantPatelJetpackJoyride mainGUI;
+    private static LoadingGUI l = new LoadingGUI();
     /**
      * Creates new form LoadingGUI
      */
@@ -121,9 +123,20 @@ public class LoadingGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LoadingGUI().setVisible(true);
+                l.setVisible(true);
             }
         });
+        
+        for(int i = 0; i < 50000; ++i){
+            System.out.println(i);
+        }
+        //timer waits 3 seconds then...
+        if(mainGUI == null){
+            mainGUI = new GrantPatelJetpackJoyride();
+        }
+        mainGUI.setVisible(true);
+        l.setVisible(false);
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
