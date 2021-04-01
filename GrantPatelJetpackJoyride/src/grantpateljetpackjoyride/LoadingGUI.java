@@ -7,6 +7,7 @@ package grantpateljetpackjoyride;
 
 import java.awt.Font;
 import java.io.InputStream;
+import javax.swing.JFrame;
 
 /**
  *
@@ -32,6 +33,8 @@ public class LoadingGUI extends javax.swing.JFrame {
             
         }
         initComponents();
+        setLocationRelativeTo(null);        
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     /**
