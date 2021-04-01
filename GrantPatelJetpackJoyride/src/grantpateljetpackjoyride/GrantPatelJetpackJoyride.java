@@ -19,7 +19,7 @@ public class GrantPatelJetpackJoyride extends JFrame {
     
     private void initUI() {
 
-        add(new GameFrame());
+        add(new MainGUI());
         
         setResizable(false);
         pack();

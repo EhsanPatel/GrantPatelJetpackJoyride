@@ -23,7 +23,7 @@ import java.awt.event.MouseEvent;
  *
  * @author ehsan
  */
-public class GameFrame extends JPanel implements ActionListener{
+public class MainGUI extends JPanel implements ActionListener{
     
     //constants for the canvas
     private final int B_WIDTH = 1110;
@@ -47,7 +47,7 @@ public class GameFrame extends JPanel implements ActionListener{
     /**
      * primary constructor to build the board and create a window that can be interacted with by the user
      */
-    public GameFrame() {
+    public MainGUI() {
 
         //initializes the attributes of the board
         initBoard();
