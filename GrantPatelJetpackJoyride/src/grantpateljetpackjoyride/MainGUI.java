@@ -84,12 +84,13 @@ public class MainGUI extends JPanel implements ActionListener{
         
     }
     private void initBoard() {
+        //load the image resources to use
+        loadImages();
         //setup the canvas
         setBackground(Color.BLACK);
         setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
 
-        //load the image resources to use
-        loadImages();
+        
         
         //creates a timer to update the window
         timer = new Timer(SPEED, this);
@@ -109,6 +110,10 @@ public class MainGUI extends JPanel implements ActionListener{
     private void drawLoop(Graphics g) {
         //casts the regular graphics object into the updated 2d graphics object
         Graphics2D g2d = (Graphics2D) g;
+        //draws background color and image
+        g2d.setColor(new Color(123,133,146));//light grey/blue color
+        g2d.fillRect(0, 0, B_WIDTH, B_HEIGHT);
+        g2d.drawImage(startBG,351 + (int)scrollX,0,this);
         
         
         if(gamestate.equals("playing")){
@@ -134,16 +139,11 @@ public class MainGUI extends JPanel implements ActionListener{
                 }
             }
             controlLimiter++;
-            
-            
+            //draws the character on the window
+            g2d.drawImage(characterFrames[(int)animationFrame],351,B_HEIGHT-150 - heightOffGround,this);
         }
         
-        //draws the items on the window
-        g2d.setColor(new Color(123,133,146));//light suare color
-        g2d.fillRect(0, 0, 351, B_HEIGHT);
         
-        g2d.drawImage(startBG,351 + (int)scrollX,0,this);
-        g2d.drawImage(characterFrames[(int)animationFrame],351,B_HEIGHT-150 - heightOffGround,this);
         
         
         //synchronizes the graphics
