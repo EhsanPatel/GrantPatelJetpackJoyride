@@ -1,5 +1,5 @@
 /*
- * Ehsan Patel
+ * Ehsan Patel and Colin Grant
  * 26-Mar-2021
  * and open the template in the editor.
  */
@@ -13,6 +13,8 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -23,7 +25,7 @@ import java.awt.event.MouseEvent;
  *
  * @author ehsan
  */
-public class MainGUI extends JPanel implements ActionListener{
+public class MainGUI extends JPanel implements ActionListener, KeyListener {
     
     //constants for the canvas
     private final int B_WIDTH = 1110;
@@ -51,6 +53,11 @@ public class MainGUI extends JPanel implements ActionListener{
 
         //initializes the attributes of the board
         initBoard();
+
+        //allows the window to recieve keyboard input
+        addKeyListener(this);
+        setFocusable(true);
+        setFocusTraversalKeysEnabled(false);
         
         //allows the board to recieve input from mouseclicks
         addMouseListener(new MouseAdapter() {
@@ -71,8 +78,8 @@ public class MainGUI extends JPanel implements ActionListener{
                 }
             }
         });
-        
-        
+
+        //game and animation variables
         scrollX = 0;
         animationFrame = 0;
         fallSpeed = 0;
@@ -81,8 +88,37 @@ public class MainGUI extends JPanel implements ActionListener{
         gamestate = "menu";
         holdEvent = false;
         
-        
     }
+    
+    
+    @Override
+    public void keyReleased(KeyEvent k){
+        if(k.getKeyChar() == ' '){
+            //what to do when mouse is released
+            if (gamestate.equals("playing")) {
+                holdEvent = false;
+            }
+        }
+    }
+    
+    
+    @Override
+    public void keyPressed(KeyEvent k){
+        if(k.getKeyChar() == ' '){
+            if(gamestate.equals("menu")){
+                gamestate = "playing";
+            }else if(gamestate.equals("playing")){
+                holdEvent = true;
+            }
+        }
+    }
+    
+    
+    @Override
+    public void keyTyped(KeyEvent k){
+    } 
+    
+    
     private void initBoard() {
         //load the image resources to use
         loadImages();
@@ -94,8 +130,8 @@ public class MainGUI extends JPanel implements ActionListener{
         timer = new Timer(SPEED, this);
         timer.setInitialDelay(500);
         timer.start();
-        
     }
+    
     
     //overrides the draw method to draw custom items on the window
     @Override
@@ -104,6 +140,7 @@ public class MainGUI extends JPanel implements ActionListener{
         super.paintComponent(g);
         drawLoop(g);
     }
+    
     
     private void drawLoop(Graphics g) {
         //casts the regular graphics object into the updated 2d graphics object
@@ -123,7 +160,7 @@ public class MainGUI extends JPanel implements ActionListener{
             if((int)animationFrame == 4){
                 animationFrame = 0;
             }
-            if(controlLimiter%6 == 0){
+            if(controlLimiter%8 == 0){
                 if(holdEvent){
                 fallSpeed += 0.8;
                 }
@@ -156,6 +193,7 @@ public class MainGUI extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e) {       
         repaint();
     }
+    
     
     /**
      * loads all of the images into the image arrays to store the resources
