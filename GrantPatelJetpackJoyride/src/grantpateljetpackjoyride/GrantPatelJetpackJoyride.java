@@ -25,17 +25,10 @@ public class GrantPatelJetpackJoyride extends JFrame {
         pack();
         
         setTitle("Jetpack Joyride");
-        //ImageIcon kingIcon = new ImageIcon(getClass().getResource("imageResources/king_white.png"));
-        //setIconImage(kingIcon.getImage());
+        ImageIcon icon = new ImageIcon(getClass().getResource("imageResources/costume1/running2.png"));
+        setIconImage(icon.getImage());
         
         setLocationRelativeTo(null);        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-
-//    public static void main(String[] args) {
-//        EventQueue.invokeLater(() -> {
-//            GrantPatelJetpackJoyride ex = new GrantPatelJetpackJoyride();
-//            ex.setVisible(true);
-//        });
-//    }
 }
