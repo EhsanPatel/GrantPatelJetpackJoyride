@@ -7,6 +7,7 @@ package grantpateljetpackjoyride;
 
 import java.awt.Font;
 import java.io.InputStream;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 /**
@@ -24,15 +25,20 @@ public class LoadingGUI extends javax.swing.JFrame {
      * Creates new form LoadingGUI
      */
     public LoadingGUI() {
+        //loads in a font to use for the text
         try{
             this.abelFont = Font.createFont(Font.TRUETYPE_FONT, is);
             abelFont12 = abelFont.deriveFont(16f);
-
         }catch(Exception e){
             System.out.println(e);
-            
         }
+        //initializes form components
         initComponents();
+        
+        //changes attributes of the display window containing the form
+        setTitle("FULLBRICK STUDIOS: Jetpack Joyride");
+        ImageIcon icon = new ImageIcon(getClass().getResource("imageResources/costume1/running2.png"));
+        setIconImage(icon.getImage());
         setLocationRelativeTo(null);        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
@@ -126,19 +132,26 @@ public class LoadingGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                //makes the form visible
                 l.setVisible(true);
             }
         });
         
-        for(int i = 0; i < 50000; ++i){
-            System.out.println(i);
-        }
-        //timer waits 3 seconds then...
+        //creates the main GUI object
         if(mainGUI == null){
             mainGUI = new GrantPatelJetpackJoyride();
         }
+        
+        //timer waits 2.5 seconds, showing the splash screen
+        try{
+            Thread.sleep(2500);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        
+        //change the visibility of both windows
         mainGUI.setVisible(true);
-        l.setVisible(false);
+        l.dispose();
         
     }
 
