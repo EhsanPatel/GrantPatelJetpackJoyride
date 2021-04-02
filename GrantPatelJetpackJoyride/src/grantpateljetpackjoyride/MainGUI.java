@@ -35,7 +35,7 @@ public class MainGUI extends JPanel implements ActionListener{
     //image declaration
     private Image startBG;
     private Image[] characterFrames;
-    
+    private Image[] menuButtons;
     private double scrollX;
     private double animationFrame;
     private String gamestate;
@@ -89,8 +89,6 @@ public class MainGUI extends JPanel implements ActionListener{
         //setup the canvas
         setBackground(Color.BLACK);
         setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
-
-        
         
         //creates a timer to update the window
         timer = new Timer(SPEED, this);
@@ -115,8 +113,11 @@ public class MainGUI extends JPanel implements ActionListener{
         g2d.fillRect(0, 0, B_WIDTH, B_HEIGHT);
         g2d.drawImage(startBG,351 + (int)scrollX,0,this);
         
-        
-        if(gamestate.equals("playing")){
+        if(gamestate.equals("menu")){
+            for(int i = 0; i < menuButtons.length; ++i){
+                g2d.drawImage(menuButtons[i],15,i*90+120,this);
+            }
+        }else if(gamestate.equals("playing")){
             scrollX -= 0.5;
             animationFrame+= 0.018;
             if((int)animationFrame == 4){
@@ -168,11 +169,23 @@ public class MainGUI extends JPanel implements ActionListener{
         ImageIcon iiCostume1Frame3 = new ImageIcon(getClass().getResource("imageResources/costume"+costumeNum+"/running3.png"));
         ImageIcon iiCostume1Frame4 = new ImageIcon(getClass().getResource("imageResources/costume"+costumeNum+"/running4.png"));
         
-        startBG = iiStartBG.getImage().getScaledInstance(4509, B_HEIGHT, Image.SCALE_AREA_AVERAGING);
+        startBG = iiStartBG.getImage().getScaledInstance(4509, B_HEIGHT, Image.SCALE_SMOOTH);
         characterFrames = new Image[] {iiCostume1Frame1.getImage().getScaledInstance(90, 90, Image.SCALE_AREA_AVERAGING),
             iiCostume1Frame2.getImage().getScaledInstance(90, 90, Image.SCALE_AREA_AVERAGING),
             iiCostume1Frame3.getImage().getScaledInstance(90, 90, Image.SCALE_AREA_AVERAGING),
             iiCostume1Frame4.getImage().getScaledInstance(90, 90, Image.SCALE_AREA_AVERAGING)};
+        
+        ImageIcon iiStoreButton = new ImageIcon(getClass().getResource("imageResources/buttons/storeButton.png"));
+        ImageIcon iiStatsButton = new ImageIcon(getClass().getResource("imageResources/buttons/statsButton.png"));
+        ImageIcon iiTutorialButton = new ImageIcon(getClass().getResource("imageResources/buttons/tutorialButton.png"));
+        ImageIcon iiCreditButton = new ImageIcon(getClass().getResource("imageResources/buttons/creditsButton.png"));
+        
+        menuButtons = new Image[] {iiStoreButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH),
+            iiStatsButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH),
+            iiTutorialButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH),
+            iiCreditButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH),
+        };
+
     }
     
 }
