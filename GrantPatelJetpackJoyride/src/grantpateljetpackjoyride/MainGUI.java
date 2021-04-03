@@ -46,13 +46,13 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     boolean holdEvent;
     private int heightOffGround;
     private double fallSpeed;
+    
     /**
-     * primary constructor to build the board and create a window that can be interacted with by the user
+     * primary constructor to build the JPanel and create a window that can be interacted with by the user
      */
     public MainGUI() {
-
         //initializes the attributes of the board
-        initBoard();
+        initPanel();
 
         //allows the window to recieve keyboard input
         addKeyListener(this);
@@ -70,7 +70,6 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         heightOffGround = 0;
         gamestate = "menu";
         holdEvent = false;
-        
     }
     
     @Override
@@ -90,36 +89,25 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     }
     @Override
     public void mouseReleased(MouseEvent e) {
-        //what to do when mouse is released
+        //what to do when mouse is released in gameplay
         if(gamestate.equals("playing")){
             holdEvent = false;
         }
     }
-    @Override
-    public void mouseExited(MouseEvent e){
-    }
-    @Override
-    public void mouseEntered(MouseEvent e){
-    }
-    @Override
-    public void mouseClicked(MouseEvent e){
-    }
-//    @Override
-//    public void mouseEntered(MouseEvent e){
-//    }
     
     
+
+    
+    //functions to implement keylistener
     @Override
     public void keyReleased(KeyEvent k){
+        //what to do when a key is released
         if(k.getKeyChar() == ' '){
-            //what to do when mouse is released
             if (gamestate.equals("playing")) {
                 holdEvent = false;
             }
         }
     }
-    
-    
     @Override
     public void keyPressed(KeyEvent k){
         if(k.getKeyChar() == ' '){
@@ -130,14 +118,9 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             }
         }
     }
+
     
-    
-    @Override
-    public void keyTyped(KeyEvent k){
-    } 
-    
-    
-    private void initBoard() {
+    private void initPanel() {
         //load the image resources to use
         loadImages();
         //setup the canvas
@@ -207,6 +190,11 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     }
     
     
+    
+    /**
+     * Every action (triggered by the timer) runs this function
+     * @param e the event that triggered the function
+     */
     @Override
     public void actionPerformed(ActionEvent e) {       
         repaint();
@@ -235,20 +223,39 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         ImageIcon iiStatsButton = new ImageIcon(getClass().getResource("imageResources/buttons/statsButton.png"));
         ImageIcon iiTutorialButton = new ImageIcon(getClass().getResource("imageResources/buttons/tutorialButton.png"));
         ImageIcon iiCreditButton = new ImageIcon(getClass().getResource("imageResources/buttons/creditsButton.png"));
+        ImageIcon iiMusicToggleButton = new ImageIcon(getClass().getResource("imageResources/buttons/tutorialButton.png"));
+        ImageIcon iiSFXToggleButton = new ImageIcon(getClass().getResource("imageResources/buttons/creditsButton.png"));
         
         
         //make buttons here 
        
         menuButtons = new MenuButton[4];
-        menuButtons[0] = new MenuButton(15, 120, 320, 66, "Redirect", iiStoreButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH), new StoreGUI());
+        menuButtons[0] = new MenuButton(15, 120, 320, 66, "Redirect", iiStoreButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH), new StoreGUI(this));
         menuButtons[1] = new MenuButton(15, 210, 320, 66, "Redirect", iiStatsButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH), new StatisticsGUI(this));
-        menuButtons[2] = new MenuButton(15, 300, 320, 66, "Redirect", iiTutorialButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH), new TutorialGUI());
+        menuButtons[2] = new MenuButton(15, 300, 320, 66, "Redirect", iiTutorialButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH), new TutorialGUI(this));
         menuButtons[3] = new MenuButton(15, 390, 320, 66, "Redirect", iiCreditButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH), new CreditsGUI(this));
-//        menuButtons[4] = new MenuButton(15, 480, 320, 66, "MusicToggle", iiStoreButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH), new StoreGUI());
-//        menuButtons[5] = new MenuButton(15, 570, 320, 66, "SFXToggle", iiStoreButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH), new StoreGUI());
+//        menuButtons[4] = new MenuButton(15, 480, 320, 66, "MusicToggle", iiMusicToggleButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH));
+//        menuButtons[5] = new MenuButton(15, 570, 320, 66, "SFXToggle", iiSFXToggleButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH));
 
 
 
     }
+    
+    
+    
+    
+    //unused functions in order to implement mouse and keyboard listener
+    @Override
+    public void mouseExited(MouseEvent e){
+    }
+    @Override
+    public void mouseEntered(MouseEvent e){
+    }
+    @Override
+    public void mouseClicked(MouseEvent e){
+    }
+    @Override
+    public void keyTyped(KeyEvent k){
+    } 
     
 }
