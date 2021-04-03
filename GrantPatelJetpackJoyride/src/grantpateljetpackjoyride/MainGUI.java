@@ -205,7 +205,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
      * loads all of the images into the image arrays to store the resources
      */
     private void loadImages() {
-        int costumeNum = 2;
+        int costumeNum = 3;
         //finds the images relative path from the place that the board class is stored - works for the executable jar too
         ImageIcon iiStartBG = new ImageIcon(getClass().getResource("imageResources/FullImage.png"));
         ImageIcon iiCostume1Frame1 = new ImageIcon(getClass().getResource("imageResources/costume"+costumeNum+"/running1.png"));
