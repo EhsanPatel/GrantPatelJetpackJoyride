@@ -247,15 +247,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
 //        menuButtons[4] = new MenuButton(15, 480, 320, 66, "MusicToggle", iiStoreButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH), new StoreGUI());
 //        menuButtons[5] = new MenuButton(15, 570, 320, 66, "SFXToggle", iiStoreButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH), new StoreGUI());
 
-//        for(int i = 0; i < menuButtons.length; ++i){
-//            
-//            g2d.drawImage(menuButtons[i],15,i*90+120,this);
-//        }
-//        menuButtons = new Image[] {iiStoreButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH),
-//            iiStatsButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH),
-//            iiTutorialButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH),
-//            iiCreditButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH),
-//        };
+
 
     }
     
