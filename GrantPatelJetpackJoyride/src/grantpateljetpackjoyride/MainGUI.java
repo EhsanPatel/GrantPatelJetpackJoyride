@@ -47,6 +47,9 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     private int heightOffGround;
     private double fallSpeed;
     
+    private long t1;
+    private long t2;
+    
     /**
      * primary constructor to build the JPanel and create a window that can be interacted with by the user
      */
@@ -139,11 +142,14 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     public void paintComponent(Graphics g) {
         //calls the parent class' drawing method to setup for drawing
         super.paintComponent(g);
-        drawLoop(g);
+        t1 = System.currentTimeMillis();
+        drawLoop(g, (int)(t1-t2));
+        t2 = System.currentTimeMillis();
+        
     }
     
     
-    private void drawLoop(Graphics g) {
+    private void drawLoop(Graphics g, int dt) {
         //casts the regular graphics object into the updated 2d graphics object
         Graphics2D g2d = (Graphics2D) g;
         //draws background color and image
@@ -151,32 +157,48 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         g2d.fillRect(0, 0, B_WIDTH, B_HEIGHT);
         g2d.drawImage(startBG,351 + (int)scrollX,0,this);
         
+        //changing what to drawy based on the state of the game
         if(gamestate.equals("menu")){
             for(int i = 0; i < menuButtons.length; ++i){
                 menuButtons[i].draw(g2d, this);
             }
         }else if(gamestate.equals("playing")){
-            scrollX -= 0.5;
-            animationFrame+= 0.018;
+            if(dt<=0){
+                dt = 1;
+            }
+            
+            //scrolling and animation of character (switching through frames)
+            scrollX -= 0.5*dt;
+            animationFrame+= 0.018*dt;
             if((int)animationFrame == 4){
                 animationFrame = 0;
             }
-            if(controlLimiter%8 == 0){
-                if(holdEvent){
-                fallSpeed += 0.8;
+            
+            //what to do if the mouse is held down - jetpack should lift player up
+            if(holdEvent){
+                if(fallSpeed < 3){
+                    fallSpeed += 0.04;
                 }
-                if(heightOffGround > 0){
-                    fallSpeed += -0.5;
-                }
-                heightOffGround += (int)fallSpeed;
-                if(heightOffGround < 0){
-                    heightOffGround = 0;
-                    fallSpeed = 0;
-                }else if(heightOffGround > 400){
-                    heightOffGround = 400;
-                    fallSpeed = 0;
+            }else if(heightOffGround > 0){
+                if(fallSpeed > -5){
+                    fallSpeed += -0.04;
                 }
             }
+            System.out.println((int)fallSpeed + ":" +heightOffGround);
+            if(controlLimiter % 3 == 0){
+                heightOffGround += ((int)fallSpeed)*dt;
+            }
+            
+            
+            //top and bottom barrier prevents character from leaving the screen
+            if(heightOffGround < 0){
+                heightOffGround = 0;
+                fallSpeed = 0;
+            }else if(heightOffGround > 400){
+                heightOffGround = 400;
+                fallSpeed = 0;
+            }
+            
             controlLimiter++;
             //draws the character on the window
             g2d.drawImage(characterFrames[(int)animationFrame],351,B_HEIGHT-150 - heightOffGround,this);
