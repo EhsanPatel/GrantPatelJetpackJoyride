@@ -1,5 +1,5 @@
 /*
- * Ehsan Patel
+ * Ehsan Patel and Colin Grant
  * 1-Apr-2021
  * and open the template in the editor.
  */
@@ -8,10 +8,6 @@ package grantpateljetpackjoyride;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
-/**
- *
- * @author ehsan
- */
 public class CreditsGUI extends javax.swing.JFrame {
     MainGUI mainWindow;
     /**

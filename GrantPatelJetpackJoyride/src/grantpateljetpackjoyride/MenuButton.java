@@ -1,5 +1,5 @@
 /*
- * Ehsan Patel
+ * Ehsan Patel and Colin Grant
  * 3-Apr-2021
  * and open the template in the editor.
  */
@@ -8,10 +8,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import javax.swing.JFrame;
 
-/**
- *
- * @author ehsan
- */
 public class MenuButton {
     private int x;
     private int y;
