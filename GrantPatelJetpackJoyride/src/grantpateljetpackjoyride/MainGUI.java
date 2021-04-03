@@ -170,21 +170,22 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             //scrolling and animation of character (switching through frames)
             scrollX -= 0.5*dt;
             animationFrame+= 0.018*dt;
-            if((int)animationFrame == 4){
+            if((int)animationFrame >= 4){
                 animationFrame = 0;
             }
             
             //what to do if the mouse is held down - jetpack should lift player up
             if(holdEvent){
                 if(fallSpeed < 3){
-                    fallSpeed += 0.04;
+                    fallSpeed += 0.04*dt;
                 }
             }else if(heightOffGround > 0){
                 if(fallSpeed > -5){
-                    fallSpeed += -0.04;
+                    fallSpeed += -0.04*dt;
                 }
             }
-            System.out.println((int)fallSpeed + ":" +heightOffGround);
+            
+            //slows down the jetpack speed
             if(controlLimiter % 3 == 0){
                 heightOffGround += ((int)fallSpeed)*dt;
             }
