@@ -18,14 +18,14 @@ import java.awt.event.KeyListener;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 /**
  *
  * @author ehsan
  */
-public class MainGUI extends JPanel implements ActionListener, KeyListener {
+public class MainGUI extends JPanel implements ActionListener, KeyListener, MouseListener {
     
     //constants for the canvas
     private final int B_WIDTH = 1110;
@@ -37,7 +37,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener {
     //image declaration
     private Image startBG;
     private Image[] characterFrames;
-    private Image[] menuButtons;
+    private MenuButton[] menuButtons;
     private double scrollX;
     private double animationFrame;
     private String gamestate;
@@ -60,24 +60,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener {
         setFocusTraversalKeysEnabled(false);
         
         //allows the board to recieve input from mouseclicks
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                //what to do when mouse is clicked
-                if(gamestate.equals("menu")){
-                    gamestate = "playing";
-                }else if(gamestate.equals("playing")){
-                    holdEvent = true;
-                }
-            }
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                //what to do when mouse is released
-                if(gamestate.equals("playing")){
-                    holdEvent = false;
-                }
-            }
-        });
+        addMouseListener(this);
 
         //game and animation variables
         scrollX = 0;
@@ -89,6 +72,41 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener {
         holdEvent = false;
         
     }
+    
+    @Override
+    public void mousePressed(MouseEvent e) {
+        //what to do when mouse is clicked
+        if(gamestate.equals("menu")){
+            for(int i = 0; i < menuButtons.length; ++i){
+                if(menuButtons[i].buttonAction(e.getX(), e.getY(), this)){
+                    return;
+                }
+                
+            }
+            gamestate = "playing";
+        }else if(gamestate.equals("playing")){
+            holdEvent = true;
+        }
+    }
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        //what to do when mouse is released
+        if(gamestate.equals("playing")){
+            holdEvent = false;
+        }
+    }
+    @Override
+    public void mouseExited(MouseEvent e){
+    }
+    @Override
+    public void mouseEntered(MouseEvent e){
+    }
+    @Override
+    public void mouseClicked(MouseEvent e){
+    }
+//    @Override
+//    public void mouseEntered(MouseEvent e){
+//    }
     
     
     @Override
@@ -152,7 +170,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener {
         
         if(gamestate.equals("menu")){
             for(int i = 0; i < menuButtons.length; ++i){
-                g2d.drawImage(menuButtons[i],15,i*90+120,this);
+                menuButtons[i].draw(g2d, this);
             }
         }else if(gamestate.equals("playing")){
             scrollX -= 0.5;
@@ -218,11 +236,26 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener {
         ImageIcon iiTutorialButton = new ImageIcon(getClass().getResource("imageResources/buttons/tutorialButton.png"));
         ImageIcon iiCreditButton = new ImageIcon(getClass().getResource("imageResources/buttons/creditsButton.png"));
         
-        menuButtons = new Image[] {iiStoreButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH),
-            iiStatsButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH),
-            iiTutorialButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH),
-            iiCreditButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH),
-        };
+        
+        //make buttons here 
+       
+        menuButtons = new MenuButton[4];
+        menuButtons[0] = new MenuButton(15, 120, 320, 66, "Redirect", iiStoreButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH), new StoreGUI());
+        menuButtons[1] = new MenuButton(15, 210, 320, 66, "Redirect", iiStatsButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH), new StatisticsGUI());
+        menuButtons[2] = new MenuButton(15, 300, 320, 66, "Redirect", iiTutorialButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH), new TutorialGUI());
+        menuButtons[3] = new MenuButton(15, 390, 320, 66, "Redirect", iiCreditButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH), new CreditsGUI(this));
+//        menuButtons[4] = new MenuButton(15, 480, 320, 66, "MusicToggle", iiStoreButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH), new StoreGUI());
+//        menuButtons[5] = new MenuButton(15, 570, 320, 66, "SFXToggle", iiStoreButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH), new StoreGUI());
+
+//        for(int i = 0; i < menuButtons.length; ++i){
+//            
+//            g2d.drawImage(menuButtons[i],15,i*90+120,this);
+//        }
+//        menuButtons = new Image[] {iiStoreButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH),
+//            iiStatsButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH),
+//            iiTutorialButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH),
+//            iiCreditButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH),
+//        };
 
     }
     
