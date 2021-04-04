@@ -144,7 +144,7 @@ public class LoadingGUI extends javax.swing.JFrame {
         
         //timer waits 2.5 seconds, showing the splash screen
         try{
-            Thread.sleep(2500);
+            Thread.sleep(200);
         }catch(Exception e){
             e.printStackTrace();
         }
