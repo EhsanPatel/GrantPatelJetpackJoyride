@@ -42,11 +42,4 @@ public interface GameObject {
     
     //sends attributes of the object to a string
     public String toString();
-    
-    //determines if two objects are the same
-    public boolean equals(GameObject g);
-    
-    //clones the object
-    public AbstractGameObject clone(GameObject g);
-
 }

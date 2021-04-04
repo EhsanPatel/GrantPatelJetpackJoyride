@@ -72,6 +72,4 @@ abstract public class AbstractObstacle extends AbstractGameObject{
     
     abstract public void draw();
     
-    abstract public AbstractObstacle clone();
-    
 }
