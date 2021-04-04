@@ -41,7 +41,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     private double scrollX;
     private double animationFrame;
     private String gamestate;
-    private int controlLimiter;
+    private int speedControl;
     
     boolean holdEvent;
     private int heightOffGround;
@@ -66,10 +66,13 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         addMouseListener(this);
 
         //game and animation variables
+        t1 = 0;
+        t2 = 0;
         scrollX = 0;
         animationFrame = 0;
         fallSpeed = 0;
-        controlLimiter = 0;
+        speedControl = 120;
+                
         heightOffGround = 0;
         gamestate = "menu";
         holdEvent = false;
@@ -132,7 +135,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         
         //creates a timer to update the window
         timer = new Timer(SPEED, this);
-        timer.setInitialDelay(0);
+        timer.setInitialDelay(10);
         timer.start();
     }
     
@@ -142,9 +145,9 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     public void paintComponent(Graphics g) {
         //calls the parent class' drawing method to setup for drawing
         super.paintComponent(g);
+        t2 = t1;
         t1 = System.currentTimeMillis();
         drawLoop(g, (int)(t1-t2));
-        t2 = System.currentTimeMillis();
         
     }
     
@@ -168,27 +171,25 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             }
             
             //scrolling and animation of character (switching through frames)
-            scrollX -= 0.5*dt;
-            animationFrame+= 0.018*dt;
+            scrollX -= 0.3*dt;
+            animationFrame+= 0.010*dt;
             if((int)animationFrame >= 4){
                 animationFrame = 0;
             }
             
             //what to do if the mouse is held down - jetpack should lift player up
             if(holdEvent){
-                if(fallSpeed < 3){
-                    fallSpeed += 0.04*dt;
+                if(fallSpeed <= speedControl){
+                    fallSpeed += 0.4*dt;
                 }
             }else if(heightOffGround > 0){
-                if(fallSpeed > -5){
-                    fallSpeed += -0.04*dt;
+                if(fallSpeed >= -speedControl){
+                    fallSpeed += -0.4*dt;
                 }
             }
-            
+
             //slows down the jetpack speed
-            if(controlLimiter % 4 == 0){
-                heightOffGround += ((int)fallSpeed)*dt;
-            }
+            heightOffGround += (fallSpeed/speedControl*dt);
             
             
             //top and bottom barrier prevents character from leaving the screen
@@ -200,9 +201,8 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
                 fallSpeed = 0;
             }
             
-            controlLimiter++;
             //draws the character on the window
-            g2d.drawImage(characterFrames[(int)animationFrame],351,B_HEIGHT-150 - heightOffGround,this);
+            g2d.drawImage(characterFrames[(int)animationFrame],351,(B_HEIGHT-150) - (int)heightOffGround,this);
         }
         
         
@@ -228,7 +228,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
      * loads all of the images into the image arrays to store the resources
      */
     private void loadImages() {
-        int costumeNum = 1;
+        int costumeNum = 3;
         //finds the images relative path from the place that the board class is stored - works for the executable jar too
         ImageIcon iiStartBG = new ImageIcon(getClass().getResource("imageResources/FullImage.png"));
         ImageIcon iiCostume1Frame1 = new ImageIcon(getClass().getResource("imageResources/costume"+costumeNum+"/running1.png"));
