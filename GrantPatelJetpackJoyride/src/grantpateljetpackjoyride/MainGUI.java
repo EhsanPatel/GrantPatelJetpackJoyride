@@ -132,7 +132,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         
         //creates a timer to update the window
         timer = new Timer(SPEED, this);
-        timer.setInitialDelay(500);
+        timer.setInitialDelay(0);
         timer.start();
     }
     
@@ -186,7 +186,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             }
             
             //slows down the jetpack speed
-            if(controlLimiter % 3 == 0){
+            if(controlLimiter % 4 == 0){
                 heightOffGround += ((int)fallSpeed)*dt;
             }
             
@@ -228,7 +228,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
      * loads all of the images into the image arrays to store the resources
      */
     private void loadImages() {
-        int costumeNum = 3;
+        int costumeNum = 1;
         //finds the images relative path from the place that the board class is stored - works for the executable jar too
         ImageIcon iiStartBG = new ImageIcon(getClass().getResource("imageResources/FullImage.png"));
         ImageIcon iiCostume1Frame1 = new ImageIcon(getClass().getResource("imageResources/costume"+costumeNum+"/running1.png"));
