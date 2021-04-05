@@ -1,7 +1,7 @@
 /*
  * Ehsan Patel and Colin Grant
  * 26-Mar-2021
- * and open the template in the editor.
+ * Main loop of the game that handles all the classes together and allows them to interact with one another
  */
 package grantpateljetpackjoyride;
 
@@ -21,10 +21,6 @@ import javax.swing.Timer;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-/**
- *
- * @author ehsan
- */
 public class MainGUI extends JPanel implements ActionListener, KeyListener, MouseListener {
     
     //constants for the canvas
@@ -115,7 +111,6 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     private void initPanel() {
         //load the image resources to use
         loadImages();
-        player.loadImages();
         //setup the canvas
         setBackground(Color.BLACK);
         setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
