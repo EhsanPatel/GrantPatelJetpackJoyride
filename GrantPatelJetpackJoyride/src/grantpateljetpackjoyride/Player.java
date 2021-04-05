@@ -86,21 +86,21 @@ public class Player extends AbstractGameObject {
         //if the user is holding down the spacebar or mouse
         if(holdEvent){
             //maximum velocity upwards
-            if(fallSpeed <= 120){
+            if(fallSpeed <= 40){
                 //adds to the velocity
-                fallSpeed += 0.4*dt;
+                fallSpeed += 0.2*dt;
             }
         //if the user is off the ground and not holding down on the mouse
         }else if(heightOffGround > 0){
             //maximum velocity downwards
-            if(fallSpeed >= -120){
+            if(fallSpeed >= -40){
                 //decreases the velocity
-                fallSpeed += -0.4*dt;
+                fallSpeed += -0.2*dt;
             }
         }
 
         //Adds the instantaneous speed to the distance off the ground - scaled down by the /15
-        heightOffGround += (fallSpeed/15);
+        heightOffGround += (fallSpeed/20);
 
         //top and bottom barrier prevents character from leaving the screen
         if(heightOffGround < 0){

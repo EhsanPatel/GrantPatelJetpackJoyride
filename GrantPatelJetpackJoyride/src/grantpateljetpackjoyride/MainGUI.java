@@ -20,6 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 public class MainGUI extends JPanel implements ActionListener, KeyListener, MouseListener {
     
@@ -30,6 +32,10 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     
     //keeps the game running and updating
     private Timer timer;
+    
+    private MediaPlayer mediaPlayer;
+    private final Media gameMusic = new Media(getClass().getResource("sounds/gamePlay.mp3").toString());
+    private final Media homeMusic = new Media(getClass().getResource("sounds/home.mp3").toString());
 
     //background image declaration
     private Image startBG;
@@ -51,6 +57,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
      * primary constructor to build the JPanel and create a window that can be interacted with by the user
      */
     public MainGUI() {
+
         //initializes the player
         player = new Player();
         
@@ -69,6 +76,12 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
                 }   
             }
             gamestate = "playing";
+            
+            mediaPlayer.stop();
+            mediaPlayer = new MediaPlayer(gameMusic);
+            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+            mediaPlayer.play();
+      
         }else if(gamestate.equals("playing")){
             holdEvent = true;
         }
@@ -135,6 +148,10 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         scrollX = 0;
         gamestate = "menu";
         holdEvent = false;
+        
+        mediaPlayer = new MediaPlayer(homeMusic);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        mediaPlayer.play();
     }
     
     
