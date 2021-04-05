@@ -117,7 +117,7 @@ public class Player extends AbstractGameObject {
         }
 
         //Adds the instantaneous speed to the distance off the ground - scaled down by the /15
-        heightOffGround += (fallSpeed/160);
+        heightOffGround += (fallSpeed/40);
 
         //top and bottom barrier prevents character from leaving the screen
         if(heightOffGround < 0){

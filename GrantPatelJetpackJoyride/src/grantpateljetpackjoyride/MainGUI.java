@@ -20,8 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+
 
 public class MainGUI extends JPanel implements ActionListener, KeyListener, MouseListener {
     
@@ -32,10 +31,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     
     //keeps the game running and updating
     private Timer timer;
-    
-    private MediaPlayer mediaPlayer;
-    private final Media gameMusic = new Media(getClass().getResource("sounds/gamePlay.mp3").toString());
-    private final Media homeMusic = new Media(getClass().getResource("sounds/home.mp3").toString());
+
 
     //background image declaration
     private Image startBG;
@@ -77,11 +73,6 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             }
             gamestate = "playing";
             
-            mediaPlayer.stop();
-            mediaPlayer = new MediaPlayer(gameMusic);
-            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-            mediaPlayer.play();
-      
         }else if(gamestate.equals("playing")){
             holdEvent = true;
         }
@@ -114,10 +105,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         if(k.getKeyChar() == ' '){
             if(gamestate.equals("menu")){
                 gamestate = "playing";
-                mediaPlayer.stop();
-                mediaPlayer = new MediaPlayer(gameMusic);
-                mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-                mediaPlayer.play();
+
             }else if(gamestate.equals("playing")){
                 holdEvent = true;
             }
@@ -136,10 +124,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         timer = new Timer(SPEED, this);
         timer.setInitialDelay(10);
         timer.start();
-         
-        mediaPlayer = new MediaPlayer(homeMusic);
-        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-        mediaPlayer.play();
+        
         
         
         //allows the window to recieve keyboard input
