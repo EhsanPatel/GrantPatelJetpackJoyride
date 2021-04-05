@@ -16,9 +16,12 @@ public class Player extends AbstractGameObject {
     private int costumeNum;
     private int score;
     private int coins;
-    private Image[] characterFrames;
+    private Image[] runningFrames;
+    private Image[] flyingFrames;
+    private Image fallingFrame;
     private double frame;
     private int heightOffGround;
+    private boolean isFalling;
     private double fallSpeed;
 
     /**
@@ -29,11 +32,12 @@ public class Player extends AbstractGameObject {
         yPos = 450;
         width = 90;
         height = 90;
-        costumeNum = 1;
+        costumeNum = 3;
         
         //defaults for game variables that always start at 0
         frame = 0;
         heightOffGround = 0;
+        isFalling = false;
         fallSpeed = 0;
         coins = 0;
         score = 0;
@@ -73,8 +77,19 @@ public class Player extends AbstractGameObject {
         Graphics2D g2d = (Graphics2D) g;
         //stores the y position on the window which is different from the height off of what appears to be the ground on the background image
         yPos = (int)(windowHeight-(0.25*windowHeight)) - (int)heightOffGround;
+        
+        //Selects which image to draw
+        Image imageToDraw = runningFrames[(int)frame];
+        
+        if(heightOffGround > 0){
+            imageToDraw = flyingFrames[(int)frame];
+        }
+        if(isFalling){
+            imageToDraw = fallingFrame;
+        }
+        
         //draws the character on the window at the x,y coordinates
-        g2d.drawImage(characterFrames[(int)frame],xPos,yPos,m);
+        g2d.drawImage(imageToDraw,xPos,yPos,m);
     }
     
     /**
@@ -85,6 +100,7 @@ public class Player extends AbstractGameObject {
     public void move(boolean holdEvent, int dt){
         //if the user is holding down the spacebar or mouse
         if(holdEvent){
+            isFalling = false;
             //maximum velocity upwards
             if(fallSpeed <= 40){
                 //adds to the velocity
@@ -92,6 +108,7 @@ public class Player extends AbstractGameObject {
             }
         //if the user is off the ground and not holding down on the mouse
         }else if(heightOffGround > 0){
+            isFalling = true;
             //maximum velocity downwards
             if(fallSpeed >= -40){
                 //decreases the velocity
@@ -104,6 +121,7 @@ public class Player extends AbstractGameObject {
 
         //top and bottom barrier prevents character from leaving the screen
         if(heightOffGround < 0){
+            isFalling = false;
             //sets the velocity to 0 and keeps resetting the height to the max or min
             heightOffGround = 0;
             fallSpeed = 0;
@@ -188,17 +206,17 @@ public class Player extends AbstractGameObject {
     }
     /**
      * sets the images for the animation frames
-     * @param characterFrames - an array of the frame images
+     * @param runningFrames - an array of the frame images
      */
-    public void setCharacterFrames(Image[] characterFrames){
-        this.characterFrames = characterFrames;
+    public void setRunningFrames(Image[] runningFrames){
+        this.runningFrames = runningFrames;
     }
     /**
      * gets the array of images for the animation frames
      * @return the image array of the frames
      */
-    public Image[] getCharacterFrames(){
-        return characterFrames;
+    public Image[] getRunningFrames(){
+        return runningFrames;
     }
     /**
      * gets the height off the ground (a certain part of the image is the ground)
@@ -234,15 +252,26 @@ public class Player extends AbstractGameObject {
      */
     @Override
     public void loadImages(){
-        ImageIcon iiCostume1Frame1 = new ImageIcon(getClass().getResource("imageResources/costume"+costumeNum+"/running1.png"));
-        ImageIcon iiCostume1Frame2 = new ImageIcon(getClass().getResource("imageResources/costume"+costumeNum+"/running2.png"));
-        ImageIcon iiCostume1Frame3 = new ImageIcon(getClass().getResource("imageResources/costume"+costumeNum+"/running3.png"));
-        ImageIcon iiCostume1Frame4 = new ImageIcon(getClass().getResource("imageResources/costume"+costumeNum+"/running4.png"));
+        ImageIcon[] iiRunning = new ImageIcon[4];
+        runningFrames = new Image[iiRunning.length];
         
-        characterFrames = new Image[] {iiCostume1Frame1.getImage().getScaledInstance(90, 90, Image.SCALE_FAST),
-            iiCostume1Frame2.getImage().getScaledInstance(90, 90, Image.SCALE_FAST),
-            iiCostume1Frame3.getImage().getScaledInstance(90, 90, Image.SCALE_FAST),
-            iiCostume1Frame4.getImage().getScaledInstance(90, 90, Image.SCALE_FAST)};
+        for(int i = 0; i < iiRunning.length; ++i){
+            iiRunning[i] = new ImageIcon(getClass().getResource("imageResources/costume"+costumeNum+"/running"+(i+1)+".png"));
+            runningFrames[i] = iiRunning[i].getImage().getScaledInstance(90, 90, Image.SCALE_FAST);
+        }
+        
+        ImageIcon[] iiFlying = new ImageIcon[4];
+        flyingFrames = new Image[iiFlying.length];
+        
+        for(int i = 0; i < iiFlying.length; ++i){
+            iiFlying[i] = new ImageIcon(getClass().getResource("imageResources/costume"+costumeNum+"/flying"+(i+1)+".png"));
+            flyingFrames[i] = iiFlying[i].getImage().getScaledInstance(90, 204, Image.SCALE_FAST);
+        }
+        
+        ImageIcon iiFalling = new ImageIcon(getClass().getResource("imageResources/costume"+costumeNum+"/falling.png"));
+        fallingFrame = iiFalling.getImage().getScaledInstance(90, 90, Image.SCALE_FAST);
+        
+
     }
     /**
      * provides the values of the player variables collected in a string
