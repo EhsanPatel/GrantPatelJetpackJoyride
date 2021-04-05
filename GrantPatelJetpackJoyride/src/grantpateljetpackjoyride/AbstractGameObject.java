@@ -7,10 +7,6 @@ package grantpateljetpackjoyride;
 
 import java.awt.Graphics;
 
-/**
- *
- * @author ehsan
- */
 public abstract class AbstractGameObject implements GameObject{
     //instance variables
     protected int xPos, yPos, height, width;
