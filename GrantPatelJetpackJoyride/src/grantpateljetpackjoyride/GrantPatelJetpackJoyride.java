@@ -5,7 +5,7 @@
  */
 package grantpateljetpackjoyride;
 
-import javafx.embed.swing.JFXPanel;
+import com.sun.javafx.application.PlatformImpl;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
@@ -18,7 +18,7 @@ public class GrantPatelJetpackJoyride extends JFrame {
     }
     
     private void initUI() {
-        add(new JFXPanel());
+        PlatformImpl.startup(() -> {});
         add(new MainGUI());
         
         setResizable(false);
