@@ -57,7 +57,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
      * primary constructor to build the JPanel and create a window that can be interacted with by the user
      */
     public MainGUI() {
-
+        
         //initializes the player
         player = new Player();
         
@@ -114,6 +114,10 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         if(k.getKeyChar() == ' '){
             if(gamestate.equals("menu")){
                 gamestate = "playing";
+                mediaPlayer.stop();
+                mediaPlayer = new MediaPlayer(gameMusic);
+                mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+                mediaPlayer.play();
             }else if(gamestate.equals("playing")){
                 holdEvent = true;
             }
@@ -132,6 +136,11 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         timer = new Timer(SPEED, this);
         timer.setInitialDelay(10);
         timer.start();
+         
+        mediaPlayer = new MediaPlayer(homeMusic);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        mediaPlayer.play();
+        
         
         //allows the window to recieve keyboard input
         addKeyListener(this);
@@ -148,10 +157,6 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         scrollX = 0;
         gamestate = "menu";
         holdEvent = false;
-        
-        mediaPlayer = new MediaPlayer(homeMusic);
-        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-        mediaPlayer.play();
     }
     
     
