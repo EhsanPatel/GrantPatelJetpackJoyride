@@ -52,8 +52,8 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     
     boolean mainMusicPlaying = false;
     boolean menuMusicPlaying = true;
-    private String filepathMain = "src/grantpateljetpackjoyride/audio/JetpackJoyrideOST-MainTheme.wav";
-    private String filepathMenu = "src/grantpateljetpackjoyride/audio/JetpackJoyrideOST-Home.wav";
+    private final String filepathMain = "src/grantpateljetpackjoyride/audio/JetpackJoyrideOST-MainTheme.wav";
+    private final String filepathMenu = "src/grantpateljetpackjoyride/audio/JetpackJoyrideOST-Home.wav";
     private AudioPlayer audioPlayer;
     
     
