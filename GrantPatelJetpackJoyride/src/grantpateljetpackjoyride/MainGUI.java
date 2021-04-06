@@ -28,7 +28,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     //constants for the canvas
     private final int B_WIDTH = 1110;
     private final int B_HEIGHT = 600;
-    private final int SPEED = 1;
+    private final int SPEED = 10;
     
     //keeps the game running and updating
     private Timer timer;
@@ -79,12 +79,6 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
 
         //game and animation variables
         scrollX = 0;
-        /*
-        animationFrame = 0;
-        fallSpeed = 0;
-        controlLimiter = 0;
-        heightOffGround = 0;
-        */
         gamestate = "menu";
         holdEvent = false;
         playMusic(filepathMenu);
@@ -157,7 +151,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         
         //creates a timer to update the window
         timer = new Timer(SPEED, this);
-        timer.setInitialDelay(10);
+        timer.setInitialDelay(100);
         timer.start();
         
         
@@ -196,6 +190,8 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         //prevents unexpected dt from changing game function
         if(dt<=0){
             dt = 1;
+        }else if(dt > 25){
+            dt = 25;
         }
         
         //casts the regular graphics object into the updated 2d graphics object
