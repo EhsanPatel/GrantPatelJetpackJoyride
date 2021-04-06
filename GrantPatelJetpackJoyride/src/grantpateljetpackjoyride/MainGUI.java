@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -50,6 +51,14 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     private long t1;
     private long t2;
     
+    boolean mainMusicPlaying = false;
+    boolean menuMusicPlaying = true;
+    private String filepathMain = "src/grantpateljetpackjoyride/audio/JetpackJoyrideOST-MainTheme.wav";
+    private String filepathMenu = "src/grantpateljetpackjoyride/audio/JetpackJoyrideOST-Home.wav";
+    private AudioPlayer audioPlayer;
+    
+    
+    
     /**
      * primary constructor to build the JPanel and create a window that can be interacted with by the user
      */
@@ -73,6 +82,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         heightOffGround = 0;
         gamestate = "menu";
         holdEvent = false;
+        playMusic(filepathMenu);
     }
     
     @Override
@@ -157,7 +167,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         g2d.fillRect(0, 0, B_WIDTH, B_HEIGHT);
         g2d.drawImage(startBG,351 + (int)scrollX,0,this);
         
-        //changing what to drawy based on the state of the game
+        //changing what to draw based on the state of the game
         if(gamestate.equals("menu")){
             for(int i = 0; i < menuButtons.length; ++i){
                 menuButtons[i].draw(g2d, this);
@@ -166,7 +176,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             if(dt<=0){
                 dt = 1;
             }
-            
+           
             //scrolling and animation of character (switching through frames)
             scrollX -= 0.5*dt;
             animationFrame+= 0.018*dt;
@@ -276,9 +286,28 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     }
     @Override
     public void mouseClicked(MouseEvent e){
+        if (mainMusicPlaying == false && gamestate.equals("playing")){
+                audioPlayer.stop();
+                playMusic(filepathMain);
+                mainMusicPlaying = true;
+            }
     }
     @Override
     public void keyTyped(KeyEvent k){
+        if (mainMusicPlaying == false && gamestate.equals("playing")){
+                audioPlayer.stop();
+                playMusic(filepathMain);
+                mainMusicPlaying = true;
+            }
     } 
     
+    public void playMusic(String filepath){
+        try{
+            audioPlayer = new AudioPlayer(filepath);
+              
+            } catch (Exception e){
+                JOptionPane.showMessageDialog(null, e);
+            }
+        
+    }
 }
