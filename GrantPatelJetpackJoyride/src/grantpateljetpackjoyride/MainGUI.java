@@ -52,8 +52,8 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     
     boolean mainMusicPlaying = false;
     boolean menuMusicPlaying = true;
-    private final String filepathMain = "src/grantpateljetpackjoyride/audio/JetpackJoyrideOST-MainTheme.wav";
-    private final String filepathMenu = "src/grantpateljetpackjoyride/audio/JetpackJoyrideOST-Home.wav";
+    private final String filepathMain = "audio/JetpackJoyrideOST-MainTheme.wav";
+    private final String filepathMenu = "audio/JetpackJoyrideOST-Home.wav";
     private AudioPlayer audioPlayer;
     
     
@@ -94,10 +94,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
                     return;
                 }   
             }
-            gamestate = "playing";
-            audioPlayer.stop();
-            playMusic(filepathMain);
-            mainMusicPlaying = true;
+            playGame();
             
         }else if(gamestate.equals("playing")){
             holdEvent = true;
@@ -130,10 +127,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     public void keyPressed(KeyEvent k){
         if(k.getKeyChar() == ' '){
             if(gamestate.equals("menu")){
-                gamestate = "playing";
-                audioPlayer.stop();
-                playMusic(filepathMain);
-                mainMusicPlaying = true;
+                playGame(); 
 
             }else if(gamestate.equals("playing")){
                 holdEvent = true;
@@ -273,13 +267,21 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
 
     }
     
+    
+    public void playGame(){
+        gamestate = "playing";
+        audioPlayer.stop();
+        playMusic(filepathMain);
+        mainMusicPlaying = true;
+    }
+    
     public void playMusic(String filepath){
         try{
             audioPlayer = new AudioPlayer(filepath);
-              
-            } catch (Exception e){
-                JOptionPane.showMessageDialog(null, e);
-            }
+
+        } catch (Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
         
     }
     
