@@ -57,6 +57,8 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     private AudioPlayer audioPlayer;
     
     
+    VerticalObstacle v;
+    
     
     /**
      * primary constructor to build the JPanel and create a window that can be interacted with by the user
@@ -165,6 +167,8 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         scrollX = 0;
         gamestate = "menu";
         holdEvent = false;
+        
+        v = new VerticalObstacle(0,0, 300, 90, "type");
     }
     
     
@@ -219,6 +223,9 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             player.move(holdEvent, dt);            
             player.draw(g, B_HEIGHT, this);
         }
+        
+        v.draw(this,g);
+        
         
         //synchronizes the graphics
         Toolkit.getDefaultToolkit().sync();
