@@ -16,9 +16,9 @@ import javax.swing.JFrame;
  */
 
 public class LoadingGUI extends javax.swing.JFrame {
-    private InputStream is = LoadingGUI.class.getResourceAsStream("fonts/Abel-Regular.ttf");
-    private Font abelFont;
-    private Font abelFont12;
+    private static InputStream is = LoadingGUI.class.getResourceAsStream("fonts/Abel-Regular.ttf");
+    private static Font abelFont;
+    private static Font scaledAbelFont;
     private static GrantPatelJetpackJoyride mainGUI;
     private static LoadingGUI l = new LoadingGUI();
     /**
@@ -28,7 +28,7 @@ public class LoadingGUI extends javax.swing.JFrame {
         //loads in a font to use for the text
         try{
             this.abelFont = Font.createFont(Font.TRUETYPE_FONT, is);
-            abelFont12 = abelFont.deriveFont(16f);
+            scaledAbelFont = abelFont.deriveFont(20f);
         }catch(Exception e){
             System.out.println(e);
         }
@@ -65,7 +65,7 @@ public class LoadingGUI extends javax.swing.JFrame {
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/grantpateljetpackjoyride/imageResources/logo.png"))); // NOI18N
 
         jLabel1.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel1.setFont(abelFont12);
+        jLabel1.setFont(scaledAbelFont);
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Remake by Colin Grant and Ehsan Patel");

@@ -22,8 +22,8 @@ import javax.swing.JOptionPane;
  */
 public class AudioPlayer {
     
-    Clip audioClip;
-    AudioInputStream audioStream;
+    private Clip audioClip;
+    private AudioInputStream audioStream;
     
     public AudioPlayer(String filepath)
             throws UnsupportedAudioFileException,
