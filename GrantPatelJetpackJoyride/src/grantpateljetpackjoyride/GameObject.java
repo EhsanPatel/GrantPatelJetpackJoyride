@@ -5,6 +5,8 @@ Game Object Interface - contains methods common to all game objects
  */
 package grantpateljetpackjoyride;
 
+import java.awt.Graphics;
+
 /**
  *
  * @author cogra9807
@@ -38,8 +40,8 @@ public interface GameObject {
     public void loadImages();
     
     //draws the images onto the screen
-    public void draw();
+//    public void draw(Graphics g);
     
     //sends attributes of the object to a string
-    public String toString();
+    public String toString()
 }

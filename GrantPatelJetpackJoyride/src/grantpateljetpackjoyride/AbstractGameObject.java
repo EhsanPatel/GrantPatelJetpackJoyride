@@ -5,10 +5,8 @@
  */
 package grantpateljetpackjoyride;
 
-/**
- *
- * @author ehsan
- */
+import java.awt.Graphics;
+
 public abstract class AbstractGameObject implements GameObject{
     //instance variables
     protected int xPos, yPos, height, width;
@@ -123,7 +121,7 @@ public abstract class AbstractGameObject implements GameObject{
     abstract public void loadImages();
     
     //draws the images onto the screen
-    abstract public void draw();
+//    abstract public void draw(Graphics g);
     
     /**
      * sends attributes of object to a string
