@@ -43,5 +43,5 @@ public interface GameObject {
 //    public void draw(Graphics g);
     
     //sends attributes of the object to a string
-    public String toString()
+    public String toString();
 }
