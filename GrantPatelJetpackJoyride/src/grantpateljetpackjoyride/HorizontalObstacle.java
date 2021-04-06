@@ -39,7 +39,7 @@ public class HorizontalObstacle extends AbstractObstacle{
     public HorizontalObstacle(int xPos, int yPos, int height, int width, String type){
         super(xPos, yPos, height, width, type);
         //determine if big obstacle or not
-        height = 75; //vertical obstacle will always have same width
+        height = 100; //vertical obstacle will always have same width
         if (width > 500){ //determine which set of images to use
             resizeImages(framesMedium);
         } else {

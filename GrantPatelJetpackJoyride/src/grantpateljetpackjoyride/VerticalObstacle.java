@@ -38,8 +38,10 @@ public class VerticalObstacle extends AbstractObstacle{
      */
     public VerticalObstacle(int xPos, int yPos, int height, int width, String type){
         super(xPos, yPos, height, width, type);
+        //loading images
+        loadImages();
         //determine if big obstacle or not
-        width = 75; //vertical obstacle will always have same width
+        width = 100; //vertical obstacle will always have same width
         if (height > 500){ //determine which set of images to use
             resizeImages(framesMedium);
         } else {
@@ -59,11 +61,14 @@ public class VerticalObstacle extends AbstractObstacle{
             
         }
         
+        
         //add medium obstacles
         //for each frame
         for (int i = 0; i < framesMedium.length; i++) {
             framesMedium[i] = new ImageIcon(getClass().getResource("imageResources/obstacles/mediumVertical/obstacle" + (i + 1) + ".png"));
         }
+        
+        
     }
     
     /**
