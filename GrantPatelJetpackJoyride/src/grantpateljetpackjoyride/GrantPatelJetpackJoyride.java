@@ -5,6 +5,9 @@
  */
 package grantpateljetpackjoyride;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
@@ -28,5 +31,29 @@ public class GrantPatelJetpackJoyride extends JFrame {
         
         setLocationRelativeTo(null);        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+    private void createSaveFile(){
+        String saveAddress = System.getProperty("user.home") + "\\Documents\\";
+        System.out.println(saveAddress+"filename.txt");
+        try {
+            File myObj = new File(saveAddress+"autosave.jjrs");
+            if (myObj.createNewFile()) {
+              System.out.println("File created: " + myObj.getName());
+            } else {
+              System.out.println("File already exists.");
+            }
+          } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+        try {
+            FileWriter myWriter = new FileWriter(saveAddress+"autosave.jjrs");
+            myWriter.write("New Test output");
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
     }
 }
