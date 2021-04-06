@@ -79,10 +79,12 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
 
         //game and animation variables
         scrollX = 0;
+        /*
         animationFrame = 0;
         fallSpeed = 0;
         controlLimiter = 0;
         heightOffGround = 0;
+        */
         gamestate = "menu";
         holdEvent = false;
         playMusic(filepathMenu);
