@@ -145,7 +145,4 @@ public abstract class AbstractGameObject implements GameObject{
                 this.height == g.getHeight() && this.width == g.getWidth();
     }
     
-    //clones object
-    abstract public AbstractGameObject clone();
-    
 }

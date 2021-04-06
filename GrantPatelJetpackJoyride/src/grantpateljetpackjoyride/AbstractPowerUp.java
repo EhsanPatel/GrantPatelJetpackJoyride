@@ -35,26 +35,49 @@ abstract public class AbstractPowerUp extends AbstractGameObject{
         this.amplitude = amplitude;
     }
     
+    /**
+     * gets the movement speed
+     * @return the movement speed
+     */
     public int getMoveSpeed(){
         return moveSpeed;
     }
     
+    /**
+     * sets the movement speed
+     * @param moveSpeed the new movement speed
+     */
     public void setMoveSpeed(int moveSpeed){
         this.moveSpeed = moveSpeed;
     }
     
+    /**
+     * gets the amplitude
+     * @return the amplitude
+     */
     public int getAmplitude(){
         return amplitude;
     }
     
+    /**
+     * sets the amplitude
+     * @param amplitude the new amplitude
+     */
     public void setAmplitude(int amplitude){
         this.amplitude = amplitude;
     }
     
+    /**
+     * defines how the powerup will move
+     */
     public void move(){
         //do this later
     }
     
+    /**
+     * puts attributes of abstract power up in a string
+     * @return the string
+     */
     public String toString(){
         String str = super.toString() + "\nMovement Speed:\t" + moveSpeed + "\n" + 
                 "Amplitude:\t" + amplitude;

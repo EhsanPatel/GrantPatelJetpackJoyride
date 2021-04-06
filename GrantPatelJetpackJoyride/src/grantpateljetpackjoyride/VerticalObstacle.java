@@ -1,7 +1,7 @@
 /*
  * Ehsan Patel and Colin Grant
  * 1-Apr-2021
- * Codes for horizontal obstacles
+ * Codes for methods common to vertical obstacles
  */
 package grantpateljetpackjoyride;
 
@@ -9,9 +9,9 @@ package grantpateljetpackjoyride;
  *
  * @author ehsan
  */
-public class HorizontalObstacle extends AbstractObstacle{
+public class VerticalObstacle extends AbstractObstacle{
     //default constructor
-    public HorizontalObstacle(){
+    public VerticalObstacle(){
         super();
     }
     
@@ -23,7 +23,7 @@ public class HorizontalObstacle extends AbstractObstacle{
      * @param width
      * @param type 
      */
-    public HorizontalObstacle(int xPos, int yPos, int height, int width, String type){
+    public VerticalObstacle(int xPos, int yPos, int height, int width, String type){
         super(xPos, yPos, height, width, type);
     }
     
@@ -51,18 +51,18 @@ public class HorizontalObstacle extends AbstractObstacle{
     
     /**
      * determines if two obstacles are the same
-     * @param h the second obstacle
+     * @param v the second obstacle
      * @return true if the same, else false
      */
-    public boolean equals(HorizontalObstacle h){
-        return super.equals(h);
+    public boolean equals(VerticalObstacle v){
+        return super.equals(v);
     }
     
     /**
-     * clones the horizontal obstacle
+     * clones the vertical obstacle
      * @return the clone
      */
-    public HorizontalObstacle clone(){
-        return new HorizontalObstacle(xPos, yPos, height, width, type);
+    public VerticalObstacle clone(){
+        return new VerticalObstacle(xPos, yPos, height, width, type);
     }
 }
