@@ -101,6 +101,9 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
                 }   
             }
             gamestate = "playing";
+            audioPlayer.stop();
+            playMusic(filepathMain);
+            mainMusicPlaying = true;
             
         }else if(gamestate.equals("playing")){
             holdEvent = true;
@@ -134,6 +137,9 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         if(k.getKeyChar() == ' '){
             if(gamestate.equals("menu")){
                 gamestate = "playing";
+                audioPlayer.stop();
+                playMusic(filepathMain);
+                mainMusicPlaying = true;
 
             }else if(gamestate.equals("playing")){
                 holdEvent = true;
@@ -187,6 +193,11 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     
     
     private void drawLoop(Graphics g, int dt) {
+        //prevents unexpected dt from changing game function
+        if(dt<=0){
+            dt = 1;
+        }
+        
         //casts the regular graphics object into the updated 2d graphics object
         Graphics2D g2d = (Graphics2D) g;
         //draws background color and image
@@ -208,9 +219,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
                 menuButtons[i].draw(g2d, this);
             }
         }else if(gamestate.equals("playing")){
-            if(dt<=0){
-                dt = 1;
-            }
+            
            
             //scrolling and animation of character (switching through frames)
             scrollX -= 0.3*dt;
@@ -267,31 +276,6 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
 //        menuButtons[5] = new MenuButton(15, 570, 320, 66, "SFXToggle", iiSFXToggleButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH));
 
     }
-
-    
-    //unused functions in order to implement mouse and keyboard listener
-    @Override
-    public void mouseExited(MouseEvent e){
-    }
-    @Override
-    public void mouseEntered(MouseEvent e){
-    }
-    @Override
-    public void mouseClicked(MouseEvent e){
-        if (mainMusicPlaying == false && gamestate.equals("playing")){
-                audioPlayer.stop();
-                playMusic(filepathMain);
-                mainMusicPlaying = true;
-            }
-    }
-    @Override
-    public void keyTyped(KeyEvent k){
-        if (mainMusicPlaying == false && gamestate.equals("playing")){
-                audioPlayer.stop();
-                playMusic(filepathMain);
-                mainMusicPlaying = true;
-            }
-    } 
     
     public void playMusic(String filepath){
         try{
@@ -302,4 +286,21 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             }
         
     }
+    
+    
+    //unused functions in order to implement mouse and keyboard listener
+    @Override
+    public void mouseExited(MouseEvent e){
+    }
+    @Override
+    public void mouseEntered(MouseEvent e){
+    }
+    @Override
+    public void mouseClicked(MouseEvent e){
+    }
+    @Override
+    public void keyTyped(KeyEvent k){
+    } 
+    
+
 }
