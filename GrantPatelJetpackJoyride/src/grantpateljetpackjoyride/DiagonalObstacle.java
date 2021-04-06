@@ -5,11 +5,17 @@
  */
 package grantpateljetpackjoyride;
 
+import java.awt.Image;
+
 /**
  *
  * @author ehsan
  */
 public class DiagonalObstacle extends AbstractObstacle{
+    
+    //class variables
+    private static Image[] framesSmall;
+    private static Image[] framesMedium;
     
     //default constructor
     public DiagonalObstacle(){

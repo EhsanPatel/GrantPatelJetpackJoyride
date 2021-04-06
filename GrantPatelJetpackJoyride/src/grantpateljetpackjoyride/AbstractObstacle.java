@@ -18,7 +18,6 @@ abstract public class AbstractObstacle extends AbstractGameObject{
     //instance variables
     protected String type;
     protected double frame;
-    protected boolean bigObstacle;
     
     //default constructor
     public AbstractObstacle(){
@@ -38,14 +37,7 @@ abstract public class AbstractObstacle extends AbstractGameObject{
         super(xPos, yPos, height, width);
         this.type = type;
         
-        //determining if obstacle is big or not (which image set to use)
-        if (((int)(Math.random() * 2) + 1) == 1){
-            bigObstacle = true;
-        } else {
-            bigObstacle = false;
-        }
         
-        bigObstacle = false;
     }
     
     /**
@@ -78,22 +70,6 @@ abstract public class AbstractObstacle extends AbstractGameObject{
      */
     public void setFrame(double frame){
         this.frame = frame;
-    }
-    
-    /**
-     * gets if obstacle is big
-     * @return true if it is big, else false
-     */
-    public boolean getBigObstacle(){
-        return bigObstacle;
-    }
-    
-    /**
-     * sets the obstacle size
-     * @param big if obstacle is big or not
-     */
-    public void setBigObstacle(boolean big){
-        bigObstacle = big;
     }
     
     /**
