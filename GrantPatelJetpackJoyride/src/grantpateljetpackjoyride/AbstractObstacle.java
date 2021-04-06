@@ -5,6 +5,10 @@
  */
 package grantpateljetpackjoyride;
 
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+
 /**
  *
  * @author ehsan
@@ -13,6 +17,8 @@ abstract public class AbstractObstacle extends AbstractGameObject{
     
     //instance variables
     protected String type;
+    protected double frame;
+    protected boolean bigObstacle;
     
     //default constructor
     public AbstractObstacle(){
@@ -31,6 +37,15 @@ abstract public class AbstractObstacle extends AbstractGameObject{
     public AbstractObstacle(int xPos, int yPos, int height, int width, String type){
         super(xPos, yPos, height, width);
         this.type = type;
+        
+        //determining if obstacle is big or not (which image set to use)
+        if (((int)(Math.random() * 2) + 1) == 1){
+            bigObstacle = true;
+        } else {
+            bigObstacle = false;
+        }
+        
+        bigObstacle = false;
     }
     
     /**
@@ -47,6 +62,38 @@ abstract public class AbstractObstacle extends AbstractGameObject{
      */
     public void setType(String type){
         this.type = type;
+    }
+    
+    /**
+     * gets the frame number
+     * @return the frame number
+     */
+    public double getFrame(){
+        return frame;
+    }
+    
+    /**
+     * sets the frame number
+     * @param frame the new frame number
+     */
+    public void setFrame(double frame){
+        this.frame = frame;
+    }
+    
+    /**
+     * gets if obstacle is big
+     * @return true if it is big, else false
+     */
+    public boolean getBigObstacle(){
+        return bigObstacle;
+    }
+    
+    /**
+     * sets the obstacle size
+     * @param big if obstacle is big or not
+     */
+    public void setBigObstacle(boolean big){
+        bigObstacle = big;
     }
     
     /**
@@ -67,9 +114,26 @@ abstract public class AbstractObstacle extends AbstractGameObject{
         return super.equals(a) && a.getType().equals(this.getType());
     }
     
+    /**
+     * draws the obstacles to the screen
+     * @param m the mainGUI screen
+     * @param g the graphics tool
+     * @param images the images
+     */
+    public void draw(MainGUI m, Graphics g, Image[] images){
+        //casts the graphics object to the better 2d version
+        Graphics2D g2d = (Graphics2D) g;
+        
+        //Selects which image to draw
+        Image imageToDraw = images[(int)frame];
+        
+        //draws the character on the window at the x,y coordinates
+        g2d.drawImage(imageToDraw,xPos,yPos,m);
+    }
+    
     //methods that cannot be coded for in abstract class
     abstract public void loadImages();
     
-    abstract public void draw();
+    
     
 }

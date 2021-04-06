@@ -1,7 +1,7 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+Colin Grant and Ehsan Patel
+April 5, 2021
+Audio Player class - creates an audio player to play a .wav file for game sounds
  */
 package grantpateljetpackjoyride;
 

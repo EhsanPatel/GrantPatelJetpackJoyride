@@ -5,11 +5,20 @@
  */
 package grantpateljetpackjoyride;
 
+import java.awt.Graphics;
+import java.awt.Image;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author ehsan
  */
 public class VerticalObstacle extends AbstractObstacle{
+    
+    //class variables
+    private static Image[] framesSmall;
+    private static Image[] framesMedium;
+    
     //default constructor
     public VerticalObstacle(){
         super();
@@ -31,14 +40,62 @@ public class VerticalObstacle extends AbstractObstacle{
      * loads the image of the obstacle
      */
     public void loadImages(){
-        //load the image
+        //load the horizontal obstacle frames into an array, resize them to the width and height
+        ImageIcon[] iiHObstacle = new ImageIcon[4];
+        framesSmall = new Image[iiHObstacle.length];
+        
+        //for each frame
+        for (int i = 0; i < iiHObstacle.length; i++) {
+            iiHObstacle[i] = new ImageIcon(getClass().getResource("imageResources/obstacles/smallVertical/obstacle" + (i + 1) + ".png"));
+            framesSmall[i] = iiHObstacle[i].getImage().getScaledInstance(width, height, Image.SCALE_FAST);
+        }
+        
+        //add medium obstacles
+    }
+    
+    /**
+     * gets the images of the vertical obstacles
+     * @return the array of images
+     */
+    public Image[] getFramesMedium(){
+        return framesMedium.clone();
+    }
+    
+    /**
+     * sets the images of the obstacle
+     * @param framesMedium the new array of images
+     */
+    public void setFramesMedium(Image[] framesMedium){
+        VerticalObstacle.framesMedium = framesMedium;
+    }
+    
+    /**
+     * gets the images of the vertical obstacles
+     * @return the array of images
+     */
+    public Image[] getFramesSmall(){
+        return framesSmall.clone();
+    }
+    
+    /**
+     * sets the images of the obstacle
+     * @param framesSmall the new array of images
+     */
+    public void setFramesSmall(Image[] framesSmall){
+        VerticalObstacle.framesSmall = framesSmall;
     }
     
     /**
      * draws the obstacle image onto the screen
      */
-    public void draw(){
-        //draw the image onto the screen
+    public void draw(MainGUI m, Graphics g){
+        //determine which size of obstacle to draw
+        if (bigObstacle){
+            super.draw(m, g, framesMedium);
+        } else {
+            super.draw(m, g, framesSmall);
+        }
+        
     }
     
     /**
