@@ -5,6 +5,11 @@
  */
 package grantpateljetpackjoyride;
 
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author ehsan
@@ -20,8 +25,8 @@ public class Coin extends AbstractGameObject {
      *
      */
     //instance variables
-    protected int value;
-    //protected Image coinImage; will add in later
+    private int value;
+    private static Image coinImage1, coinImage2;
 
     //default constructor
     Coin() {
@@ -75,19 +80,25 @@ public class Coin extends AbstractGameObject {
     /**
      * draws the coin
      */
-    public void draw() {
-        //do this later
+    public void draw(MainGUI m, Graphics g) {
+        //casts the graphics object to the better 2d version
+        Graphics2D g2d = (Graphics2D) g;
+        
+        //draw coin to screen, depending on what the value is
+        if (value == 1){
+            g2d.drawImage(coinImage1, xPos, yPos, m);
+        } else {
+            g2d.drawImage(coinImage2, xPos, yPos, m);
+        }
     }
 
     /**
      * loads the coin image depending on the value of the coin
      */
     public void loadImages() {
-        if (value == 1) {
-            //load this image
-        } else {
-            //load this image
-        }
+        coinImage1 = (new ImageIcon(getClass().getResource("imageResources/coins/coin1.png"))).getImage().getScaledInstance(width, height, Image.SCALE_FAST);
+        coinImage2 = (new ImageIcon(getClass().getResource("imageResources/coins/coin2.png"))).getImage().getScaledInstance(width, height, Image.SCALE_FAST);
+        
     }
 
     /**

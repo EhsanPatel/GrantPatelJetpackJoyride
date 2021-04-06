@@ -39,9 +39,11 @@ public class VerticalObstacle extends AbstractObstacle{
      */
     public VerticalObstacle(int xPos, int yPos, int height, int width, String type){
         super(xPos, yPos, height, width, type);
-        this.loadImages();
+        //loading images
+        loadImages();
+
         //determine if big obstacle or not
-        width = 75; //vertical obstacle will always have same width
+        width = 100; //vertical obstacle will always have same width
         if (height > 500){ //determine which set of images to use
             frames = framesMedium;
         } else {
@@ -61,11 +63,25 @@ public class VerticalObstacle extends AbstractObstacle{
             framesSmall[i] = iiFrames[i].getImage().getScaledInstance(width, height, Image.SCALE_FAST);
             
         }
-        
-        //add medium obstacles for each frame
+                
+        //add medium obstacles
+        //for each frame
         for (int i = 0; i < framesMedium.length; i++) {
-            iiFrames[i] = new ImageIcon(getClass().getResource("imageResources/obstacles/smallVertical/obstacle" + (i + 1) + ".png"));
-            framesMedium[i] = iiFrames[i].getImage().getScaledInstance(width, height, Image.SCALE_FAST);
+            framesMedium[i] = new ImageIcon(getClass().getResource("imageResources/obstacles/mediumVertical/obstacle" + (i + 1) + ".png"));
+        }
+        
+        
+    }
+    
+    /**
+     * resizes images to fit height and width
+     * @param images array containing original images
+     */
+    public void resizeImages(ImageIcon[] images){
+        //resize each frame
+        for (int i = 0; i < images.length; i++) {
+            frames[i] = images[i].getImage().getScaledInstance(width, height, Image.SCALE_FAST);
+
         }
     }
     

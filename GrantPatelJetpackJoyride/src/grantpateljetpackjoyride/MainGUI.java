@@ -280,6 +280,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         audioPlayer.stop();
         playMusic(filepathMain);
         mainMusicPlaying = true;
+        menuMusicPlaying = false;
     }
     
     public void playMusic(String filepath){
