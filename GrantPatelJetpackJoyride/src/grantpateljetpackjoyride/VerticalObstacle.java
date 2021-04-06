@@ -16,8 +16,12 @@ import javax.swing.ImageIcon;
 public class VerticalObstacle extends AbstractObstacle{
     
     //class variables
-    private static Image[] framesSmall;
-    private static Image[] framesMedium;
+    private static ImageIcon[] framesSmall = new ImageIcon[4];
+    private static ImageIcon[] framesMedium = new ImageIcon[4];
+    
+    //instance variables
+    private Image[] frames = new Image[4];
+    
     
     //default constructor
     public VerticalObstacle(){
@@ -34,68 +38,70 @@ public class VerticalObstacle extends AbstractObstacle{
      */
     public VerticalObstacle(int xPos, int yPos, int height, int width, String type){
         super(xPos, yPos, height, width, type);
+        //determine if big obstacle or not
+        width = 75; //vertical obstacle will always have same width
+        if (height > 500){ //determine which set of images to use
+            resizeImages(framesMedium);
+        } else {
+            resizeImages(framesSmall);
+        }
+        
     }
     
     /**
      * loads the image of the obstacle
      */
     public void loadImages(){
-        //load the horizontal obstacle frames into an array, resize them to the width and height
-        ImageIcon[] iiHObstacle = new ImageIcon[4];
-        framesSmall = new Image[iiHObstacle.length];
         
-        //for each frame
-        for (int i = 0; i < iiHObstacle.length; i++) {
-            iiHObstacle[i] = new ImageIcon(getClass().getResource("imageResources/obstacles/smallVertical/obstacle" + (i + 1) + ".png"));
-            framesSmall[i] = iiHObstacle[i].getImage().getScaledInstance(width, height, Image.SCALE_FAST);
+        //for each frame for small obstacles
+        for (int i = 0; i < framesSmall.length; i++) {
+            framesSmall[i] = new ImageIcon(getClass().getResource("imageResources/obstacles/smallVertical/obstacle" + (i + 1) + ".png"));
+            
         }
         
         //add medium obstacles
+        //for each frame
+        for (int i = 0; i < framesMedium.length; i++) {
+            framesMedium[i] = new ImageIcon(getClass().getResource("imageResources/obstacles/mediumVertical/obstacle" + (i + 1) + ".png"));
+        }
+    }
+    
+    /**
+     * resizes images to fit height and width
+     * @param images array containing original images
+     */
+    public void resizeImages(ImageIcon[] images){
+        //resize each frame
+        for (int i = 0; i < images.length; i++) {
+            frames[i] = images[i].getImage().getScaledInstance(width, height, Image.SCALE_FAST);
+        }
     }
     
     /**
      * gets the images of the vertical obstacles
      * @return the array of images
      */
-    public Image[] getFramesMedium(){
-        return framesMedium.clone();
+    public Image[] getFrames(){
+        return frames.clone();
     }
     
     /**
      * sets the images of the obstacle
-     * @param framesMedium the new array of images
+     * @param frames the new array of images
      */
-    public void setFramesMedium(Image[] framesMedium){
-        VerticalObstacle.framesMedium = framesMedium;
+    public void setFrames(Image[] frames){
+        this.frames = frames;
     }
     
-    /**
-     * gets the images of the vertical obstacles
-     * @return the array of images
-     */
-    public Image[] getFramesSmall(){
-        return framesSmall.clone();
-    }
-    
-    /**
-     * sets the images of the obstacle
-     * @param framesSmall the new array of images
-     */
-    public void setFramesSmall(Image[] framesSmall){
-        VerticalObstacle.framesSmall = framesSmall;
-    }
     
     /**
      * draws the obstacle image onto the screen
+     * @param m the screen
+     * @param g the graphics component
      */
     public void draw(MainGUI m, Graphics g){
-        //determine which size of obstacle to draw
-        if (bigObstacle){
-            super.draw(m, g, framesMedium);
-        } else {
-            super.draw(m, g, framesSmall);
-        }
-        
+            super.draw(m, g, frames); //draw obstacle
+
     }
     
     /**
