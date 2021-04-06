@@ -117,8 +117,6 @@ public abstract class AbstractGameObject implements GameObject{
         this.speed = speed;
     }
     
-    //loads the images
-    abstract public void loadImages();
     
     //draws the images onto the screen
 //    abstract public void draw(Graphics g);

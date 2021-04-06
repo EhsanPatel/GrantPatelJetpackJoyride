@@ -36,9 +36,6 @@ public interface GameObject {
     //sets the width
     public void setWidth(int w);
     
-    //loads the images
-    public void loadImages();
-    
     //draws the images onto the screen
 //    public void draw(Graphics g);
     

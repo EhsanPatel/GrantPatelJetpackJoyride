@@ -50,17 +50,17 @@ public class HorizontalObstacle extends AbstractObstacle{
     /**
      * loads the image of the obstacle
      */
-    public void loadImages(){
+    public static void loadImages(){
         //for each frame for small obstacles
         for (int i = 0; i < framesSmall.length; i++) {
-            framesSmall[i] = new ImageIcon(getClass().getResource("imageResources/obstacles/smallHorizontal/obstacle" + (i + 1) + ".png"));
+            framesSmall[i] = new ImageIcon(HorizontalObstacle.class.getResource("imageResources/obstacles/smallHorizontal/obstacle" + (i + 1) + ".png"));
             
         }
         
         //add medium obstacles
         //for each frame
         for (int i = 0; i < framesMedium.length; i++) {
-            framesMedium[i] = new ImageIcon(getClass().getResource("imageResources/obstacles/mediumHorizontal/obstacle" + (i + 1) + ".png"));
+            framesMedium[i] = new ImageIcon(HorizontalObstacle.class.getResource("imageResources/obstacles/medHorizontal/obstacle" + (i + 1) + ".png"));
         }
     }
     

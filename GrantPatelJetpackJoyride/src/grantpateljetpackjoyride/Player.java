@@ -250,7 +250,6 @@ public class Player extends AbstractGameObject {
     /**
      * loads the images into an array of frames to use for drawing
      */
-    @Override
     public void loadImages(){
         ImageIcon[] iiRunning = new ImageIcon[4];
         runningFrames = new Image[iiRunning.length];

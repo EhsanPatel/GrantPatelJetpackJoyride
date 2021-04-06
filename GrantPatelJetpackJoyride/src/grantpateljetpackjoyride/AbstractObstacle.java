@@ -107,8 +107,6 @@ abstract public class AbstractObstacle extends AbstractGameObject{
         g2d.drawImage(imageToDraw,xPos,yPos,m);
     }
     
-    //methods that cannot be coded for in abstract class
-    abstract public void loadImages();
     
     
     

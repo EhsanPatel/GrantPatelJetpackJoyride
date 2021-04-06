@@ -16,11 +16,14 @@ import javax.swing.ImageIcon;
 public class DiagonalObstacle extends AbstractObstacle{
     
     //class variables
-    private static ImageIcon[] framesSmall = new ImageIcon[4];
-    private static ImageIcon[] framesMedium = new ImageIcon[4];
+    private static ImageIcon[] framesSmallRight = new ImageIcon[4];
+    private static ImageIcon[] framesMediumRight = new ImageIcon[4];
+    private static ImageIcon[] framesSmallLeft = new ImageIcon[4];
+    private static ImageIcon[] framesMediumLeft = new ImageIcon[4];
     
     //instance variables
     private Image[] frames = new Image[4];
+    boolean left;
     
     //default constructor
     public DiagonalObstacle(){
@@ -29,21 +32,30 @@ public class DiagonalObstacle extends AbstractObstacle{
     
     /**
      * constructs obstacle with specified attributes
-     * @param xPos
-     * @param yPos
-     * @param height
-     * @param width
-     * @param type 
+     * @param xPos the x position
+     * @param yPos the y position
+     * @param height the height
+     * @param width the width
+     * @param type the type of obstacle
+     * @param left if the obstacle is facing left or not
      */
-    public DiagonalObstacle(int xPos, int yPos, int height, int width, String type){
+    public DiagonalObstacle(int xPos, int yPos, int height, int width, String type, boolean left){
         super(xPos, yPos, height, width, type);
         //make height equals width because they will be the same
         height = width;
         //determine if big obstacle, resize the images
         if (height > 500){ //determine which set of images to use
-            resizeImages(framesMedium);
+            if (left){ //determine which way the obstacle is facing
+                resizeImages(framesMediumLeft);
+            } else {
+                resizeImages(framesMediumRight);
+            }
         } else {
-            resizeImages(framesSmall);
+            if (left){ //determine which way the obstacle is facing
+                resizeImages(framesSmallLeft);
+            } else {
+                resizeImages(framesSmallRight);
+            }
         }
         
         
@@ -62,18 +74,16 @@ public class DiagonalObstacle extends AbstractObstacle{
     /**
      * loads the image of the obstacle
      */
-    public void loadImages(){
-        //for each frame for small obstacles
-        for (int i = 0; i < framesSmall.length; i++) {
-            framesSmall[i] = new ImageIcon(getClass().getResource("imageResources/obstacles/smallDiagonal/obstacle" + (i + 1) + ".png"));
-            
+    public static void loadImages(){
+        //for each frame for diagonal obstacles
+        for (int i = 0; i < framesSmallLeft.length; i++) {
+            framesSmallLeft[i] = new ImageIcon(DiagonalObstacle.class.getResource("imageResources/obstacles/smallDiagonalLeft/obstacle" + (i + 1) + ".png"));
+            framesSmallRight[i] = new ImageIcon(DiagonalObstacle.class.getResource("imageResources/obstacles/smallDiagonalRight/obstacle" + (i + 1) + ".png"));
+            framesMediumLeft[i] = new ImageIcon(DiagonalObstacle.class.getResource("imageResources/obstacles/medDiagonalLeft/obstacle" + (i + 1) + ".png"));
+            framesMediumRight[i] = new ImageIcon(DiagonalObstacle.class.getResource("imageResources/obstacles/medDiagonalRight/obstacle" + (i + 1) + ".png"));
         }
         
-        //add medium obstacles
-        //for each frame
-        for (int i = 0; i < framesMedium.length; i++) {
-            framesMedium[i] = new ImageIcon(getClass().getResource("imageResources/obstacles/mediumDiagonal/obstacle" + (i + 1) + ".png"));
-        }
+
     }
     
     /**
@@ -135,6 +145,6 @@ public class DiagonalObstacle extends AbstractObstacle{
      * @return the clone
      */
     public DiagonalObstacle clone(){
-        return new DiagonalObstacle(xPos, yPos, height, width, type);
+        return new DiagonalObstacle(xPos, yPos, height, width, type, left);
     }
 }
