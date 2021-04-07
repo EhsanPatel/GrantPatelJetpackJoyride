@@ -38,10 +38,11 @@ public class Coin extends AbstractGameObject {
      * constructs coin with specified attributes, 1/20 chance of getting a coin
      * with a value of 5
      *
-     * @param xPos
-     * @param yPos
-     * @param height
-     * @param width
+     * @param xPos the x position of the coin
+     * @param yPos the y position of the coin
+     * @param height the height of the coin
+     * @param width the width of the coin
+     * @param value the value of the coin
      */
     public Coin(int xPos, int yPos, int height, int width, int value) {
         super(xPos, yPos, height, width);
@@ -51,12 +52,17 @@ public class Coin extends AbstractGameObject {
             value = (int) (Math.random() * 20) + 1;
 
             //determining what the value of the coin will be
-            if (value == 20) {
+            if (value == 1) {
                 value = 5;
             } else {
                 value = 1;
             }
+            
         }
+        this.setValue(1);
+        
+        //making random y position for the coin
+        this.setYPos((int)(Math.random() * 470) + 50);
     }
 
     /**
@@ -95,9 +101,9 @@ public class Coin extends AbstractGameObject {
     /**
      * loads the coin image depending on the value of the coin
      */
-    public void loadImages() {
-        coinImage1 = (new ImageIcon(getClass().getResource("imageResources/coins/coin1.png"))).getImage().getScaledInstance(width, height, Image.SCALE_FAST);
-        coinImage2 = (new ImageIcon(getClass().getResource("imageResources/coins/coin2.png"))).getImage().getScaledInstance(width, height, Image.SCALE_FAST);
+    public static void loadImages() {
+        coinImage1 = (new ImageIcon(Coin.class.getResource("imageResources/coin.png"))).getImage().getScaledInstance(40, 40, Image.SCALE_FAST);
+        //coinImage2 = (new ImageIcon(getClass().getResource("imageResources/coin2.png"))).getImage().getScaledInstance(width, height, Image.SCALE_FAST);
         
     }
 
