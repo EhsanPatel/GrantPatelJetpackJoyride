@@ -45,6 +45,9 @@
           <Color blue="88" green="76" red="6d" type="rgb"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jPanel1MouseEntered"/>
+      </Events>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -58,7 +61,11 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="159" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="priceLabel1" alignment="1" min="-2" pref="250" max="-2" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="priceLabel1" max="32767" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="priceLabel2" min="-2" pref="250" max="-2" attributes="0"/>
+                              </Group>
                               <Group type="102" alignment="1" attributes="0">
                                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
@@ -74,7 +81,7 @@
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="jLabel4" max="32767" attributes="0"/>
-                              <Component id="priceLabel2" max="32767" attributes="0"/>
+                              <Component id="priceLabel3" max="32767" attributes="0"/>
                               <Component id="equippedLabel3" min="-2" pref="256" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -109,8 +116,11 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="priceLabel1" min="-2" max="-2" attributes="0"/>
-                      <Component id="priceLabel2" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="priceLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="priceLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="priceLabel3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="71" max="-2" attributes="0"/>
               </Group>
@@ -173,7 +183,7 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="priceLabel1">
+        <Component class="javax.swing.JLabel" name="priceLabel2">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -188,7 +198,7 @@
             <Property name="text" type="java.lang.String" value="5,000 Coins"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="priceLabel2">
+        <Component class="javax.swing.JLabel" name="priceLabel3">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -201,6 +211,21 @@
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" value="10,000 Coins"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="priceLabel1">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="scaledAbelFont" type="code"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
+            <Property name="horizontalAlignment" type="int" value="0"/>
+            <Property name="text" type="java.lang.String" value="0 Coins"/>
           </Properties>
         </Component>
       </SubComponents>

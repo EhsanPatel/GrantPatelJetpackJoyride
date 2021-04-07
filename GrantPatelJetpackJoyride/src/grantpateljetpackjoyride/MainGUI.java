@@ -34,6 +34,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     private final int B_WIDTH = 1110;
     private final int B_HEIGHT = 600;
     private final int SPEED = 10;
+    private static String saveAddress;
     
     //keeps the game running and updating
     private Timer timer;
@@ -72,12 +73,13 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
      * primary constructor to build the JPanel and create a window that can be interacted with by the user
      */
     public MainGUI(String saveAddress) {
-
+        this.saveAddress = saveAddress;
+        
         //initializes the attributes of the board
         initPanel();
         
         //reads the autosaved file and updates game objects
-        readAutoSave(saveAddress);
+        readAutoSave();
         
         //allows the window to recieve keyboard input
         addKeyListener(this);
@@ -297,7 +299,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
      * Reads the autosave file and changes the game setup accordingly
      * @param saveAddress - where the root folder of the save files is located
      */
-    private void readAutoSave(String saveAddress){
+    private void readAutoSave(){
         ArrayList<String> autosaveContents = new ArrayList();
         //reads the save file
         try {
@@ -327,7 +329,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         }
     }
 
-    private void writeToAutoSave(String saveAddress){
+    private void writeToAutoSave(){
         //writes to the file
     }
 
@@ -393,7 +395,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         ImageIcon iiSFXToggleButton = new ImageIcon(getClass().getResource("imageResources/buttons/creditsButton.png"));
 
         menuButtons = new MenuButton[4];
-        menuButtons[0] = new MenuButton(15, 120, 320, 66, "Redirect", iiStoreButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH), new StoreGUI(this));
+        menuButtons[0] = new MenuButton(15, 120, 320, 66, "Redirect", iiStoreButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH), new StoreGUI(this,saveAddress));
         menuButtons[1] = new MenuButton(15, 210, 320, 66, "Redirect", iiStatsButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH), new StatisticsGUI(this));
         menuButtons[2] = new MenuButton(15, 300, 320, 66, "Redirect", iiTutorialButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH), new TutorialGUI(this));
         menuButtons[3] = new MenuButton(15, 390, 320, 66, "Redirect", iiCreditButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH), new CreditsGUI(this));
