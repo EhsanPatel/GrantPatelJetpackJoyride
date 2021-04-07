@@ -34,7 +34,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     private final int B_WIDTH = 1110;
     private final int B_HEIGHT = 600;
     private final int SPEED = 10;
-    private static String saveAddress;
+    private String saveAddress;
     
     //keeps the game running and updating
     private Timer timer;
@@ -57,6 +57,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     private long t2;
     
     //music variables
+    private boolean isMusicOn;
     boolean mainMusicPlaying = false;
     boolean menuMusicPlaying = true;
     private final String filepathMain = "audio/JetpackJoyrideOST-MainTheme.wav";
@@ -126,9 +127,6 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         holdEvent = false;
         oXPos = 1500;
         increase = 1.2;
-        
-        //play music
-        playMusic(filepathMenu); 
         
         //initializes the player
         player = new Player();
@@ -251,8 +249,8 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             }
             //if generating has finished, no increment is added
             if (obstacles.size() != 15){
-                oXPos += 30;
-                change += 30;
+                oXPos += 60;
+                change += 60;
             }
         }
         //resetting the obstacle x position 
@@ -264,10 +262,14 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
 
     public void playGame(){
         gamestate = "playing";
-        audioPlayer.stop();
-        playMusic(filepathMain);
-        mainMusicPlaying = true;
-        menuMusicPlaying = false;
+        //play music
+        if(isMusicOn){
+            audioPlayer.stop();
+            playMusic(filepathMain);
+            mainMusicPlaying = true;
+            menuMusicPlaying = false;
+        }
+        
     }
     
     public void endRun(){
@@ -354,6 +356,14 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             
             //linear search through auto save file contents - different number of bought costumes will affect which line items are on
             for(int i = 0; i < autosaveContents.size(); ++i){
+                if(autosaveContents.get(i).equals("Music"))
+                    if(autosaveContents.get(i+1).equals("on")){
+                        isMusicOn = true;
+                        playMusic(filepathMenu); 
+                    }else{
+                        isMusicOn = false;
+                    }
+                    
                 //finds the equipped costume line in autosave
                 if(autosaveContents.get(i).equals("Equipped Costume")){
                     //The next line is the costume to use, so set the players costume

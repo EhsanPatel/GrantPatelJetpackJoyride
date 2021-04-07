@@ -54,18 +54,16 @@ public class GrantPatelJetpackJoyride extends JFrame {
     
 
     private void findSaveFile(String saveAddress, String filename){        
-        System.out.println(saveAddress+filename);
+//        System.out.println(saveAddress+filename);
         
         //searches for a file and creates one if necessary
         try {
             File myObj = new File(saveAddress+filename);
             if (myObj.createNewFile()) {
-              System.out.println("File created: " + myObj.getName());
               if(filename.equals("autosave.jjrs")){
                   writeSaveDefaults(saveAddress);
               }
             } else {
-              System.out.println("File already exists.");
             }
           } catch (IOException e) {
             System.out.println("An error occurred.");
@@ -77,7 +75,6 @@ public class GrantPatelJetpackJoyride extends JFrame {
             FileWriter myWriter = new FileWriter(saveAddress+"autosave.jjrs");
             myWriter.write("Coins\n0\nBought Costumes\n1\nEquipped Costume\n1");
             myWriter.close();
-            System.out.println("Successfully wrote to the file.");
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, e);
         }
