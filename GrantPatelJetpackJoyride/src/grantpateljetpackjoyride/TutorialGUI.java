@@ -84,7 +84,7 @@ public class TutorialGUI extends javax.swing.JFrame {
         jLabel4.setFont(scaledAbelFont);
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Press and hold the mouse or the spacebar to flyup");
+        jLabel4.setText("Press and hold the mouse or the spacebar to fly up");
 
         jLabel5.setFont(scaledAbelFont);
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));

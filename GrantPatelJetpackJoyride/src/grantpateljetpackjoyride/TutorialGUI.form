@@ -138,7 +138,7 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Press and hold the mouse or the spacebar to flyup"/>
+            <Property name="text" type="java.lang.String" value="Press and hold the mouse or the spacebar to fly up"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">

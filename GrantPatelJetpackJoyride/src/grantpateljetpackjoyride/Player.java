@@ -102,7 +102,7 @@ public class Player extends AbstractGameObject {
         if(holdEvent){
             isFalling = false;
             //maximum velocity upwards
-            if(fallSpeed <= 300){
+            if(fallSpeed*dt <= 6000){
                 //adds to the velocity
                 fallSpeed += 2*dt;
             }
@@ -110,14 +110,11 @@ public class Player extends AbstractGameObject {
         }else if(heightOffGround > 0){
             isFalling = true;
             //maximum velocity downwards
-            if(fallSpeed >= -300){
+            if(fallSpeed*dt >= -6000){
                 //decreases the velocity
                 fallSpeed += -2*dt;
             }
         }
-
-        //Adds the instantaneous speed to the distance off the ground - scaled down by the /15
-        heightOffGround += (fallSpeed/40);
 
         //top and bottom barrier prevents character from leaving the screen
         if(heightOffGround < 0){
@@ -129,7 +126,9 @@ public class Player extends AbstractGameObject {
             heightOffGround = 400;
             fallSpeed = 0;
         }
-            
+        
+        //Adds the instantaneous speed to the distance off the ground - scaled down by the /15
+        heightOffGround += (fallSpeed/40);    
     }
     /**
      * gets the costume that the user has selected
