@@ -18,7 +18,7 @@ public class StoreGUI extends javax.swing.JFrame {
     private static InputStream is = LoadingGUI.class.getResourceAsStream("fonts/Abel-Regular.ttf");
     private static Font abelFont;
     private static Font scaledAbelFont;
-    MainGUI mainWindow;
+    private static MainGUI mainWindow;
     /**
      * Creates new form StoreGUI
      */
