@@ -298,12 +298,13 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         oXPos = oXPosDiff + 100;
         //oXPosDiff = oXPos - oXPosDiff;
         //oXPos = oXPos - oXPosDiff + obstacles.get(9).getWidth();
-        
+    
     }
     
     
 
     public void playGame(){
+        readAutoSave();
         gamestate = "playing";
         //play music
         if(isMusicOn){

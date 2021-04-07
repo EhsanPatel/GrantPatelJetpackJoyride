@@ -8,8 +8,10 @@ package grantpateljetpackjoyride;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.ImageIcon;
@@ -28,6 +30,7 @@ public class StoreGUI extends javax.swing.JFrame {
     private static MainGUI mainWindow;
     private static JLabel[] equippedLabels;
     private static JLabel[] priceLabels;
+    private String equippedCostume;
     private String saveAddress;
     /**
      * Creates new form StoreGUI
@@ -56,7 +59,7 @@ public class StoreGUI extends javax.swing.JFrame {
         clearLabels();
         
         //search save file for which ones are bought and update store
-        readAutoSave(saveAddress);
+        readAutoSave();
     }
 
     /**
@@ -101,8 +104,18 @@ public class StoreGUI extends javax.swing.JFrame {
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/grantpateljetpackjoyride/imageResources/costume1/running2.png"))); // NOI18N
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/grantpateljetpackjoyride/imageResources/costume2/running2.png"))); // NOI18N
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel3MouseClicked(evt);
+            }
+        });
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/grantpateljetpackjoyride/imageResources/costume3/running2.png"))); // NOI18N
+        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel4MouseClicked(evt);
+            }
+        });
 
         equippedLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         equippedLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/grantpateljetpackjoyride/imageResources/equipped.png"))); // NOI18N
@@ -117,13 +130,23 @@ public class StoreGUI extends javax.swing.JFrame {
         priceLabel2.setFont(scaledAbelFont);
         priceLabel2.setForeground(new java.awt.Color(255, 255, 255));
         priceLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        priceLabel2.setText("5,000 Coins");
+        priceLabel2.setText("Buy for 5,000 Coins");
+        priceLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                priceLabel2MouseClicked(evt);
+            }
+        });
 
         priceLabel3.setBackground(new java.awt.Color(255, 255, 255));
         priceLabel3.setFont(scaledAbelFont);
         priceLabel3.setForeground(new java.awt.Color(255, 255, 255));
         priceLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        priceLabel3.setText("10,000 Coins");
+        priceLabel3.setText("Buy for 10,000 Coins");
+        priceLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                priceLabel3MouseClicked(evt);
+            }
+        });
 
         priceLabel1.setBackground(new java.awt.Color(255, 255, 255));
         priceLabel1.setFont(scaledAbelFont);
@@ -208,9 +231,41 @@ public class StoreGUI extends javax.swing.JFrame {
 
     private void jPanel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseEntered
         clearLabels();
-        readAutoSave(saveAddress);
+        readAutoSave();
     }//GEN-LAST:event_jPanel1MouseEntered
 
+    private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
+        buyShopItem(10000, 3);
+        
+    }//GEN-LAST:event_jLabel4MouseClicked
+
+    private void priceLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_priceLabel3MouseClicked
+        buyShopItem(10000, 3);
+    }//GEN-LAST:event_priceLabel3MouseClicked
+
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+        buyShopItem(5000, 2);
+    }//GEN-LAST:event_jLabel3MouseClicked
+
+    private void priceLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_priceLabel2MouseClicked
+        buyShopItem(5000, 2);
+    }//GEN-LAST:event_priceLabel2MouseClicked
+
+    private void buyShopItem(int price, int costumeNum){
+        DecimalFormat num = new DecimalFormat("#,##0");
+        if (JOptionPane.showConfirmDialog(null, "Are you sure want to buy this for "+num.format(price)+" coins?", "Confirm Purchase",
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            
+            //subtract from coins here
+            
+            priceLabels[costumeNum-1].setVisible(false);
+            equippedCostume = costumeNum+"";
+            //write to file
+            writeToSave();
+            //read file
+            readAutoSave();
+        }
+    }
     
     private void clearLabels(){
         //set all equipped labels as hidden until read by file
@@ -227,11 +282,28 @@ public class StoreGUI extends javax.swing.JFrame {
         }
     }
     
+    
+    private void writeToSave(){
+        try{
+            FileWriter myWriter = new FileWriter(saveAddress+"autosave.jjrs");
+            String boughtCostumes = "";
+            for(int i = 0; i < priceLabels.length; ++i){
+                if(!priceLabels[i].isVisible()){
+                    boughtCostumes += (i+1)+"\n";
+                }
+            }
+            myWriter.write("Coins\n0\nBought Costumes\n"+boughtCostumes+"Equipped Costume\n"+equippedCostume);
+            myWriter.close();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+    
     /**
      * Reads the autosave file and updates the store accordingly
      * @param saveAddress - where the root folder of the save files is located
      */
-    private void readAutoSave(String saveAddress){
+    private void readAutoSave(){
         ArrayList<String> autosaveContents = new ArrayList();
         //reads the save file
         try {
@@ -250,7 +322,8 @@ public class StoreGUI extends javax.swing.JFrame {
             for(int i = 0; i < autosaveContents.size(); ++i){
                 //finds the equipped costume line in autosave
                 if(autosaveContents.get(i).equals("Equipped Costume")){
-                    equippedLabels[Integer.parseInt(autosaveContents.get(i+1))-1].setVisible(true);
+                    equippedCostume = autosaveContents.get(i + 1);
+                    equippedLabels[Integer.parseInt(equippedCostume)-1].setVisible(true);
                     endOfBought = i-1;
                 }
                 
