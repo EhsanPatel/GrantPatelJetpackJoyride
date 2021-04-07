@@ -5,6 +5,8 @@
  */
 package grantpateljetpackjoyride;
 
+import java.awt.Font;
+import java.io.InputStream;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
@@ -13,11 +15,21 @@ import javax.swing.JFrame;
  * @author ehsan
  */
 public class StoreGUI extends javax.swing.JFrame {
+    private static InputStream is = LoadingGUI.class.getResourceAsStream("fonts/Abel-Regular.ttf");
+    private static Font abelFont;
+    private static Font scaledAbelFont;
     MainGUI mainWindow;
     /**
      * Creates new form StoreGUI
      */
     public StoreGUI(MainGUI m) {
+        //loads in a font to use for the text
+        try{
+            this.abelFont = Font.createFont(Font.TRUETYPE_FONT, is);
+            scaledAbelFont = abelFont.deriveFont(24f);
+        }catch(Exception e){
+            System.out.println(e);
+        }
         mainWindow = m;
         initComponents();
         //changes attributes of the display window containing the form
@@ -27,6 +39,18 @@ public class StoreGUI extends javax.swing.JFrame {
         setLocationRelativeTo(null);        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
+        
+        
+        //set all labels as hidden until read by file
+        equippedLabel2.setVisible(false);
+        equippedLabel3.setVisible(false);
+        
+        //search save file for which ones are bought
+        //change visibility of prices
+        //use priceLabel1.setVisible(false);
+        
+        //search save file for costume that is equipped
+        //change visibility of eqipped labels
     }
 
     /**
@@ -40,8 +64,17 @@ public class StoreGUI extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        equippedLabel1 = new javax.swing.JLabel();
+        equippedLabel3 = new javax.swing.JLabel();
+        equippedLabel2 = new javax.swing.JLabel();
+        priceLabel1 = new javax.swing.JLabel();
+        priceLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1110, 600));
         setSize(new java.awt.Dimension(1110, 600));
 
         jPanel1.setBackground(new java.awt.Color(109, 118, 136));
@@ -53,21 +86,85 @@ public class StoreGUI extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/grantpateljetpackjoyride/imageResources/costume1/running2.png"))); // NOI18N
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/grantpateljetpackjoyride/imageResources/costume2/running2.png"))); // NOI18N
+
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/grantpateljetpackjoyride/imageResources/costume3/running2.png"))); // NOI18N
+
+        equippedLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        equippedLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/grantpateljetpackjoyride/imageResources/equipped.png"))); // NOI18N
+
+        equippedLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        equippedLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/grantpateljetpackjoyride/imageResources/equipped.png"))); // NOI18N
+
+        equippedLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        equippedLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/grantpateljetpackjoyride/imageResources/equipped.png"))); // NOI18N
+
+        priceLabel1.setBackground(new java.awt.Color(255, 255, 255));
+        priceLabel1.setFont(scaledAbelFont);
+        priceLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        priceLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        priceLabel1.setText("5,000 Coins");
+
+        priceLabel2.setBackground(new java.awt.Color(255, 255, 255));
+        priceLabel2.setFont(scaledAbelFont);
+        priceLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        priceLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        priceLabel2.setText("10,000 Coins");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(45, 45, 45)
-                .addComponent(jLabel1)
-                .addContainerGap(874, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(45, 45, 45)
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(159, 159, 159)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(priceLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jLabel2)
+                                    .addComponent(equippedLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(equippedLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(priceLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(equippedLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(159, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(jLabel1)
-                .addContainerGap(460, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(equippedLabel1)
+                            .addComponent(equippedLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel4)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(equippedLabel3)
+                        .addGap(289, 289, 289)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(priceLabel1)
+                    .addComponent(priceLabel2))
+                .addGap(71, 71, 71))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -92,7 +189,15 @@ public class StoreGUI extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel equippedLabel1;
+    private javax.swing.JLabel equippedLabel2;
+    private javax.swing.JLabel equippedLabel3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel priceLabel1;
+    private javax.swing.JLabel priceLabel2;
     // End of variables declaration//GEN-END:variables
 }
