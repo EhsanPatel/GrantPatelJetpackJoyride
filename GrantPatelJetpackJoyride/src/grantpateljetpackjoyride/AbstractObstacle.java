@@ -73,6 +73,17 @@ abstract public class AbstractObstacle extends AbstractGameObject{
     }
     
     /**
+     * determines which frame to draw
+     * @param amount the amount the frame changes by each time
+     */
+    public void nextFrame(double amount){
+        frame += amount;
+        if ((int)frame >= 4){
+            frame = 0;
+        }
+    }
+    
+    /**
      * puts attributes of object in a string
      * @return the string
      */

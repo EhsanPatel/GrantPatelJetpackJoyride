@@ -20,6 +20,8 @@ public class DiagonalObstacle extends AbstractObstacle{
     private static ImageIcon[] framesMediumRight = new ImageIcon[4];
     private static ImageIcon[] framesSmallLeft = new ImageIcon[4];
     private static ImageIcon[] framesMediumLeft = new ImageIcon[4];
+    private static final int BIG_WIDTH = 400;
+    private static final int SMALL_WIDTH = 250;
     
     //instance variables
     private Image[] frames = new Image[4];
@@ -41,21 +43,30 @@ public class DiagonalObstacle extends AbstractObstacle{
      */
     public DiagonalObstacle(int xPos, int yPos, int height, int width, String type, boolean left){
         super(xPos, yPos, height, width, type);
-        //make height equals width because they will be the same
-        height = width;
         //determine if big obstacle, resize the images
-        if (height > 500){ //determine which set of images to use
+        if ((int)(Math.random()*2 + 1) == 1){ //determine which set of images to use
+            width = BIG_WIDTH;
             if (left){ //determine which way the obstacle is facing
                 resizeImages(framesMediumLeft, width);
             } else {
                 resizeImages(framesMediumRight, width);
             }
         } else {
+            width = SMALL_WIDTH;
             if (left){ //determine which way the obstacle is facing
                 resizeImages(framesSmallLeft, width);
             } else {
                 resizeImages(framesSmallRight, width);
             }
+        }
+        
+        //determine random yPos
+        if ((int)(Math.random() * 3) + 1 == 1){
+            this.setYPos(0); //top of screen
+        } else if((int)(Math.random() * 3) + 1 == 2){
+            this.setYPos(570 - width); //bottom of screen
+        } else {
+            this.setYPos(310 - (width / 2)); //middle of screen
         }
         
         
