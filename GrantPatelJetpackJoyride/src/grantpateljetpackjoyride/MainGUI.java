@@ -85,8 +85,111 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         holdEvent = false;
         playMusic(filepathMenu);
     }
+
+    
+    private void initPanel() {
+        //load the image resources to use
+        loadImages();
+        //setup the canvas
+        setBackground(Color.BLACK);
+        setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
+        
+        //creates a timer to update the window
+        timer = new Timer(SPEED, this);
+        timer.setInitialDelay(100);
+        timer.start();
+        
+        
+        //allows the window to recieve keyboard input
+        addKeyListener(this);
+        setFocusable(true);
+        setFocusTraversalKeysEnabled(false);
+        //allows the board to recieve input from mouseclicks
+        addMouseListener(this);
+
+        //processing time correction variables
+        t1 = 0;
+        t2 = 0;
+        
+        //game variables
+        scrollX = 0;
+        gamestate = "menu";
+        holdEvent = false;
+        
+        v = new VerticalObstacle(0,0, 300, 90, "type");
+    }
+    
+
+    private void drawLoop(Graphics g, int dt) {
+        //prevents unexpected dt from changing game function
+        if(dt<=0){
+            dt = 1;
+        }else if(dt > 25){
+            dt = 25;
+        }
+        
+        //casts the regular graphics object into the updated 2d graphics object
+        Graphics2D g2d = (Graphics2D) g;
+        //draws background color and image
+        g2d.setColor(new Color(123,133,146));//light grey/blue color
+        g2d.fillRect(0, 0, B_WIDTH, B_HEIGHT);
+        
+        //draws the starting background image if it is within the frame
+        if(351 + (int)scrollX + 4509 >0){
+            g2d.drawImage(startBG,351 + (int)scrollX,0,this);
+        }
+        //infinite scrolling backgrounds - not infinite yet
+        g2d.drawImage(mainBG,4860 + (int)scrollX,0,this);
+        g2d.drawImage(randomBG,6669 + (int)scrollX,0,this);
+        
+        
+        //changing what to draw based on the state of the game
+        if(gamestate.equals("menu")){
+            for(int i = 0; i < menuButtons.length; ++i){
+                menuButtons[i].draw(g2d, this);
+            }
+        }else if(gamestate.equals("playing")){
+            
+           
+            //scrolling and animation of character (switching through frames)
+            scrollX -= 0.3*dt;
+            
+            //controls the player's frame, movement, then draws
+            player.nextFrame(0.010*dt);
+            player.move(holdEvent, dt);            
+            player.draw(g, B_HEIGHT, this);
+        }
+        
+        v.draw(this,g);
+        
+        
+        //synchronizes the graphics
+        Toolkit.getDefaultToolkit().sync();
+    }
+    
+
+    public void playGame(){
+        gamestate = "playing";
+        audioPlayer.stop();
+        playMusic(filepathMain);
+        mainMusicPlaying = true;
+        menuMusicPlaying = false;
+    }
+    
+    public void endRun(){
+        //display score on a rectangle that covers the screen
+        //stop frames from moving
+        //reset all game variables
+        //add coins to counter
+        //add score to highscores txt file
+        //save coins to achievements file
+        //save any other settings
+    }
+    
+        
     
     
+    //mouse and keyboard functions
     @Override
     public void mousePressed(MouseEvent e) {
         //what to do when mouse is clicked
@@ -136,43 +239,28 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             }
         }
     }
+    
+    
+    
 
     
-    private void initPanel() {
-        //load the image resources to use
-        loadImages();
-        //setup the canvas
-        setBackground(Color.BLACK);
-        setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
-        
-        //creates a timer to update the window
-        timer = new Timer(SPEED, this);
-        timer.setInitialDelay(100);
-        timer.start();
-        
-        
-        
-        //allows the window to recieve keyboard input
-        addKeyListener(this);
-        setFocusable(true);
-        setFocusTraversalKeysEnabled(false);
-        //allows the board to recieve input from mouseclicks
-        addMouseListener(this);
+    /**
+     * plays the music using the audioplayer object
+     * @param filepath - the path to the audio file to play
+     */
+    public void playMusic(String filepath){
+        try{
+            audioPlayer = new AudioPlayer(filepath);
 
-        //processing time correction variables
-        t1 = 0;
-        t2 = 0;
+        } catch (Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
         
-        //game variables
-        scrollX = 0;
-        gamestate = "menu";
-        holdEvent = false;
-        
-        v = new VerticalObstacle(0,0, 300, 90, "type");
     }
-    
-    
-    //overrides the draw method to draw custom items on the window
+        /**
+     * overrides the draw method to draw custom items on the window
+     * @param g - the tool to draw graphics on the window
+     */
     @Override
     public void paintComponent(Graphics g) {
         //calls the parent class' drawing method to setup for drawing
@@ -183,55 +271,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         
     }
     
-    
-    private void drawLoop(Graphics g, int dt) {
-        //prevents unexpected dt from changing game function
-        if(dt<=0){
-            dt = 1;
-        }else if(dt > 25){
-            dt = 25;
-        }
         
-        //casts the regular graphics object into the updated 2d graphics object
-        Graphics2D g2d = (Graphics2D) g;
-        //draws background color and image
-        g2d.setColor(new Color(123,133,146));//light grey/blue color
-        g2d.fillRect(0, 0, B_WIDTH, B_HEIGHT);
-        
-        //draws the starting background image if it is within the frame
-        if(351 + (int)scrollX + 4509 >0){
-            g2d.drawImage(startBG,351 + (int)scrollX,0,this);
-        }
-        //infinite scrolling backgrounds - not infinite yet
-        g2d.drawImage(mainBG,4860 + (int)scrollX,0,this);
-        g2d.drawImage(randomBG,6669 + (int)scrollX,0,this);
-        
-        
-        //changing what to draw based on the state of the game
-        if(gamestate.equals("menu")){
-            for(int i = 0; i < menuButtons.length; ++i){
-                menuButtons[i].draw(g2d, this);
-            }
-        }else if(gamestate.equals("playing")){
-            
-           
-            //scrolling and animation of character (switching through frames)
-            scrollX -= 0.3*dt;
-            
-            //controls the player's frame, movement, then draws
-            player.nextFrame(0.010*dt);
-            player.move(holdEvent, dt);            
-            player.draw(g, B_HEIGHT, this);
-        }
-        
-        v.draw(this,g);
-        
-        
-        //synchronizes the graphics
-        Toolkit.getDefaultToolkit().sync();
-    }
-    
-    
     /**
      * Every action (triggered by the timer) runs this function
      * @param e the event that triggered the function
@@ -272,25 +312,6 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
 //        menuButtons[4] = new MenuButton(15, 480, 320, 66, "MusicToggle", iiMusicToggleButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH));
 //        menuButtons[5] = new MenuButton(15, 570, 320, 66, "SFXToggle", iiSFXToggleButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH));
 
-    }
-    
-    
-    public void playGame(){
-        gamestate = "playing";
-        audioPlayer.stop();
-        playMusic(filepathMain);
-        mainMusicPlaying = true;
-        menuMusicPlaying = false;
-    }
-    
-    public void playMusic(String filepath){
-        try{
-            audioPlayer = new AudioPlayer(filepath);
-
-        } catch (Exception e){
-            JOptionPane.showMessageDialog(null, e);
-        }
-        
     }
     
     
