@@ -45,28 +45,28 @@ public class DiagonalObstacle extends AbstractObstacle{
         super(xPos, yPos, height, width, type);
         //determine if big obstacle, resize the images
         if ((int)(Math.random()*2 + 1) == 1){ //determine which set of images to use
-            width = BIG_WIDTH;
+            this.setWidth(BIG_WIDTH);
             if (left){ //determine which way the obstacle is facing
-                resizeImages(framesMediumLeft, width);
+                resizeImages(framesMediumLeft, this.width);
             } else {
-                resizeImages(framesMediumRight, width);
+                resizeImages(framesMediumRight, this.width);
             }
         } else {
-            width = SMALL_WIDTH;
+            this.setWidth(SMALL_WIDTH);
             if (left){ //determine which way the obstacle is facing
-                resizeImages(framesSmallLeft, width);
+                resizeImages(framesSmallLeft, this.width);
             } else {
-                resizeImages(framesSmallRight, width);
+                resizeImages(framesSmallRight, this.width);
             }
         }
         
         //determine random yPos
         if ((int)(Math.random() * 3) + 1 == 1){
-            this.setYPos(0); //top of screen
+            this.setYPos(50); //top of screen
         } else if((int)(Math.random() * 3) + 1 == 2){
-            this.setYPos(570 - width); //bottom of screen
+            this.setYPos(570 - this.width); //bottom of screen
         } else {
-            this.setYPos(310 - (width / 2)); //middle of screen
+            this.setYPos(310 - (this.width / 2)); //middle of screen
         }
         
         

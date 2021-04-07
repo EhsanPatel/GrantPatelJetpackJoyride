@@ -40,19 +40,19 @@ public class VerticalObstacle extends AbstractObstacle{
     public VerticalObstacle(int xPos, int yPos, int height, int width, String type){
         super(xPos, yPos, height, width, type);
 
-        width = WIDTH; //vertical obstacle will always have same width
+        this.setWidth(WIDTH); //vertical obstacle will always have same width
         //make either a big or small obstacle
         if ((int)(Math.random()* 2 + 1) == 1){ //determine which set of images to use
             height = 350;
-            resizeImages(framesMedium, width, height);
+            resizeImages(framesMedium, this.width, height);
         } else {
             height = 250;
-            resizeImages(framesSmall, width, height);
+            resizeImages(framesSmall, this.width, height);
         }
         
         //determine random yPos
         if ((int)(Math.random() * 3) + 1 == 1){
-            this.setYPos(0); //top of screen
+            this.setYPos(50); //top of screen
         } else if((int)(Math.random() * 3) + 1 == 2){
             this.setYPos(570 - height); //bottom of screen
         } else {
