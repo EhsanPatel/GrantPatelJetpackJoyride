@@ -65,9 +65,11 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     private AudioPlayer audioPlayer;
     
     //arrayLists containing game objects
-    ArrayList<AbstractObstacle> obstacles = new ArrayList<AbstractObstacle>();
-    //obstacle x position
+    ArrayList<AbstractObstacle> obstacles = new ArrayList();
+    ArrayList<Coin> coins = new ArrayList();
+    //game object x position
     private int oXPos;
+    private int cXPos;
     
     //speed increase
     private double increase;
@@ -126,18 +128,21 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         gamestate = "menu";
         holdEvent = false;
         oXPos = 1500;
+        cXPos = 1500;
         increase = 1.2;
         
         //initializes the player
         player = new Player();
         
-        //loading obstacle images
+        //loading game object images
         VerticalObstacle.loadImages();
         HorizontalObstacle.loadImages();
         DiagonalObstacle.loadImages();
+        Coin.loadImages();
         
         //randomize the obstacles
         randomizeObstacles();
+        randomizeCoins();
         
     }
     
@@ -211,6 +216,24 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
                     ((DiagonalObstacle)(obstacles.get(i))).draw(this, g);
                 }
             }   
+            
+            
+            
+            //drawing coins
+            for (int i = 0; i < coins.size(); i++) {
+                coins.get(i).setXPos(coins.get(i).getXPos() - (int)(0.3*dt*increase));
+                coins.get(i).draw(this, g);
+            }
+            
+            //checks if coins need to be removed
+            if (coins.get(0).getXPos() + coins.get(0).getWidth() < 0){
+                coins.remove(0);
+            }
+
+            //checks if more coins need to be added
+            if (coins.size() <= 10){
+                randomizeCoins();
+            }
         }
         
         
@@ -220,10 +243,24 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     }
     
     /**
+     * generates an arrayList of coins
+     */
+    public void randomizeCoins(){
+        //add coins to the array list of coins
+        for (int i = 0; i < 20; i++) { //add 10 coins to the list
+            coins.add(new Coin(cXPos, 0, 40, 40, 1));
+            cXPos += 150;
+        }
+        
+        cXPos = 1500;
+
+    }
+    
+    /**
      * generates an array list of obstacles
      */
     public void randomizeObstacles(){
-        int oXPosDiff = oXPos;
+        int oXPosDiff = 0;
         int change = 0;
         //add obstacles to an array
         while (obstacles.size() < 15) {
@@ -252,10 +289,16 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
                 oXPos += 60;
                 change += 60;
             }
+            
         }
-        //resetting the obstacle x position 
-        oXPosDiff = oXPos - oXPosDiff + 50;
-        oXPos = oXPos - oXPosDiff + obstacles.get(9).getWidth();
+        for (int i = 9; i < 14; i++) {
+            oXPosDiff += obstacles.get(i + 1).getXPos() - obstacles.get(i).getXPos();
+        }
+        
+        oXPos = oXPosDiff + 100;
+        //oXPosDiff = oXPos - oXPosDiff;
+        //oXPos = oXPos - oXPosDiff + obstacles.get(9).getWidth();
+    
     }
     
     
