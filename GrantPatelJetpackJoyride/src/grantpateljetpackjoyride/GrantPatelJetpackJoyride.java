@@ -33,8 +33,8 @@ public class GrantPatelJetpackJoyride extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     private void createSaveFile(){
-        System.out.println(System.getProperty("os.name").toLowerCase());
-        String saveAddress = System.getProperty("user.home") + "\\Documents\\Jetpack Joyride\\";
+        //System.out.println(System.getProperty("os.name").toLowerCase());
+        String saveAddress = System.getProperty("user.home") + File.separator + "Documents" + File.separator + "Jetpack Joyride" + File.separator;
         
         //searches for directory and creates one if necessary
         File file = new File(saveAddress);
