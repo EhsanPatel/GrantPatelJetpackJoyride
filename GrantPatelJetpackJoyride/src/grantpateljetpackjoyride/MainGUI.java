@@ -73,11 +73,12 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
      */
     public MainGUI(String saveAddress) {
 
-        readAutoSave(saveAddress);
-        
         //initializes the attributes of the board
         initPanel();
-
+        
+        //reads the autosaved file and updates game objects
+        readAutoSave(saveAddress);
+        
         //allows the window to recieve keyboard input
         addKeyListener(this);
         setFocusable(true);
