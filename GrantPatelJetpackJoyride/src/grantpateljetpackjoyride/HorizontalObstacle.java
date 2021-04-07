@@ -19,7 +19,8 @@ public class HorizontalObstacle extends AbstractObstacle{
     //class variables
     private static ImageIcon[] framesSmall = new ImageIcon[4];
     private static ImageIcon[] framesMedium = new ImageIcon[4];
-    private static final int HEIGHT = 110;
+    private static final int BIG_HEIGHT = 150;
+    private static final int SMALL_HEIGHT = 100;
     
     //instance variables
     private Image[] frames = new Image[4];
@@ -40,19 +41,20 @@ public class HorizontalObstacle extends AbstractObstacle{
     public HorizontalObstacle(int xPos, int yPos, int height, int width, String type){
         super(xPos, yPos, height, width, type);
         //determine if big obstacle or not
-        height = HEIGHT; //horizontal obstacles have static height
+        height = BIG_HEIGHT; //horizontal obstacles have static height
         //make either a big or small obstacle
         if ((int)(Math.random()* 2 + 1) == 1){ //determine which set of images to use
-            width = 600;
-            resizeImages(framesMedium, width, height);
+            this.setWidth(450);
+            resizeImages(framesMedium, this.width, height);
         } else {
-            width = 400;
-            resizeImages(framesSmall, width, height);
+            height = SMALL_HEIGHT;
+            this.setWidth(240);
+            resizeImages(framesSmall, this.width, height);
         }
         
         //determine random yPos
         if ((int)(Math.random() * 3) + 1 == 1){
-            this.setYPos(0); //top of screen
+            this.setYPos(50); //top of screen
         } else if((int)(Math.random() * 3) + 1 == 2){
             this.setYPos(570 - height); //bottom of screen
         } else {

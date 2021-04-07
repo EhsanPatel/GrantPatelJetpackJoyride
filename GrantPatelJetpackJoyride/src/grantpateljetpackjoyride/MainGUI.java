@@ -64,6 +64,11 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     
     //arrayLists containing game objects
     ArrayList<AbstractObstacle> obstacles = new ArrayList<AbstractObstacle>();
+    //obstacle x position
+    private int oXPos;
+    
+    //speed increase
+    private double increase;
     
     
     
@@ -117,6 +122,8 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         scrollX = 0;
         gamestate = "menu";
         holdEvent = false;
+        oXPos = 1500;
+        increase = 1.2;
         
         //play music
         playMusic(filepathMenu); 
@@ -167,15 +174,33 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             
            
             //scrolling and animation of character (switching through frames)
-            scrollX -= 0.3*dt;
+            scrollX -= 0.3*dt*increase;
+            
+            //increasing speed
+            increase += 0.0002;
             
             //controls the player's frame, movement, then draws
             player.nextFrame(0.010*dt);
             player.move(holdEvent, dt);            
             player.draw(g, B_HEIGHT, this);
             
+            
+            //checks if first obstacle has already been passed and should be deleted
+            if (obstacles.get(0).getXPos() + obstacles.get(0).getWidth() < 0){
+                obstacles.remove(0);
+            }
+            
+            //checks if more obstacles need to be added
+            if (obstacles.size() <= 5){
+                randomizeObstacles();
+            }
+            
+            //moving obstacle frames
+            AbstractObstacle.nextFrame(0.010*dt);
+            
+            //drawing obstacles
             for (int i = 0; i < obstacles.size(); i++) {
-                obstacles.get(i).setXPos(obstacles.get(i).getXPos() - (int)(0.3*dt));
+                obstacles.get(i).setXPos(obstacles.get(i).getXPos() - (int)(0.3*dt*increase));
                 
                 //determine which type of obstacle it is in order to cast and draw
                 if (obstacles.get(i).getType().equals("vertical")){
@@ -198,27 +223,41 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
      * generates an array list of obstacles
      */
     public void randomizeObstacles(){
-        int width, height, yPos;
-        int i = 10;
-        //add 50 obstacles to an array
-        while (obstacles.size() < 51) {
-            i++;
-            if ((int)(Math.random() * 10) + 1 == 1){ //1 in 10 chance of an obstacle appearing
+        int oXPosDiff = oXPos;
+        int change = 0;
+        //add obstacles to an array
+        while (obstacles.size() < 15) {
+            if ((int)(Math.random() * 4) + 1 == 1 || change == 240){ //1 in 4 chance of an obstacle appearing
                 //determine which type of obstacle
                 if((int)(Math.random() * 3) + 1 == 1){
-                    obstacles.add(new VerticalObstacle(i * 50, 0, 0, 0, "vertical"));
+                    obstacles.add(new VerticalObstacle(oXPos, 0, 0, 0, "vertical"));
                 } else if((int)(Math.random() * 3) + 1 == 2){
-                    obstacles.add(new HorizontalObstacle(i * 50, 0, 0, 0, "horizontal"));
+                    obstacles.add(new HorizontalObstacle(oXPos, 0, 0, 0, "horizontal"));
                 } else {
                     if ((int)(Math.random() * 2) + 1 == 1){ //obstacle faces left
-                        obstacles.add(new DiagonalObstacle(i * 50, 0, 0, 0, "diagonal", true));
+                        obstacles.add(new DiagonalObstacle(oXPos, 0, 0, 0, "diagonal", true));
                     } else { //obstacle faces right
-                        obstacles.add(new DiagonalObstacle(i * 50, 0, 0, 0, "diagonal", false));
+                        obstacles.add(new DiagonalObstacle(oXPos, 0, 0, 0, "diagonal", false));
                     }
                 }
+                
+                //changing values to set for next obstacle if generating has not finished
+                if (obstacles.size() != 15){
+                    oXPos += obstacles.get(obstacles.size() - 1).getWidth() + 30;
+                    change = 0;
+                }
+            }
+            //if generating has finished, no increment is added
+            if (obstacles.size() != 15){
+                oXPos += 30;
+                change += 30;
             }
         }
+        //resetting the obstacle x position 
+        oXPosDiff = oXPos - oXPosDiff;
+        oXPos = oXPos - oXPosDiff + obstacles.get(9).getWidth();
     }
+    
     
 
     public void playGame(){
