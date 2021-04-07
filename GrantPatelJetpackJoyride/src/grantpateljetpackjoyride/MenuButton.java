@@ -63,4 +63,8 @@ public class MenuButton {
     public void draw(Graphics2D g2d, MainGUI m){
         g2d.drawImage(image, x, y, m);
     }
+    
+    public void setDestination(JFrame destination){
+        this.destination = destination;
+    }
 }
