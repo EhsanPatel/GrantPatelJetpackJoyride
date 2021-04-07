@@ -46,7 +46,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     
     private MenuButton[] menuButtons;
     
-    private double scrollX;
+    private int scrollX;
     private String gamestate;    
     boolean holdEvent;
     
@@ -72,19 +72,8 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
      * primary constructor to build the JPanel and create a window that can be interacted with by the user
      */
     public MainGUI(String saveAddress) {
-        //initializes the player
-        player = new Player();
+
         readAutoSave(saveAddress);
-        
-        
-        
-        //loading obstacle images
-        VerticalObstacle.loadImages();
-        HorizontalObstacle.loadImages();
-        DiagonalObstacle.loadImages();
-        
-        //randomize the obstacles
-        randomizeObstacles();
         
         //initializes the attributes of the board
         initPanel();
@@ -96,12 +85,6 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         
         //allows the board to recieve input from mouseclicks
         addMouseListener(this);
-
-        //game and animation variables
-        scrollX = 0;
-        gamestate = "menu";
-        holdEvent = false;
-        playMusic(filepathMenu); 
     }
 
     
@@ -133,6 +116,20 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         scrollX = 0;
         gamestate = "menu";
         holdEvent = false;
+        
+        //play music
+        playMusic(filepathMenu); 
+        
+        //initializes the player
+        player = new Player();
+        
+        //loading obstacle images
+        VerticalObstacle.loadImages();
+        HorizontalObstacle.loadImages();
+        DiagonalObstacle.loadImages();
+        
+        //randomize the obstacles
+        randomizeObstacles();
         
     }
     
@@ -175,12 +172,22 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             player.nextFrame(0.010*dt);
             player.move(holdEvent, dt);            
             player.draw(g, B_HEIGHT, this);
+            
+            for (int i = 0; i < obstacles.size(); i++) {
+                obstacles.get(i).setXPos(obstacles.get(i).getXPos() - (int)(0.3*dt));
+                
+                //determine which type of obstacle it is in order to cast and draw
+                if (obstacles.get(i).getType().equals("vertical")){
+                    ((VerticalObstacle)(obstacles.get(i))).draw(this, g);
+                } else if (obstacles.get(i).getType().equals("horizontal")){
+                    ((HorizontalObstacle)(obstacles.get(i))).draw(this, g);
+                } else {
+                    ((DiagonalObstacle)(obstacles.get(i))).draw(this, g);
+                }
+            }   
         }
         
-        for (int i = 0; i < obstacles.size(); i++) {
-            obstacles.get(i).setXPos(obstacles.get(i).getXPos() + (int)scrollX);
-           ((VerticalObstacle)(obstacles.get(i))).draw(this, g);
-        }
+        
         
         //synchronizes the graphics
         Toolkit.getDefaultToolkit().sync();
@@ -196,13 +203,18 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         while (obstacles.size() < 51) {
             i++;
             if ((int)(Math.random() * 10) + 1 == 1){ //1 in 10 chance of an obstacle appearing
-                width = (int)(Math.random() * 300) + 100;
-                height = (int)(Math.random() * 300) + 100;
-                yPos = (int)(Math.random() * 520) + 100;
-                if (height + yPos > 620){ //making sure obstacle does not go off the screen
-                    yPos = 620 - height;
+                //determine which type of obstacle
+                if((int)(Math.random() * 3) + 1 == 1){
+                    obstacles.add(new VerticalObstacle(i * 50, 0, 0, 0, "vertical"));
+                } else if((int)(Math.random() * 3) + 1 == 2){
+                    obstacles.add(new HorizontalObstacle(i * 50, 0, 0, 0, "horizontal"));
+                } else {
+                    if ((int)(Math.random() * 2) + 1 == 1){ //obstacle faces left
+                        obstacles.add(new DiagonalObstacle(i * 50, 0, 0, 0, "diagonal", true));
+                    } else { //obstacle faces right
+                        obstacles.add(new DiagonalObstacle(i * 50, 0, 0, 0, "diagonal", false));
+                    }
                 }
-                obstacles.add(new VerticalObstacle(i * 50, yPos, height, width, "vertical"));
             }
         }
     }

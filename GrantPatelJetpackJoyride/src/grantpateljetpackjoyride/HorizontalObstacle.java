@@ -19,6 +19,7 @@ public class HorizontalObstacle extends AbstractObstacle{
     //class variables
     private static ImageIcon[] framesSmall = new ImageIcon[4];
     private static ImageIcon[] framesMedium = new ImageIcon[4];
+    private static final int HEIGHT = 110;
     
     //instance variables
     private Image[] frames = new Image[4];
@@ -39,12 +40,25 @@ public class HorizontalObstacle extends AbstractObstacle{
     public HorizontalObstacle(int xPos, int yPos, int height, int width, String type){
         super(xPos, yPos, height, width, type);
         //determine if big obstacle or not
-        height = 100; //vertical obstacle will always have same width
-        if (width > 500){ //determine which set of images to use
-            resizeImages(framesMedium, height);
+        height = HEIGHT; //horizontal obstacles have static height
+        //make either a big or small obstacle
+        if ((int)(Math.random()* 2 + 1) == 1){ //determine which set of images to use
+            width = 600;
+            resizeImages(framesMedium, width, height);
         } else {
-            resizeImages(framesSmall, height);
+            width = 400;
+            resizeImages(framesSmall, width, height);
         }
+        
+        //determine random yPos
+        if ((int)(Math.random() * 3) + 1 == 1){
+            this.setYPos(0); //top of screen
+        } else if((int)(Math.random() * 3) + 1 == 2){
+            this.setYPos(570 - height); //bottom of screen
+        } else {
+            this.setYPos(310 - (height / 2)); //middle of screen
+        }
+        
     }
     
     /**
@@ -68,7 +82,7 @@ public class HorizontalObstacle extends AbstractObstacle{
      * resizes images to fit height and width
      * @param images array containing original images
      */
-    public void resizeImages(ImageIcon[] images, int height){
+    public void resizeImages(ImageIcon[] images, int width, int height){
         //resize each frame
         for (int i = 0; i < images.length; i++) {
             frames[i] = images[i].getImage().getScaledInstance(width, height, Image.SCALE_FAST);
