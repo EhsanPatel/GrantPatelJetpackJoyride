@@ -6,10 +6,12 @@
 package grantpateljetpackjoyride;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 
 public class GrantPatelJetpackJoyride extends JFrame {
@@ -20,8 +22,13 @@ public class GrantPatelJetpackJoyride extends JFrame {
     }
     
     private void initUI() {
-        add(new MainGUI());
-        createSaveFile();
+        String saveAddress = System.getProperty("user.home") + File.separator + "Documents" + File.separator + "Jetpack Joyride" + File.separator;
+        findSaveDirectory(saveAddress);
+        findSaveFile(saveAddress, "autosave.jjrs");
+        findSaveFile(saveAddress, "allCoins.jjrs");
+        findSaveFile(saveAddress, "allScores.jjrs");
+        add(new MainGUI(saveAddress));
+        
         setResizable(false);
         pack();
         
@@ -32,10 +39,8 @@ public class GrantPatelJetpackJoyride extends JFrame {
         setLocationRelativeTo(null);        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-    private void createSaveFile(){
-        //System.out.println(System.getProperty("os.name").toLowerCase());
-        String saveAddress = System.getProperty("user.home") + File.separator + "Documents" + File.separator + "Jetpack Joyride" + File.separator;
-        
+    
+    private void findSaveDirectory(String saveAddress){
         //searches for directory and creates one if necessary
         File file = new File(saveAddress);
         if (!file.exists()) {
@@ -45,14 +50,20 @@ public class GrantPatelJetpackJoyride extends JFrame {
                 System.out.println("Failed to create directory!");
             }
         }
-        
-        System.out.println(saveAddress+"autosave.jjrs");
+    }
+    
+
+    private void findSaveFile(String saveAddress, String filename){        
+        System.out.println(saveAddress+filename);
         
         //searches for a file and creates one if necessary
         try {
-            File myObj = new File(saveAddress+"autosave.jjrs");
+            File myObj = new File(saveAddress+filename);
             if (myObj.createNewFile()) {
               System.out.println("File created: " + myObj.getName());
+              if(filename.equals("autosave.jjrs")){
+                  writeSaveDefaults(saveAddress);
+              }
             } else {
               System.out.println("File already exists.");
             }
@@ -60,14 +71,15 @@ public class GrantPatelJetpackJoyride extends JFrame {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
-        try {
+    }
+    private void writeSaveDefaults(String saveAddress){
+        try{
             FileWriter myWriter = new FileWriter(saveAddress+"autosave.jjrs");
-            myWriter.write("New Test output");
+            myWriter.write("Coins\n0\nBought Costumes\n1\nEquipped Costume\n1");
             myWriter.close();
             System.out.println("Successfully wrote to the file.");
         } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e);
         }
     }
 }

@@ -20,7 +20,11 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 
@@ -67,9 +71,9 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     /**
      * primary constructor to build the JPanel and create a window that can be interacted with by the user
      */
-    public MainGUI() {
-        
+    public MainGUI(String saveAddress) {
 
+        readAutoSave(saveAddress);
         
         //initializes the attributes of the board
         initPanel();
@@ -288,8 +292,43 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         }
     }
     
-    
-    
+    /**
+     * Reads the autosave file and changes the game setup accordingly
+     * @param saveAddress - where the root folder of the save files is located
+     */
+    private void readAutoSave(String saveAddress){
+        ArrayList<String> autosaveContents = new ArrayList();
+        //reads the save file
+        try {
+            //new input stream for the auto save file
+            FileInputStream in = new FileInputStream(saveAddress + "autosave.jjrs");
+            //scanner to read the input stream
+            Scanner scanner = new Scanner(in);
+            
+            //adds contents of file into arraylist
+            while(scanner.hasNextLine()){
+                autosaveContents.add(scanner.nextLine());                
+            }
+            
+            //linear search through auto save file contents - different number of bought costumes will affect which line items are on
+            for(int i = 0; i < autosaveContents.size(); ++i){
+                //finds the equipped costume line in autosave
+                if(autosaveContents.get(i).equals("Equipped Costume")){
+                    //The next line is the costume to use, so set the players costume
+                    player.setCostumeNum(Integer.parseInt(autosaveContents.get(i+1)));
+                    //reload the correct images
+                    player.loadImages();
+                }
+                
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+
+    private void writeToAutoSave(String saveAddress){
+        //writes to the file
+    }
 
     
     /**
