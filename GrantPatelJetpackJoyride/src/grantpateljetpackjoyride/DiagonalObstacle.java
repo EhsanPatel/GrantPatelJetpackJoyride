@@ -46,15 +46,15 @@ public class DiagonalObstacle extends AbstractObstacle{
         //determine if big obstacle, resize the images
         if (height > 500){ //determine which set of images to use
             if (left){ //determine which way the obstacle is facing
-                resizeImages(framesMediumLeft);
+                resizeImages(framesMediumLeft, width);
             } else {
-                resizeImages(framesMediumRight);
+                resizeImages(framesMediumRight, width);
             }
         } else {
             if (left){ //determine which way the obstacle is facing
-                resizeImages(framesSmallLeft);
+                resizeImages(framesSmallLeft, width);
             } else {
-                resizeImages(framesSmallRight);
+                resizeImages(framesSmallRight, width);
             }
         }
         
@@ -90,10 +90,10 @@ public class DiagonalObstacle extends AbstractObstacle{
      * resizes images to fit height and width
      * @param images array containing original images
      */
-    public void resizeImages(ImageIcon[] images){
+    public void resizeImages(ImageIcon[] images, int width){
         //resize each frame
         for (int i = 0; i < images.length; i++) {
-            frames[i] = images[i].getImage().getScaledInstance(width, height, Image.SCALE_FAST);
+            frames[i] = images[i].getImage().getScaledInstance(width, width, Image.SCALE_FAST);
         }
     }
     

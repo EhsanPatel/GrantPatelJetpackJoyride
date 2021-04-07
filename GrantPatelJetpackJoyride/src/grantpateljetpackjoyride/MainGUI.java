@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 
@@ -50,14 +51,17 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     private long t1;
     private long t2;
     
+    //music variables
     boolean mainMusicPlaying = false;
     boolean menuMusicPlaying = true;
     private final String filepathMain = "audio/JetpackJoyrideOST-MainTheme.wav";
     private final String filepathMenu = "audio/JetpackJoyrideOST-Home.wav";
     private AudioPlayer audioPlayer;
     
+    //arrayLists containing game objects
+    ArrayList<AbstractObstacle> obstacles = new ArrayList<AbstractObstacle>();
     
-    VerticalObstacle v;
+    
     
     
     /**
@@ -67,6 +71,14 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         
         //initializes the player
         player = new Player();
+        
+        //loading obstacle images
+        VerticalObstacle.loadImages();
+        HorizontalObstacle.loadImages();
+        DiagonalObstacle.loadImages();
+        
+        //randomize the obstacles
+        randomizeObstacles();
         
         //initializes the attributes of the board
         initPanel();
@@ -83,7 +95,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         scrollX = 0;
         gamestate = "menu";
         holdEvent = false;
-        playMusic(filepathMenu);
+        playMusic(filepathMenu); 
     }
 
     
@@ -116,7 +128,6 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         gamestate = "menu";
         holdEvent = false;
         
-        v = new VerticalObstacle(0,0, 300, 90, "type");
     }
     
 
@@ -160,11 +171,34 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             player.draw(g, B_HEIGHT, this);
         }
         
-        v.draw(this,g);
-        
+        for (int i = 0; i < obstacles.size(); i++) {
+            obstacles.get(i).setXPos(obstacles.get(i).getXPos() + (int)scrollX);
+           ((VerticalObstacle)(obstacles.get(i))).draw(this, g);
+        }
         
         //synchronizes the graphics
         Toolkit.getDefaultToolkit().sync();
+    }
+    
+    /**
+     * generates an array list of obstacles
+     */
+    public void randomizeObstacles(){
+        int width, height, yPos;
+        int i = 10;
+        //add 50 obstacles to an array
+        while (obstacles.size() < 51) {
+            i++;
+            if ((int)(Math.random() * 10) + 1 == 1){ //1 in 10 chance of an obstacle appearing
+                width = (int)(Math.random() * 300) + 100;
+                height = (int)(Math.random() * 300) + 100;
+                yPos = (int)(Math.random() * 520) + 100;
+                if (height + yPos > 620){ //making sure obstacle does not go off the screen
+                    yPos = 620 - height;
+                }
+                obstacles.add(new VerticalObstacle(i * 50, yPos, height, width, "vertical"));
+            }
+        }
     }
     
 
