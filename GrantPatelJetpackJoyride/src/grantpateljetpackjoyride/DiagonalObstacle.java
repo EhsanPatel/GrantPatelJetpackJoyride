@@ -102,7 +102,6 @@ public class DiagonalObstacle extends AbstractObstacle{
                     if (p.getYPos() + 10 < this.getYPos() + (i*boxHeight) + boxHeight - 20 && p.getYPos() - 10 + p.getHeight() > this.getYPos() + (i * boxHeight) + 20){
                         //check if player is in x space of each box
                         if (p.getXPos() + 10 < this.getXPos() + (width - i*boxHeight) + boxHeight - 20 && p.getXPos() - 10 + p.getHeight() > this.getXPos() + (width - i * boxHeight) + 20){
-                            System.out.println(xPos + "  :  " + yPos);
                             return true;
                         }
                     }
