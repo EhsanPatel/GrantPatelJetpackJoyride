@@ -532,6 +532,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
      * @param saveAddress - where the root folder of the save files is located
      */
     private void readAutoSave(){
+        autosaveContents.clear();
         //reads the save file
         try {
             //new input stream for the auto save file
