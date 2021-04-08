@@ -68,10 +68,8 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     private final String filepathMenu = "audio/JetpackJoyrideOST-Home.wav";
     private final String filepathCoin = "audio/coin.wav";
     private final String filepathZapper = "audio/zapper.wav";
-    private final String filepathJetpack = "audio/jetpack.wav";
     private AudioPlayer audioPlayer;
     private AudioPlayer coinAudio;
-    private AudioPlayer jetpackAudio;
     private AudioPlayer zapperAudio;
     
     //arrayLists containing game objects
