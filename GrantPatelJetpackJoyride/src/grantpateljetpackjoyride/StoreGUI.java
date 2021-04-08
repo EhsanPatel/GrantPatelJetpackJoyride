@@ -40,6 +40,7 @@ public class StoreGUI extends javax.swing.JFrame {
     private int coins;
     //stores the music setting for persistance
     private String music;
+    private String sfx;
     //stores the save address
     private String saveAddress;
     //format for large numbers like the number of coins or price
@@ -216,7 +217,6 @@ public class StoreGUI extends javax.swing.JFrame {
                             .addComponent(equippedLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(153, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainContainerPanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(coinsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -246,10 +246,8 @@ public class StoreGUI extends javax.swing.JFrame {
                             .addComponent(costumeImg1)
                             .addComponent(costumeImg3)))
                     .addGroup(mainContainerPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, 0)
                         .addComponent(equippedLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 295, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(mainContainerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(mainContainerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(priceLabel2)
@@ -440,7 +438,7 @@ public class StoreGUI extends javax.swing.JFrame {
                 }
             }
             //write to the file the new changes that were observed in the store, preserve the old ones
-            myWriter.write("Music\n"+music+"\nCoins\n"+coins+"\nBought Costumes\n"+boughtCostumes+"Equipped Costume\n"+equippedCostume);
+            myWriter.write("Music\n"+music+"\nSFX\n"+sfx+"\nCoins\n"+coins+"\nBought Costumes\n"+boughtCostumes+"Equipped Costume\n"+equippedCostume);
             //close the file
             myWriter.close();
         } catch (IOException e) {
@@ -488,6 +486,9 @@ public class StoreGUI extends javax.swing.JFrame {
                 }else if(autosaveContents.get(i).equals("Music")){
                     //stores the music setting so it is not overwritten when writing back to the file
                     music = autosaveContents.get(i + 1);
+                }else if(autosaveContents.get(i).equals("SFX")){
+                    //stores the music setting so it is not overwritten when writing back to the file
+                    sfx = autosaveContents.get(i + 1);
                 }
                 
             }

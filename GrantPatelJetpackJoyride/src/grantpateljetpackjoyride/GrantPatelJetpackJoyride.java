@@ -77,7 +77,7 @@ public class GrantPatelJetpackJoyride extends JFrame {
     private void writeSaveDefaults(String saveAddress){
         try{
             FileWriter myWriter = new FileWriter(saveAddress+"autosave.jjrs");
-            myWriter.write("Music\non\nCoins\n0\nBought Costumes\n1\nEquipped Costume\n1");
+            myWriter.write("Music\non\nSFX\non\nCoins\n0\nBought Costumes\n1\nEquipped Costume\n1");
             myWriter.close();
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, e);
