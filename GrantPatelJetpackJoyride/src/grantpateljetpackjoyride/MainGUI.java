@@ -232,8 +232,10 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
                 
                 //determine which type of obstacle it is in order to cast and draw
                 if (obstacles.get(i).getType().equals("vertical")){
+                    notDiagonalOCollisions(i);
                     ((VerticalObstacle)(obstacles.get(i))).draw(this, g);
                 } else if (obstacles.get(i).getType().equals("horizontal")){
+                    notDiagonalOCollisions(i);
                     ((HorizontalObstacle)(obstacles.get(i))).draw(this, g);
                 } else {
                     ((DiagonalObstacle)(obstacles.get(i))).draw(this, g);
@@ -269,6 +271,24 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         
         //synchronizes the graphics
         Toolkit.getDefaultToolkit().sync();
+    }
+    
+    /**
+     * checks if the player has collided with a horizontal or vertical obstacle
+     * @param i the index of the obstacle in the arrayList
+     */
+    public void notDiagonalOCollisions(int i){
+        //eliminate some obstacles to eliminate processing
+        if (Math.abs(obstacles.get(i).getXPos() - player.getXPos()) < 500){ //if obstacle is within 500 pixels on either side of the player
+            //check if player is in correct y space
+            if (player.getYPos() + 5 < obstacles.get(i).getYPos() + obstacles.get(i).getHeight() - 40 && player.getYPos() - 5 + player.getHeight() > obstacles.get(i).getYPos() + 40){
+                //check if player is in correct x space
+                if (player.getXPos() + 5 < obstacles.get(i).getXPos() + obstacles.get(i).getWidth() - 40 && player.getXPos() + player.getWidth() > obstacles.get(i).getXPos() + 40){
+                    JOptionPane.showMessageDialog(null, "You died!"); //change later to screen with end credits in method endrun
+                    endRun();
+                }
+            }
+        }
     }
     
     /**
