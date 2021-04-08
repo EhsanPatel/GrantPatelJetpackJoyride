@@ -66,7 +66,11 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     boolean menuMusicPlaying = true;
     private final String filepathMain = "audio/JetpackJoyrideOST-MainTheme.wav";
     private final String filepathMenu = "audio/JetpackJoyrideOST-Home.wav";
+    private final String filepathCoin = "audio/coin.wav";
+    private final String filepathZapper = "audio/zapper.wav";
     private AudioPlayer audioPlayer;
+    private AudioPlayer coinAudio;
+    private AudioPlayer zapperAudio;
     
     //arrayLists containing game objects
     ArrayList<AbstractObstacle> obstacles = new ArrayList();
@@ -267,10 +271,11 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
                 if (oCollision){ //if the player has collided with the obstacle
                         gamestate = "gameover";
                         audioPlayer.stop();
+                        playSFX(zapperAudio, filepathZapper);
                         //wait before going to end screen
                         try {
                             Thread.sleep(1000);
-                        } catch (Exception e) {
+                        } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
@@ -286,6 +291,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
                 if (!(cCollision)){ //if the coin has not been hit, draw the coin
                     coins.get(i).draw(this, g);
                 } else { //remove the coin
+                    playSFX(coinAudio, filepathCoin);
                     coins.remove(i);
                     player.updateTotalCoins();
                 }
@@ -547,12 +553,37 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             audioPlayer.stop();
         }
         try{
-            audioPlayer = new AudioPlayer(filepath);
+            audioPlayer = new AudioPlayer(filepath, true);
 
         } catch (Exception e){
             JOptionPane.showMessageDialog(null, e);
         }
         
+    }
+    
+    /**
+     * plays the sfx using the audioplayer object
+     * @param audioPlayer - which sfx object to use
+     */
+    public void playSFX(AudioPlayer audioPlayer, String filepath){
+        if(audioPlayer != null){
+            audioPlayer.stop();
+        }
+        try{
+            audioPlayer = new AudioPlayer(filepath, false);
+
+        } catch (Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+    /**
+     * plays the music using the audioplayer object
+     * @param audioPlayer
+     */
+    public void stopSFX(AudioPlayer audioPlayer){
+        if(audioPlayer != null){
+            audioPlayer.stop();
+        }
     }
         /**
      * overrides the draw method to draw custom items on the window
