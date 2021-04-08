@@ -433,12 +433,8 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             panelScrollX[i] = 4860+ i*1809;
         }
         //remove all obstacles and coins
-        for (int i = 0; i < obstacles.size(); i++) {
-            obstacles.remove(i);
-        }
-        for (int i = 0; i < coins.size(); i++) {
-            coins.remove(i);
-        }
+        obstacles.clear();
+        coins.clear();
         
         //making new player object
         player = new Player();
@@ -483,8 +479,8 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
                     playMusic(filepathMenu);
                 } else if (e.getX() > ((B_WIDTH - metrics.stringWidth("Play Again")) / 4) * 3 - 5 && e.getX() < ((B_WIDTH - metrics.stringWidth("Play Again")) / 4) * 3 + (B_WIDTH - metrics.stringWidth("Play Again")) + 5){
                     endRun();
-                    gamestate = "playing";
-                    playMusic(filepathMain);
+                    playGame(); //restart game
+                    
                 }
             }
             
