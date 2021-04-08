@@ -207,22 +207,24 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
                 menuButtons[i].draw(g2d, this);
             }
         }else if(gamestate.equals("playing")){
-            //scrolling starting background
-            startingBGX -= 0.3*dt*increase;
+            //infinite scrolling backgrounds - not infinite yet
+            g2d.drawImage(panel1,(int)panelScrollX[0]-10,0,this);
+            g2d.drawImage(panel2,(int)panelScrollX[1]-10,0,this);
             
             //increasing speed
             increase += 0.0002;
-           
+            
+            //scrolling starting background
+            startingBGX -= 0.3*dt*increase;
+
             for(int i = 0; i < panelScrollX.length; ++i){
-                panelScrollX[i] -= 0.3*dt*increase;
+                panelScrollX[i] -= (int)(0.3*dt*increase);
                 if(panelScrollX[i] <= -1809){
-                    panelScrollX[i] = 1809;
+                    panelScrollX[i] += 2*1809;
                 }
             }
 
-            //infinite scrolling backgrounds - not infinite yet
-            g2d.drawImage(panel1,(int)panelScrollX[0],0,this);
-            g2d.drawImage(panel2,(int)panelScrollX[1],0,this);
+
             
             //scrolling and animation of character (switching through frames)
             //controls the player's frame, movement, then draws
