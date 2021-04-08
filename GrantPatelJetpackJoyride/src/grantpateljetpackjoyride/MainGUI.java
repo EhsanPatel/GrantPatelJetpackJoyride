@@ -74,6 +74,9 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     //speed increase
     private double increase;
     
+    //collision boolean variables
+    private boolean cCollision, oCollision;
+    
     
     
     
@@ -130,6 +133,8 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         oXPos = 1500;
         cXPos = 1500;
         increase = 1.2;
+        cCollision = false;
+        oCollision = false;
         
         //initializes the player
         player = new Player();
@@ -147,6 +152,11 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     }
     
 
+    /**
+     * draws to the main screen
+     * @param g the graphics
+     * @param dt the delta time used to adjust for slower/faster computer speeds
+     */
     private void drawLoop(Graphics g, int dt) {
         //prevents unexpected dt from changing game function
         if(dt<=0){
@@ -225,7 +235,13 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             //drawing coins
             for (int i = 0; i < coins.size(); i++) {
                 coins.get(i).setXPos(coins.get(i).getXPos() - (int)(0.3*dt*increase));
-                coins.get(i).draw(this, g);
+                //check if coins have collided with player
+                coinCollisions(i);
+                if (!(cCollision)){ //if the coin has not been hit, draw the coin
+                    coins.get(i).draw(this, g);
+                } else { //remove the coin
+                    coins.remove(i);
+                }
             }
             
             //checks if coins need to be removed
@@ -246,6 +262,29 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     }
     
     /**
+     * detects coin collisions between the player and a coin
+     * @param i the array index of the coin being checked
+     */
+    public void coinCollisions(int i){
+        //set coin collisions equal to false, collision has not happened yet
+        cCollision = false;
+
+        //if the x distance between the coin and player is less than 100 on either side
+        if (Math.abs(coins.get(i).getXPos() - player.getXPos()) < 100) { //eliminates many coins to speed up processing
+
+            //check if player is in the right y space
+            if (player.getYPos() + 5 < coins.get(i).getYPos() + coins.get(i).getHeight() && player.getYPos() + player.getHeight() - 5 > coins.get(i).getYPos()) {
+                //check if player is in the right x space
+                if (player.getXPos() + 5 < coins.get(i).getXPos() + coins.get(i).getWidth() && player.getXPos() + player.getWidth() - 5 > coins.get(i).getXPos()) {
+                    cCollision = true;
+                    player.updateTotalCoins(); //add one to coins
+                }
+            }
+        }
+
+    }
+    
+    /**
      * generates an arrayList of coins
      */
     public void randomizeCoins(){
@@ -255,7 +294,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             cXPos += 150;
         }
         
-        cXPos = 1500;
+        cXPos = 1650;
 
     }
     
