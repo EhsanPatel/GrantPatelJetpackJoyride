@@ -1,7 +1,7 @@
 /*
  * Ehsan Patel and Colin Grant
  * 1-Apr-2021
- * and open the template in the editor.
+ * Shows game statistics for past runs by opening save files, processing the data and displaying
  */
 package grantpateljetpackjoyride;
 
@@ -28,12 +28,14 @@ public class StatisticsGUI extends javax.swing.JFrame {
     //stores the save address
     private String saveAddress;
     
+    //arrays to store the tracked data
     private int[] allCoins;
     private int[] allScores;
     
+    //stores the totals
     private int totalDistTravelled;
     private int totalCoinsCollected;
-    
+        
     
     /**
      * Creates new form StatisticsGUI
@@ -52,6 +54,7 @@ public class StatisticsGUI extends javax.swing.JFrame {
         
         //stores the window to go back to
         mainWindow = m;
+        //default components for jFrame
         initComponents();
         
         //changes attributes of the display window containing the form
@@ -61,8 +64,6 @@ public class StatisticsGUI extends javax.swing.JFrame {
         setLocationRelativeTo(null);        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        totalDistTravelled = 0;
-        totalCoinsCollected = 0;
     }
 
     /**
@@ -85,7 +86,7 @@ public class StatisticsGUI extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         totalCoinsLabel = new javax.swing.JLabel();
         mostCoinsLabel = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        achievementLabel1 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
@@ -174,9 +175,9 @@ public class StatisticsGUI extends javax.swing.JFrame {
         mostCoinsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         mostCoinsLabel.setText("Most Coins Collected: 0");
 
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setText("Easy as 123...4 Achievement: Not Completed");
+        achievementLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        achievementLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        achievementLabel1.setText("Easy as 123...4 Achievement: Not Completed");
 
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -210,7 +211,7 @@ public class StatisticsGUI extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(411, 411, 411)
                         .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(achievementLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(totalCoinsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(mostCoinsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -243,7 +244,7 @@ public class StatisticsGUI extends javax.swing.JFrame {
                         .addGap(22, 22, 22)
                         .addComponent(jLabel11)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel8)
+                        .addComponent(achievementLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel9))
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -264,59 +265,103 @@ public class StatisticsGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * runs when the back button/label is clicked by the user
+     * @param evt - the click event
+     */
     private void backToMenuLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backToMenuLabelMouseClicked
+        //set the main window visible again
         ((JFrame)mainWindow.getRootPane().getParent()).setVisible(true);
+        //dispose of current window to free up resources
         this.dispose();
     }//GEN-LAST:event_backToMenuLabelMouseClicked
 
+    /**
+     * runs when this form comes into focus
+     * @param evt - the click event
+     */
     private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained
         updateForm();
     }//GEN-LAST:event_formFocusGained
 
+    /**
+     * runs if the current form is being shown (usually when switched to)
+     * @param evt - the click event
+     */
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        //only update form if the form focus did not get triggered
         if(!this.hasFocus()){
             updateForm();
         }
     }//GEN-LAST:event_formComponentShown
 
     private void updateForm(){
+        //reads the file contents (just a lot of numbers) into an array
         allScores = readNumberFile("allScores.jjrs");
         allCoins = readNumberFile("allCoins.jjrs");
+        
+        //initializes totals
         totalDistTravelled = 0;
         totalCoinsCollected = 0;
 
+        //Error checks that there are numbers that can be processed
         if (allScores != null) {
+            //sorts the arrays to be processed, in descending order
             quikDescending(allScores, 0, allScores.length - 1);
+            //stores the number of runs for the average
             int numRuns = 0;
+            //loops through all the scores
             for (int i = 0; i < allScores.length; ++i) {
-                System.out.println(allScores[i]);
+                //adds each separate score to the total distance
                 totalDistTravelled += allScores[i];
+                //adds to the run counter, 1 score in file = 1 run
                 ++numRuns;
             }
+            //displays the information on distances to the user
             totalDistanceLabel.setText("Total Distance Travelled: " + totalDistTravelled);
             avgDistanceLabel.setText("Average Distance Travelled: " + (totalDistTravelled / numRuns));
 
-            int numLeaderboardValues = (allScores.length > 10) ? 10 : allScores.length;
+            //stores how many scores to show on the leaderboard - can't always read 10 scores if there aren't 10 to read from
+            int numLeaderboardValues = Math.min(allScores.length, 10);
+            //store a message to display
             String leaderboardMsg = "";
+            //iterate through the top scores (10 scores max)
             for (int i = 0; i < numLeaderboardValues; ++i) {
+                //adds the score to the leaderboard, with the position on the leaderboard
                 leaderboardMsg += (i+1)+". "+allScores[i]+ "\n";
             }
+            //updates the leaderboard text area
             leaderBoardTextArea.setText(leaderboardMsg);
+            
+            //stores the message for whether or not the achievement was completed
+            String isCompletedMsg = "Not Completed";
+            //searches for numbers that the user has scored
+            if(binarySearch(1234, 0, allScores.length)){
+                isCompletedMsg = "Completed";
+            }
+            //sets the text for the achievement label
+            achievementLabel1.setText("Easy as 123...4 Achievement: " + isCompletedMsg);
 
+        //display if there was a problem reading the file and return to the main screen
         } else {
             JOptionPane.showMessageDialog(null, "There was a problem reading the file");
             ((JFrame) mainWindow.getRootPane().getParent()).setVisible(true);
             this.dispose();
         }
 
+        //error check to see if the coin data can be processed or not
         if (allCoins != null) {
+            //sorts the coins in descending order
             quikDescending(allCoins, 0, allCoins.length - 1);
+            //iterates through all the coins collected
             for (int i = 0; i < allCoins.length; ++i) {
-                System.out.println(allCoins[i]);
+                //adds the coins for the run to the total
                 totalCoinsCollected += allCoins[i];
             }
+            //sets the coin statistics labels
             totalCoinsLabel.setText("Total Coins Collected: " + totalCoinsCollected);
             mostCoinsLabel.setText("Most Coins Collected: " + allCoins[0]);
+        //Display error message if the coin file wasn't able to be opened, then return to main screen
         } else {
             JOptionPane.showMessageDialog(null, "There was a problem reading the file");
             ((JFrame) mainWindow.getRootPane().getParent()).setVisible(true);
@@ -325,16 +370,16 @@ public class StatisticsGUI extends javax.swing.JFrame {
     }
     
     /**
-     * Reads the save file and updates the store accordingly
-     * @param saveAddress - where the root folder of the save files is located
+     * Reads the save file into an array of integers
+     * @param fileName - the save files where the numbers are located
      */
     private int[] readNumberFile(String fileName){
-        //arraylist to store the contents of file - different number of bought costumes will affect which line items are on
+        //arraylist to store the contents of file could be any number of runs that the user has played
         ArrayList<Integer> fileContents = new ArrayList();
         
-        //reads the save file
+        //attempts to read the save file
         try {
-            //new input stream for the auto save file
+            //new input stream for the file
             FileInputStream in = new FileInputStream(saveAddress + fileName);
             //scanner to read the input stream
             Scanner scanner = new Scanner(in);
@@ -343,23 +388,25 @@ public class StatisticsGUI extends javax.swing.JFrame {
             while(scanner.hasNextLine()){
                 fileContents.add(Integer.parseInt(scanner.nextLine()));                
             }
-            //stores where the end of the costumes that are bought are as the user may have 1, 2, or 3 costumes
-            int endOfBought = 0;
             
+            //if there are no items in the file, return an array only containing 0
             if(fileContents.isEmpty()){
                 return new int[]{0};
             }
-            
+            //create an array to return the contents
             int[] nums = new int[fileContents.size()];
+            //fill array with contents of arraylist
             for (int i = 0; i < fileContents.size(); ++i) {
                 nums[i] = fileContents.get(i);
             }
+            //return the array of numbers
             return nums;
         //if the input stream cannot be read
         } catch (IOException e) {
             //show user the error
             JOptionPane.showMessageDialog(null, e);
         }
+        //returns a default null, preventing the program from trying to sort and set labels based off the nonexistant array values
         return null;
     }
 
@@ -368,13 +415,11 @@ public class StatisticsGUI extends javax.swing.JFrame {
      * @param nums - the array to rearrange
      * @param left - the left boundary to sort
      * @param right - the right boundary to sort
-     * @param loopCounter - the array of counters to increment for the number of loops executed
-     * @return an array that been sorted into descending order
      */
-    private static int[] quikDescending(int[] nums, int left, int right){
+    private static void quikDescending(int[] nums, int left, int right){
         //exit condition to prevent more method calls
         if(left >= right){
-            return nums;
+            return;
         }
         
         //store the left and right in another variable to use and change for looping
@@ -411,19 +456,55 @@ public class StatisticsGUI extends javax.swing.JFrame {
         //quiksorts both sides of the pivot - each element in partition is only sorted relative to pivot value, not to other elements in partition
         quikDescending(nums, left, j);
         quikDescending(nums,i, right);
-        
-        //method must have a garunteed return value, if this point is reached, the list will have been sorted
-        return nums;
     }
     
+    
+    /**
+     * Implements a binary search algorithm using recursion
+     * Assumes the array being searched is in descending order
+     * @param target - the number being searched for
+     * @param left - the left bound to search within
+     * @param right - the right bound to search within
+     */
+    private boolean binarySearch(int target, int left, int right){
+        //find the middle value to split at
+        int middle;
+        //if the left side value is bigger than the right, the paths have crossed and the value wasn't found
+        if(left > right){
+            return false;
+        }
+        //find the middle value in the array
+        middle = (left+right)/2;
+        
+        //fixes if there is only one number inputted
+        if(middle>=allScores.length){
+            return false;
+        }
+        
+        //if the middle number happens to be the number being searched for, it can return as being found
+        if(allScores[middle] == target){
+            return true;
+        }
+        //if the middle value was larger than the target
+        if(allScores[middle] > target){
+            //call the function to search the right half of the list
+            return binarySearch(target, middle + 1, right);
+        //otherwise it is on the left side half
+        }else{
+            //call the function to search the left half of the list
+            return binarySearch(target, left, middle - 1);
+        }
+    }
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel achievementLabel1;
     private javax.swing.JLabel avgDistanceLabel;
     private javax.swing.JLabel backToMenuLabel;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
