@@ -40,25 +40,24 @@ public class HorizontalObstacle extends AbstractObstacle{
      */
     public HorizontalObstacle(int xPos, int yPos, int height, int width, String type){
         super(xPos, yPos, height, width, type);
-        //determine if big obstacle or not
-        height = BIG_HEIGHT; //horizontal obstacles have static height
         //make either a big or small obstacle
         if ((int)(Math.random()* 2 + 1) == 1){ //determine which set of images to use
+            this.setHeight(BIG_HEIGHT);
             this.setWidth(450);
-            resizeImages(framesMedium, this.width, height);
+            resizeImages(framesMedium, this.width, this.height);
         } else {
-            height = SMALL_HEIGHT;
+            this.setHeight(SMALL_HEIGHT);
             this.setWidth(240);
-            resizeImages(framesSmall, this.width, height);
+            resizeImages(framesSmall, this.width, this.height);
         }
         
         //determine random yPos
         if ((int)(Math.random() * 3) + 1 == 1){
             this.setYPos(50); //top of screen
         } else if((int)(Math.random() * 3) + 1 == 2){
-            this.setYPos(570 - height); //bottom of screen
+            this.setYPos(570 - this.height); //bottom of screen
         } else {
-            this.setYPos(310 - (height / 2)); //middle of screen
+            this.setYPos(310 - (this.height / 2)); //middle of screen
         }
         
     }

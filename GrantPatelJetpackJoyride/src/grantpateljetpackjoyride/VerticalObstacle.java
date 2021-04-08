@@ -19,6 +19,8 @@ public class VerticalObstacle extends AbstractObstacle{
     private static ImageIcon[] framesSmall = new ImageIcon[4];
     private static ImageIcon[] framesMedium = new ImageIcon[4];
     private static final int WIDTH = 110;
+    private static final int BIG_HEIGHT = 350;
+    private static final int SMALL_HEIGHT = 250;
 
     //instance variables
     private Image[] frames = new Image[4];
@@ -43,20 +45,20 @@ public class VerticalObstacle extends AbstractObstacle{
         this.setWidth(WIDTH); //vertical obstacle will always have same width
         //make either a big or small obstacle
         if ((int)(Math.random()* 2 + 1) == 1){ //determine which set of images to use
-            height = 350;
-            resizeImages(framesMedium, this.width, height);
+            this.setHeight(BIG_HEIGHT);
+            resizeImages(framesMedium, this.width, this.height);
         } else {
-            height = 250;
-            resizeImages(framesSmall, this.width, height);
+            this.setHeight(SMALL_HEIGHT);
+            resizeImages(framesSmall, this.width, this.height);
         }
         
         //determine random yPos
         if ((int)(Math.random() * 3) + 1 == 1){
             this.setYPos(50); //top of screen
         } else if((int)(Math.random() * 3) + 1 == 2){
-            this.setYPos(570 - height); //bottom of screen
+            this.setYPos(570 - this.height); //bottom of screen
         } else {
-            this.setYPos(310 - (height / 2)); //middle of screen
+            this.setYPos(310 - (this.height / 2)); //middle of screen
         }
         
     }

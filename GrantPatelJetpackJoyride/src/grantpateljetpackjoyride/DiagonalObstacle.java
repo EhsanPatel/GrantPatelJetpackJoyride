@@ -46,6 +46,7 @@ public class DiagonalObstacle extends AbstractObstacle{
         //determine if big obstacle, resize the images
         if ((int)(Math.random()*2 + 1) == 1){ //determine which set of images to use
             this.setWidth(BIG_WIDTH);
+            this.setHeight(BIG_WIDTH);
             if (left){ //determine which way the obstacle is facing
                 resizeImages(framesMediumLeft, this.width);
             } else {
@@ -53,6 +54,7 @@ public class DiagonalObstacle extends AbstractObstacle{
             }
         } else {
             this.setWidth(SMALL_WIDTH);
+            this.setHeight(SMALL_WIDTH);
             if (left){ //determine which way the obstacle is facing
                 resizeImages(framesSmallLeft, this.width);
             } else {
