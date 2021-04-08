@@ -110,7 +110,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         timer = new Timer(SPEED, this);
         timer.setInitialDelay(100);
         timer.start();
-        
+ 
         
         //allows the window to recieve keyboard input
         addKeyListener(this);
@@ -188,6 +188,9 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             player.nextFrame(0.010*dt);
             player.move(holdEvent, dt);            
             player.draw(g, B_HEIGHT, this);
+            
+            //increase player score
+            player.setScore(player.getScore() + 1);
             
             
             //checks if first obstacle has already been passed and should be deleted
