@@ -20,7 +20,7 @@ public class DiagonalObstacle extends AbstractObstacle{
     private static ImageIcon[] framesMediumRight = new ImageIcon[4];
     private static ImageIcon[] framesSmallLeft = new ImageIcon[4];
     private static ImageIcon[] framesMediumLeft = new ImageIcon[4];
-    private static final int BIG_WIDTH = 400;
+    private static final int BIG_WIDTH = 375;
     private static final int SMALL_WIDTH = 250;
     
     //instance variables
@@ -46,30 +46,30 @@ public class DiagonalObstacle extends AbstractObstacle{
         this.left = left;
         //determine if big obstacle, resize the images
         if ((int)(Math.random()*2 + 1) == 1){ //determine which set of images to use
-            this.setWidth(BIG_WIDTH);
-            this.setHeight(BIG_WIDTH);
+            this.width = BIG_WIDTH;
+            this.height = BIG_WIDTH;
             if (left){ //determine which way the obstacle is facing
-                resizeImages(framesMediumLeft, this.width);
+                resizeImages(framesMediumLeft);
             } else {
-                resizeImages(framesMediumRight, this.width);
+                resizeImages(framesMediumRight);
             }
         } else {
-            this.setWidth(SMALL_WIDTH);
-            this.setHeight(SMALL_WIDTH);
+            this.width = SMALL_WIDTH;
+            this.height = SMALL_WIDTH;
             if (left){ //determine which way the obstacle is facing
-                resizeImages(framesSmallLeft, this.width);
+                resizeImages(framesSmallLeft);
             } else {
-                resizeImages(framesSmallRight, this.width);
+                resizeImages(framesSmallRight);
             }
         }
         
         //determine random yPos
         if ((int)(Math.random() * 3) + 1 == 1){
-            this.setYPos(50); //top of screen
+            this.yPos = 50; //top of screen
         } else if((int)(Math.random() * 3) + 1 == 2){
-            this.setYPos(570 - this.width); //bottom of screen
+            this.yPos = 570 - this.width; //bottom of screen
         } else {
-            this.setYPos(310 - (this.width / 2)); //middle of screen
+            this.yPos = 310 - (this.width / 2); //middle of screen
         }
         
     }
@@ -80,27 +80,29 @@ public class DiagonalObstacle extends AbstractObstacle{
      * @return true if it has collided, else false
      */
     public boolean hasCollided(Player p){
-        int boxHeight = width / 10; //height of one of the boxes
+        int boxHeight = width / 100; //height of one of the boxes
         
         //if obstacle is within 500 pixels, eliminate some processing
         if (Math.abs(this.getXPos() - p.getXPos()) < 500) {
             //if the obstacle is facing left, looks like \
             if (left) {
-                for (int i = 0; i < 10; i++) { //for each box in the obstacle
+                for (int i = 0; i < 100; i++) { //for each box in the obstacle
                     //check if player is in the y space of each box
-                    if (p.getYPos() + 5 < this.getYPos() + (i*boxHeight) + boxHeight && p.getYPos() - 5 + p.getHeight() > this.getYPos() + (i * boxHeight)){
+                    if (p.getYPos() + 5 < this.getYPos() + (i*boxHeight) + boxHeight - 20 && p.getYPos() - 5 + p.getHeight() > this.getYPos() + (i * boxHeight) + 20){
                         //check if player is in x space of each box
-                        if (p.getXPos() + 5 < this.getXPos() + (i*boxHeight) + boxHeight && p.getXPos() - 5 + p.getHeight() > this.getXPos() + (i * boxHeight)){
+                        if (p.getXPos() + 5 < this.getXPos() + (i*boxHeight) + boxHeight - 20 && p.getXPos() - 5 + p.getHeight() > this.getXPos() + (i * boxHeight) + 20){
+                            System.out.println(xPos + "  :  " + yPos);
                             return true;
                         }
                     }
                 }
             } else { //obstacle is facing right /
-                for (int i = 0; i < 6; i++) { //for each box in the obstacle
+                for (int i = 0; i < 100; i++) { //for each box in the obstacle
                     //check if player is in the y space of each box
                     if (p.getYPos() + 5 < this.getYPos() - (i*boxHeight) + boxHeight - 20 && p.getYPos() - 5 + p.getHeight() > this.getYPos() - (i * boxHeight) + 20){
                         //check if player is in x space of each box
                         if (p.getXPos() + 5 < this.getXPos() + (i*boxHeight) + boxHeight - 20 && p.getXPos() - 5 + p.getHeight() > this.getXPos() + (i * boxHeight) + 20){
+                            System.out.println(xPos + "  :  " + yPos);
                             return true;
                         }
                     }
@@ -131,7 +133,7 @@ public class DiagonalObstacle extends AbstractObstacle{
      * resizes images to fit height and width
      * @param images array containing original images
      */
-    public void resizeImages(ImageIcon[] images, int width){
+    public void resizeImages(ImageIcon[] images){
         //resize each frame
         for (int i = 0; i < images.length; i++) {
             frames[i] = images[i].getImage().getScaledInstance(width, width, Image.SCALE_FAST);

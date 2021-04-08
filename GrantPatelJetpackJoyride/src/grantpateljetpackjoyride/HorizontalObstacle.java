@@ -42,22 +42,22 @@ public class HorizontalObstacle extends AbstractObstacle{
         super(xPos, yPos, height, width, type);
         //make either a big or small obstacle
         if ((int)(Math.random()* 2 + 1) == 1){ //determine which set of images to use
-            this.setHeight(BIG_HEIGHT);
-            this.setWidth(450);
-            resizeImages(framesMedium, this.width, this.height);
+            this.height = BIG_HEIGHT;
+            this.width = 450;
+            resizeImages(framesMedium);
         } else {
-            this.setHeight(SMALL_HEIGHT);
-            this.setWidth(240);
-            resizeImages(framesSmall, this.width, this.height);
+            this.height = SMALL_HEIGHT;
+            this.width = 240;
+            resizeImages(framesSmall);
         }
         
         //determine random yPos
         if ((int)(Math.random() * 3) + 1 == 1){
-            this.setYPos(50); //top of screen
+            this.yPos = 50; //top of screen
         } else if((int)(Math.random() * 3) + 1 == 2){
-            this.setYPos(570 - this.height); //bottom of screen
+            this.yPos = 570 - this.height; //bottom of screen
         } else {
-            this.setYPos(310 - (this.height / 2)); //middle of screen
+            this.yPos = 310 - (this.height / 2); //middle of screen
         }
         
     }
@@ -83,7 +83,7 @@ public class HorizontalObstacle extends AbstractObstacle{
      * resizes images to fit height and width
      * @param images array containing original images
      */
-    public void resizeImages(ImageIcon[] images, int width, int height){
+    public void resizeImages(ImageIcon[] images){
         //resize each frame
         for (int i = 0; i < images.length; i++) {
             frames[i] = images[i].getImage().getScaledInstance(width, height, Image.SCALE_FAST);
