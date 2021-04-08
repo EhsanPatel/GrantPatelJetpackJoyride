@@ -167,8 +167,8 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         //prevents unexpected dt from changing game function
         if(dt<=0){
             dt = 1;
-        }else if(dt > 25){
-            dt = 25;
+        }else if(dt > 20){
+            dt = 20;
         }
         
         //casts the regular graphics object into the updated 2d graphics object
