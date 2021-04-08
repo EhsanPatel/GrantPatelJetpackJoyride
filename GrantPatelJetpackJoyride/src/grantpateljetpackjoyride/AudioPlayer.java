@@ -25,7 +25,7 @@ public class AudioPlayer {
     private Clip audioClip;
     private AudioInputStream audioStream;
     
-    public AudioPlayer(String filepath)
+    public AudioPlayer(String filepath, boolean isRepeating)
             throws UnsupportedAudioFileException,
         IOException, LineUnavailableException 
     {
@@ -45,8 +45,11 @@ public class AudioPlayer {
 
         //the audio clip opens the stream to read from
         audioClip.open(audioStream);
-        //loops continuously
-        audioClip.loop(Clip.LOOP_CONTINUOUSLY);
+        if(isRepeating){
+            //loops continuously
+            audioClip.loop(Clip.LOOP_CONTINUOUSLY);
+        }
+        
         //starts playing the audio
         audioClip.start();
     }
