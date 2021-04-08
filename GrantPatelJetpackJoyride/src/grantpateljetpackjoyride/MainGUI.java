@@ -308,7 +308,6 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         gamestate = "playing";
         //play music
         if(isMusicOn){
-            audioPlayer.stop();
             playMusic(filepathMain);
             mainMusicPlaying = true;
             menuMusicPlaying = false;
@@ -432,6 +431,9 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
      * @param filepath - the path to the audio file to play
      */
     public void playMusic(String filepath){
+        if(audioPlayer != null){
+            audioPlayer.stop();
+        }
         try{
             audioPlayer = new AudioPlayer(filepath);
 
