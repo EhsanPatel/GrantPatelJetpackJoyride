@@ -60,9 +60,9 @@ public class Coin extends AbstractGameObject {
         if (Math.abs(this.getXPos() - p.getXPos()) < 100) { //eliminates many coins to speed up processing
 
             //check if player is in the right y space
-            if (p.getYPos() + 5 < this.getYPos() + this.getHeight() && p.getYPos() + p.getHeight() - 5 > this.getYPos()) {
+            if (p.getYPos() + 10 < this.getYPos() + this.getHeight() && p.getYPos() + p.getHeight() - 10 > this.getYPos()) {
                 //check if player is in the right x space
-                if (p.getXPos() + 5 < this.getXPos() + this.getWidth() && p.getXPos() + p.getWidth() - 5 > this.getXPos()) {
+                if (p.getXPos() + 10 < this.getXPos() + this.getWidth() && p.getXPos() + p.getWidth() - 10 > this.getXPos()) {
                     return true;
                 }
             }
