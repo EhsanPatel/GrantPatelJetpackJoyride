@@ -317,12 +317,17 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             g2d.setFont(scaledAbel2);
             metrics = g2d.getFontMetrics(scaledAbel2);
             
+            //drawing run stats
             g2d.drawString("Score: " + (int)(player.getScore()), (B_WIDTH - metrics.stringWidth("Score: " + (int)(player.getScore()))) / 2, 250);
             g2d.drawString("Coins: " + player.getCoins(), (B_WIDTH - metrics.stringWidth("Coins: " + player.getCoins())) / 2, 350);
             
             //changing font
             g2d.setFont(scaledAbel3);
             metrics = g2d.getFontMetrics(scaledAbel3);
+            
+            //drawing buttons for user to click on
+            g2d.drawString("Main Menu", (B_WIDTH - metrics.stringWidth("Main Menu")) / 4, 500);
+            g2d.drawString("Main Menu", (B_WIDTH - metrics.stringWidth("Main Menu")) * (3/4), 500);
             
             
             
