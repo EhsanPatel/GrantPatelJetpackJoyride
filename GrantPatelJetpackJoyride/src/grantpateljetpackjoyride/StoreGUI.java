@@ -1,7 +1,8 @@
 /*
- * Ehsan Patel
+ * Ehsan Patel and Colin Grant
  * 1-Apr-2021
- * and open the template in the editor.
+ * Handles buying and equipping items
+ * Saves the items bought to a file to use next time the game is opened and when returning to other parts of the game
  */
 package grantpateljetpackjoyride;
 
@@ -19,28 +20,41 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author ehsan
- */
 public class StoreGUI extends javax.swing.JFrame {
+    //input stream to read the font file
     private static InputStream is = LoadingGUI.class.getResourceAsStream("fonts/Abel-Regular.ttf");
+    //font variables
     private  Font abelFont;
     private static Font scaledAbelFont;
+    
+    //stores reference to main window to return
     private static MainGUI mainWindow;
+    
+    //holds jLabels of the same types (to perform similar functions)
     private static JLabel[] equippedLabels;
     private static JLabel[] priceLabels;
+    
+    //Stores the costume that should be equipped
     private String equippedCostume;
+    //stores the coins that the user has
     private int coins;
+    //stores the music setting for persistance
     private String music;
+    //stores the save address
     private String saveAddress;
+    //format for large numbers like the number of coins or price
+    private static final DecimalFormat num = new DecimalFormat("#,##0");
     /**
      * Creates new form StoreGUI
      * @param m
      * @param saveAddress
      */
     public StoreGUI(MainGUI m, String saveAddress) {
+        //stores the save address location
         this.saveAddress = saveAddress;
+        //formatting to display the number of coins
+        
+        
         //loads in a font to use for the text
         try{
             this.abelFont = Font.createFont(Font.TRUETYPE_FONT, is);
@@ -48,8 +62,13 @@ public class StoreGUI extends javax.swing.JFrame {
         }catch(FontFormatException | IOException e){
             System.out.println(e);
         }
+        
+        //stores the window to go back to
         mainWindow = m;
+        //initializes the form components
         initComponents();
+        
+        
         //changes attributes of the display window containing the form
         setTitle("FULLBRICK STUDIOS: Jetpack Joyride");
         ImageIcon icon = new ImageIcon(getClass().getResource("imageResources/costume1/running2.png"));
@@ -57,10 +76,10 @@ public class StoreGUI extends javax.swing.JFrame {
         setLocationRelativeTo(null);        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        
+        //clears all labels to start with no equipped or price labels
         clearLabels();
         
-        //search save file for which ones are bought and update store
+        //search save file for which costumes are bought and update store labels
         readAutoSave();
     }
 
@@ -73,11 +92,11 @@ public class StoreGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        mainContainerPanel = new javax.swing.JPanel();
+        backToMenuLabel = new javax.swing.JLabel();
+        costumeImg1 = new javax.swing.JLabel();
+        costumeImg2 = new javax.swing.JLabel();
+        costumeImg3 = new javax.swing.JLabel();
         equippedLabel1 = new javax.swing.JLabel();
         equippedLabel3 = new javax.swing.JLabel();
         equippedLabel2 = new javax.swing.JLabel();
@@ -91,33 +110,38 @@ public class StoreGUI extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(1110, 600));
         setSize(new java.awt.Dimension(1110, 600));
 
-        jPanel1.setBackground(new java.awt.Color(109, 118, 136));
-        jPanel1.addMouseListener(new java.awt.event.MouseAdapter() {
+        mainContainerPanel.setBackground(new java.awt.Color(109, 118, 136));
+        mainContainerPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jPanel1MouseEntered(evt);
+                mainContainerPanelMouseEntered(evt);
             }
         });
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/grantpateljetpackjoyride/imageResources/buttons/backFromStore.png"))); // NOI18N
-        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+        backToMenuLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/grantpateljetpackjoyride/imageResources/buttons/backFromStore.png"))); // NOI18N
+        backToMenuLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel1MouseClicked(evt);
+                backToMenuLabelMouseClicked(evt);
             }
         });
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/grantpateljetpackjoyride/imageResources/costume1/running2.png"))); // NOI18N
-
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/grantpateljetpackjoyride/imageResources/costume2/running2.png"))); // NOI18N
-        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+        costumeImg1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/grantpateljetpackjoyride/imageResources/costume1/running2.png"))); // NOI18N
+        costumeImg1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel3MouseClicked(evt);
+                costumeImg1MouseClicked(evt);
             }
         });
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/grantpateljetpackjoyride/imageResources/costume3/running2.png"))); // NOI18N
-        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+        costumeImg2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/grantpateljetpackjoyride/imageResources/costume2/running2.png"))); // NOI18N
+        costumeImg2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel4MouseClicked(evt);
+                costumeImg2MouseClicked(evt);
+            }
+        });
+
+        costumeImg3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/grantpateljetpackjoyride/imageResources/costume3/running2.png"))); // NOI18N
+        costumeImg3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                costumeImg3MouseClicked(evt);
             }
         });
 
@@ -163,70 +187,72 @@ public class StoreGUI extends javax.swing.JFrame {
         coinsLabel.setFont(scaledAbelFont);
         coinsLabel.setForeground(new java.awt.Color(255, 255, 255));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout mainContainerPanelLayout = new javax.swing.GroupLayout(mainContainerPanel);
+        mainContainerPanel.setLayout(mainContainerPanelLayout);
+        mainContainerPanelLayout.setHorizontalGroup(
+            mainContainerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainContainerPanelLayout.createSequentialGroup()
+                .addGroup(mainContainerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(mainContainerPanelLayout.createSequentialGroup()
                         .addGap(159, 159, 159)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(mainContainerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(priceLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(equippedLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(priceLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(equippedLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(costumeImg1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(equippedLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(mainContainerPanelLayout.createSequentialGroup()
                         .addGap(45, 45, 45)
-                        .addComponent(jLabel1)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(priceLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(backToMenuLabel)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(mainContainerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(mainContainerPanelLayout.createSequentialGroup()
+                        .addGroup(mainContainerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(priceLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(costumeImg2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(equippedLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(mainContainerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(mainContainerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(costumeImg3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(priceLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(equippedLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(159, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(153, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainContainerPanelLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(coinsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(32, 32, 32))))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+        mainContainerPanelLayout.setVerticalGroup(
+            mainContainerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainContainerPanelLayout.createSequentialGroup()
+                .addGroup(mainContainerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(mainContainerPanelLayout.createSequentialGroup()
                         .addGap(20, 20, 20)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(mainContainerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(coinsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(mainContainerPanelLayout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(backToMenuLabel)))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(mainContainerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(mainContainerPanelLayout.createSequentialGroup()
+                        .addGroup(mainContainerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(equippedLabel1)
                             .addComponent(equippedLabel2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel4)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(mainContainerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(costumeImg2)
+                            .addComponent(costumeImg1)
+                            .addComponent(costumeImg3)))
+                    .addGroup(mainContainerPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, 0)
                         .addComponent(equippedLabel3)
-                        .addGap(289, 289, 289)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 295, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(mainContainerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(mainContainerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(priceLabel2)
                         .addComponent(priceLabel1))
                     .addComponent(priceLabel3))
@@ -237,91 +263,175 @@ public class StoreGUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(mainContainerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(mainContainerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+    /**
+     * returns the user back to the main screen if clicked
+     * @param evt - the click event
+     */
+    private void backToMenuLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backToMenuLabelMouseClicked
+        //finds the jFrame that the mainwindow jpanel is on and sets it as visible for the user to see
         ((JFrame)mainWindow.getRootPane().getParent()).setVisible(true);
+        //disposes of the current window to free up background resources
         this.dispose();
-    }//GEN-LAST:event_jLabel1MouseClicked
+    }//GEN-LAST:event_backToMenuLabelMouseClicked
 
-    private void jPanel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseEntered
+    /**
+     * Updates the window if the mouse enters - easy for testing the save file and when the user returns from the jOptionPane
+     * @param evt - the click event
+     */
+    private void mainContainerPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainContainerPanelMouseEntered
         clearLabels();
         readAutoSave();
-    }//GEN-LAST:event_jPanel1MouseEntered
+    }//GEN-LAST:event_mainContainerPanelMouseEntered
 
-    private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
-        buyShopItem(10000, 3);
+    /**
+     * When the third costume image is clicked, chooses to prompt to buy or equip the costume
+     * @param evt - the click event 
+     */
+    private void costumeImg3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_costumeImg3MouseClicked
+        switchOrEquip(3, 10000);
         
-    }//GEN-LAST:event_jLabel4MouseClicked
-
+    }//GEN-LAST:event_costumeImg3MouseClicked
+    
+    /**
+     * When the third costume buy label is clicked, prompts to buy the costume
+     * @param evt - the click event 
+     */
     private void priceLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_priceLabel3MouseClicked
         buyShopItem(10000, 3);
     }//GEN-LAST:event_priceLabel3MouseClicked
+    
+    /**
+     * When the second costume image is clicked, chooses to prompt to buy or equip the costume
+     * @param evt - the click event 
+     */
+    private void costumeImg2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_costumeImg2MouseClicked
+        switchOrEquip(2, 5000);
+    }//GEN-LAST:event_costumeImg2MouseClicked
 
-    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-        buyShopItem(5000, 2);
-    }//GEN-LAST:event_jLabel3MouseClicked
-
+    /**
+     * When the second costume buy label is clicked, prompts to buy the costume
+     * @param evt - the click event 
+     */
     private void priceLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_priceLabel2MouseClicked
         buyShopItem(5000, 2);
     }//GEN-LAST:event_priceLabel2MouseClicked
+    
+    /**
+     * When the first costume image is clicked, chooses to prompt to buy or equip the costume
+     * @param evt - the click event 
+     */
+    private void costumeImg1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_costumeImg1MouseClicked
+        switchOrEquip(1, 0);
+    }//GEN-LAST:event_costumeImg1MouseClicked
 
+    /**
+     * Either equips the new costume or goes to the buy sequence if the the item has not been bought
+     * @param costumeNum - the number corresponding to the costume
+     * @param price - the price of the costume
+     */
+    private void switchOrEquip(int costumeNum, int price){
+        //if the price label for the costume is visible, it must not be bought already
+        if(priceLabels[costumeNum-1].isVisible()){
+            //proceed to the buy process
+            buyShopItem(price, costumeNum);
+        }else{
+            //change the equipped costume
+            equippedCostume = ""+costumeNum;
+            //write to file
+            writeToSave();
+            //clear the labels to refresh screen
+            clearLabels();
+            //read file to update
+            readAutoSave();
+        }
+    }
+    
+    /**
+     * Allows the user to buy an item from the store if they have enough coins saved up
+     * @param price - the price of the costume they want to buy
+     * @param costumeNum - the number corresponding to the costume that the user wants to buy
+     */
     private void buyShopItem(int price, int costumeNum){
-        DecimalFormat num = new DecimalFormat("#,##0");
+        //if the user has enough coins to cover the price
         if(coins>=price){
+            //prompt with a yes or no dialog if the user wants to buy the item for the price
             if (JOptionPane.showConfirmDialog(null, "Are you sure want to buy this for "+num.format(price)+" coins?", "Confirm Purchase",
                     JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-
-                //subtract from coins here
+                //if the user selects yes to the option, run the following
+                
+                //subtract price from coins 
                 coins -= price;
+                //hide the price label of the item the user just clicked
                 priceLabels[costumeNum-1].setVisible(false);
+                //update the costume number
                 equippedCostume = costumeNum+"";
-                //write to file
+                //write to file about the change
                 writeToSave();
-                //read file
+                //clear all labels
+                clearLabels();
+                //read file to update the store
                 readAutoSave();
             }
+        //if the user does not have enough coins
         }else{
+            //prompt with a message to tell them they do not have enough to buy the costume
             JOptionPane.showMessageDialog(null, "Sorry, it looks like you don't have enough coins to buy that");
         }
     }
     
+    /**
+     * clears the labels on the screen so that the store only has the back button and three costume images (items are always being shown)
+     */
     private void clearLabels(){
-        //set all equipped labels as hidden until read by file
+        //create an array to store all the labels
         equippedLabels = new JLabel[]{equippedLabel1,equippedLabel2,equippedLabel3};
         
+        //set all equipped labels as hidden until read by file
         for (int i = 0; i < equippedLabels.length; i++) {
             equippedLabels[i].setVisible(false);
         }
         
-        //set all price labels as hidden until read by file
+        //same as above, except for a different set of labels
         priceLabels = new JLabel[]{priceLabel1,priceLabel2,priceLabel3};
         for (int i = 0; i < priceLabels.length; ++i) {
             priceLabels[i].setVisible(true);
         }
     }
     
-    
+    /**
+     * Writes the changes obeserved from the store to the file to save
+     */
     private void writeToSave(){
+        //attempts to create a file writer for the save file
         try{
+            //file writer object to use for reading the file in the save location
             FileWriter myWriter = new FileWriter(saveAddress+"autosave.jjrs");
+            //store the bought costumes
             String boughtCostumes = "";
+            //iterate through the price labels
             for(int i = 0; i < priceLabels.length; ++i){
+                //if the price label is hidden, the user must own the costume
                 if(!priceLabels[i].isVisible()){
+                    //add the costume number
                     boughtCostumes += (i+1)+"\n";
                 }
             }
+            //write to the file the new changes that were observed in the store, preserve the old ones
             myWriter.write("Music\n"+music+"\nCoins\n"+coins+"\nBought Costumes\n"+boughtCostumes+"Equipped Costume\n"+equippedCostume);
+            //close the file
             myWriter.close();
         } catch (IOException e) {
+            //display error message if the file writer couldn't access the file to write to
             JOptionPane.showMessageDialog(null, e);
         }
     }
@@ -331,6 +441,7 @@ public class StoreGUI extends javax.swing.JFrame {
      * @param saveAddress - where the root folder of the save files is located
      */
     private void readAutoSave(){
+        //arraylist to store the contents of file - different number of bought costumes will affect which line items are on
         ArrayList<String> autosaveContents = new ArrayList();
         //reads the save file
         try {
@@ -343,49 +454,61 @@ public class StoreGUI extends javax.swing.JFrame {
             while(scanner.hasNextLine()){
                 autosaveContents.add(scanner.nextLine());                
             }
-            
+            //stores where the end of the costumes that are bought are as the user may have 1, 2, or 3 costumes
             int endOfBought = 0;
-            //linear search through auto save file contents - different number of bought costumes will affect which line items are on
+            //linear search through auto save file contents
             for(int i = 0; i < autosaveContents.size(); ++i){
                 //finds the equipped costume line in autosave
                 if(autosaveContents.get(i).equals("Equipped Costume")){
+                    //the next item in the array is the value that the above key holds
                     equippedCostume = autosaveContents.get(i + 1);
+                    //sets the visibility of the equipped label over the costume that is equipped in the file
                     equippedLabels[Integer.parseInt(equippedCostume)-1].setVisible(true);
+                    //store the location of the end of the bought costumes as this field is after bought costumes
                     endOfBought = i-1;
+                //finds the number of coins the user has from the save file
                 }else if(autosaveContents.get(i).equals("Coins")){
                     coins = Integer.parseInt(autosaveContents.get(i + 1));
-                    coinsLabel.setText(""+coins);
+                    //updates the label that shows the user the number of coins
+                    coinsLabel.setText(num.format(coins));
+                //finds the music setting in the autosave contents
                 }else if(autosaveContents.get(i).equals("Music")){
+                    //stores the music setting so it is not overwritten when writing back to the file
                     music = autosaveContents.get(i + 1);
                 }
                 
             }
-            //linear search through auto save file contents - different number of bought costumes will affect which line items are on
+            //must linear search again for bought cotumes because the end was determined above
             for(int i = 0; i < autosaveContents.size(); ++i){
+                //find the bought costume
                 if(autosaveContents.get(i).equals("Bought Costumes")){
+                    //go until the end of the bought items
                     for(int j = i; j < endOfBought; ++j){
+                        //hide the price of the items that are bought
                         priceLabels[Integer.parseInt(autosaveContents.get(j+1))-1].setVisible(false);
                     }
                 }
                 
             }
+        //if the input stream cannot be read
         } catch (IOException e) {
+            //show user the error
             JOptionPane.showMessageDialog(null, e);
         }
     }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel backToMenuLabel;
     private javax.swing.JLabel coinsLabel;
+    private javax.swing.JLabel costumeImg1;
+    private javax.swing.JLabel costumeImg2;
+    private javax.swing.JLabel costumeImg3;
     private javax.swing.JLabel equippedLabel1;
     private javax.swing.JLabel equippedLabel2;
     private javax.swing.JLabel equippedLabel3;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel mainContainerPanel;
     private javax.swing.JLabel priceLabel1;
     private javax.swing.JLabel priceLabel2;
     private javax.swing.JLabel priceLabel3;
