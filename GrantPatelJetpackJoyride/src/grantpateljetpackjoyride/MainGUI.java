@@ -189,9 +189,6 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             player.move(holdEvent, dt);            
             player.draw(g, B_HEIGHT, this);
             
-            //increase player score
-            player.setScore(player.getScore() + 1);
-            
             
             //checks if first obstacle has already been passed and should be deleted
             if (obstacles.get(0).getXPos() + obstacles.get(0).getWidth() < 0){

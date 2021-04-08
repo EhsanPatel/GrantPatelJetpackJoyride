@@ -16,7 +16,7 @@ import javax.swing.ImageIcon;
 public class Player extends AbstractGameObject {
 
     private int costumeNum;
-    private int score;
+    private double score;
     private int coins;
     private Image[] runningFrames;
     private Image[] flyingFrames;
@@ -100,7 +100,7 @@ public class Player extends AbstractGameObject {
         g2d.setFont(new Font("Abel-Regular", Font.PLAIN, 50));
         
         //draws the score total
-        g2d.drawString("" + score, 10, 50);
+        g2d.drawString("" + (int)score, 10, 50);
         
         //draws coin total
         g2d.drawString("" + coins, 1025, 50);
@@ -162,14 +162,14 @@ public class Player extends AbstractGameObject {
      * gets the score that the player has achieved
      * @return the current score
      */
-    public int getScore(){
+    public double getScore(){
         return score;
     }
     /**
      * sets the score for the player
      * @param score - the score counter for the player
      */
-    public void setScore(int score){
+    public void setScore(double score){
         this.score = score;
     }
     /**
@@ -213,6 +213,7 @@ public class Player extends AbstractGameObject {
     public void nextFrame(double amount){
         //increases the frame by a small amount
         frame += amount;
+        score += amount;
         if((int)frame >= 4){
             frame = 0;
         }
