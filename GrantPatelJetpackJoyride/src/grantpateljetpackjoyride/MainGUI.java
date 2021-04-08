@@ -42,12 +42,13 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
 
     //background image declaration
     private Image startBG;
-    private Image mainBG;
-    private Image randomBG;
+    private Image panel1;
+    private Image panel2;
     
     private MenuButton[] menuButtons;
     
-    private int scrollX;
+    private int[] panelScrollX;
+    private int startingBGX;
     private String gamestate;    
     boolean holdEvent;
     
@@ -126,8 +127,13 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         t1 = 0;
         t2 = 0;
         
+        panelScrollX = new int[2];
         //game variables
-        scrollX = 0;
+        for(int i = 0; i < panelScrollX.length; ++i){
+            panelScrollX[i] = 4860+ i*1809;
+        }
+        
+        startingBGX = 0;
         gamestate = "menu";
         holdEvent = false;
         oXPos = 1500;
@@ -172,13 +178,9 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         g2d.fillRect(0, 0, B_WIDTH, B_HEIGHT);
         
         //draws the starting background image if it is within the frame
-        if(351 + (int)scrollX + 4509 >0){
-            g2d.drawImage(startBG,351 + (int)scrollX,0,this);
+        if(351 + (int)startingBGX + 4509 >0){
+            g2d.drawImage(startBG,351 + (int)startingBGX,0,this);
         }
-        //infinite scrolling backgrounds - not infinite yet
-        g2d.drawImage(mainBG,4860 + (int)scrollX,0,this);
-        g2d.drawImage(randomBG,6669 + (int)scrollX,0,this);
-        
         
         //changing what to draw based on the state of the game
         if(gamestate.equals("menu")){
@@ -186,14 +188,25 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
                 menuButtons[i].draw(g2d, this);
             }
         }else if(gamestate.equals("playing")){
-            
-           
-            //scrolling and animation of character (switching through frames)
-            scrollX -= 0.3*dt*increase;
+            //scrolling starting background
+            startingBGX -= 0.3*dt*increase;
             
             //increasing speed
             increase += 0.0002;
+           
+            for(int i = 0; i < panelScrollX.length; ++i){
+                panelScrollX[i] -= 0.3*dt*increase;
+                if(panelScrollX[i] <= -1809){
+                    panelScrollX[i] = 1809;
+                }
+                System.out.println(panelScrollX[i]);
+            }
+
+            //infinite scrolling backgrounds - not infinite yet
+            g2d.drawImage(panel1,(int)panelScrollX[0],0,this);
+            g2d.drawImage(panel2,(int)panelScrollX[1],0,this);
             
+            //scrolling and animation of character (switching through frames)
             //controls the player's frame, movement, then draws
             player.nextFrame(0.010*dt);
             player.move(holdEvent, dt);            
@@ -517,8 +530,8 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         ImageIcon iiRandomBG = new ImageIcon(getClass().getResource("imageResources/randomPanelBG.png"));
         
         startBG = iiStartBG.getImage().getScaledInstance(4509, B_HEIGHT, Image.SCALE_FAST);
-        mainBG = iiMainBG.getImage().getScaledInstance(1809, B_HEIGHT, Image.SCALE_FAST);
-        randomBG = iiRandomBG.getImage().getScaledInstance(1809, B_HEIGHT, Image.SCALE_FAST);
+        panel1 = iiMainBG.getImage().getScaledInstance(1809, B_HEIGHT, Image.SCALE_FAST);
+        panel2 = iiRandomBG.getImage().getScaledInstance(1809, B_HEIGHT, Image.SCALE_FAST);
         
         //menu buttons          
         ImageIcon iiStoreButton = new ImageIcon(getClass().getResource("imageResources/buttons/storeButton.png"));
