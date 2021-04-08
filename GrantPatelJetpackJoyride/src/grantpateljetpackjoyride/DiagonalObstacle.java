@@ -96,11 +96,11 @@ public class DiagonalObstacle extends AbstractObstacle{
                     }
                 }
             } else { //obstacle is facing right /
-                for (int i = 5; i < 88; i++) { //for each box in the obstacle
+                for (int i = 12; i < 100; i++) { //for each box in the obstacle
                     //check if player is in the y space of each box
                     if (p.getYPos() + 10 < this.getYPos() + (i*boxHeight) + boxHeight - 20 && p.getYPos() - 10 + p.getHeight() > this.getYPos() + (i * boxHeight) + 20){
                         //check if player is in x space of each box
-                        if (p.getXPos() + 10 < this.getXPos() + (width - i*boxHeight) + boxHeight - 35 && p.getXPos() - 10 + p.getHeight() > this.getXPos() + (width - i * boxHeight) + 35){
+                        if (p.getXPos() + 10 < this.getXPos() + (width - i*boxHeight) + boxHeight - 30 && p.getXPos() - 10 + p.getHeight() > this.getXPos() + (width - i * boxHeight) + 30){
                             return true;
                         }
                     }
