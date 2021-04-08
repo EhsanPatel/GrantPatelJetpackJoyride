@@ -57,7 +57,9 @@ public class AudioPlayer {
     public void stop(){
         //stops the clip
         audioClip.stop();
-        audioClip.close();
+        
+        Runnable runnable =() -> {audioClip.close();};
+        
         try{
             //closes the stream to free resources
             audioStream.close();
