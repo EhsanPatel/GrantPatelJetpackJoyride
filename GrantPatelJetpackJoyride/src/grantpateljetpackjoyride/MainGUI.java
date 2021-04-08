@@ -90,7 +90,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     //font variables
     private Font abel;
     private static Font scaledAbel1, scaledAbel2, scaledAbel3;
-    private FontMetrics metrics;
+    private FontMetrics metrics, metricsAbel3;
     
     
     
@@ -274,7 +274,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
                         playSFX(zapperAudio, filepathZapper);
                         //wait before going to end screen
                         try {
-                            Thread.sleep(1000);
+                            Thread.sleep(800);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -332,18 +332,14 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             //changing font
             g2d.setFont(scaledAbel3);
             metrics = g2d.getFontMetrics(scaledAbel3);
+            metricsAbel3 = g2d.getFontMetrics(scaledAbel3);
             
             //drawing buttons for user to click on
             g2d.drawString("Main Menu", (B_WIDTH - metrics.stringWidth("Main Menu")) / 4, 500);
-            g2d.drawString("Main Menu", (B_WIDTH - metrics.stringWidth("Main Menu")) * (3/4), 500);
-            
-            
-            
+            g2d.drawString("Play Again", ((B_WIDTH - metrics.stringWidth("Play Again")) / 4) * 3, 500);
             
         }
-        
-        
-        
+
         //synchronizes the graphics
         Toolkit.getDefaultToolkit().sync();
     }
@@ -436,6 +432,13 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         for(int i = 0; i < panelScrollX.length; ++i){
             panelScrollX[i] = 4860+ i*1809;
         }
+        //remove all obstacles and coins
+        for (int i = 0; i < obstacles.size(); i++) {
+            obstacles.remove(i);
+        }
+        for (int i = 0; i < coins.size(); i++) {
+            coins.remove(i);
+        }
         
         //making new player object
         player = new Player();
@@ -460,7 +463,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             
         }else if(gamestate.equals("playing")){
             holdEvent = true;
-        }
+        } 
     }
     
     
@@ -469,6 +472,22 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         //what to do when mouse is released in gameplay
         if(gamestate.equals("playing")){
             holdEvent = false;
+        } else if (gamestate.equals("gameover")){
+            //check if mouse is in correct y space
+            if (e.getY() > 465 && e.getY() < 535){
+                //check if mouse click is on either button
+                if (e.getX() > (B_WIDTH - metrics.stringWidth("Main Menu")) / 4  - 5 && e.getX() < ((B_WIDTH - metrics.stringWidth("Main Menu")) / 4) + metrics.stringWidth("Main Menu") + 5){
+                    //menu button was clicked
+                    endRun(); //reset variables and write to file
+                    gamestate = "menu";
+                    playMusic(filepathMenu);
+                } else if (e.getX() > ((B_WIDTH - metrics.stringWidth("Play Again")) / 4) * 3 - 5 && e.getX() < ((B_WIDTH - metrics.stringWidth("Play Again")) / 4) * 3 + (B_WIDTH - metrics.stringWidth("Play Again")) + 5){
+                    endRun();
+                    gamestate = "playing";
+                    playMusic(filepathMain);
+                }
+            }
+            
         }
     }
 
