@@ -7,6 +7,8 @@ package grantpateljetpackjoyride;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -21,7 +23,6 @@ import javax.swing.Timer;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -77,6 +78,10 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     
     //collision boolean variables
     private boolean cCollision, oCollision;
+    
+    //drawing text to screen
+    Font abel;
+    FontMetrics metrics;
     
     
     
@@ -244,7 +249,14 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
                 }
                 
                 if (oCollision){ //if the player has collided with the obstacle
-                        JOptionPane.showMessageDialog(null, "You died!");
+                        gamestate = "gameover";
+                        endRun(); //reset variables and write to file
+                        //wait before going to end screen
+                        try {
+                            Thread.sleep(1000);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
             }   
             
@@ -272,6 +284,31 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             if (coins.size() <= 10){
                 randomizeCoins();
             }
+            
+        } else if (gamestate.equals("gameover")){ //if the player has died
+            //draw a rectangle that covers the screen
+            g2d.setColor(new Color(123,133,146));
+            g2d.fillRect(0, 0, B_WIDTH + 20, B_HEIGHT + 20);
+            
+            //displaying statistics from run
+            //setting font and color
+            g2d.setColor(Color.black);
+            abel = new Font("Abel-Regular", Font.PLAIN, 75);
+            g2d.setFont(abel);
+            metrics = g2d.getFontMetrics(abel);
+            //centre text
+            g2d.drawString("You died", (B_WIDTH - metrics.stringWidth("You died")) / 2 , 150);
+            
+            g2d.setFont(new Font("Abel-Regular", Font.PLAIN, 40));
+            abel = new Font("Abel-Regular", Font.PLAIN, 40);
+            metrics = g2d.getFontMetrics(abel);
+            
+            g2d.drawString("Score: " + (int)(player.getScore()), (B_WIDTH - metrics.stringWidth("Score: " + (int)(player.getScore()))) / 2, 250);
+            g2d.drawString("Coins: " + player.getCoins(), (B_WIDTH - metrics.stringWidth("Coins: " + player.getCoins())) / 2, 350);
+            
+            
+            
+            
         }
         
         
