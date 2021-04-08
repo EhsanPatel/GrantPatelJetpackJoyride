@@ -88,9 +88,9 @@ public class DiagonalObstacle extends AbstractObstacle{
             if (left) {
                 for (int i = 0; i < 100; i++) { //for each box in the obstacle
                     //check if player is in the y space of each box
-                    if (p.getYPos() + 5 < this.getYPos() + (i*boxHeight) + boxHeight - 20 && p.getYPos() - 5 + p.getHeight() > this.getYPos() + (i * boxHeight) + 20){
+                    if (p.getYPos() + 10 < this.getYPos() + (i*boxHeight) + boxHeight - 20 && p.getYPos() - 10 + p.getHeight() > this.getYPos() + (i * boxHeight) + 20){
                         //check if player is in x space of each box
-                        if (p.getXPos() + 5 < this.getXPos() + (i*boxHeight) + boxHeight - 20 && p.getXPos() - 5 + p.getHeight() > this.getXPos() + (i * boxHeight) + 20){
+                        if (p.getXPos() + 10 < this.getXPos() + (i*boxHeight) + boxHeight - 20 && p.getXPos() - 10 + p.getHeight() > this.getXPos() + (i * boxHeight) + 20){
                             System.out.println(xPos + "  :  " + yPos);
                             return true;
                         }
@@ -99,9 +99,9 @@ public class DiagonalObstacle extends AbstractObstacle{
             } else { //obstacle is facing right /
                 for (int i = 0; i < 100; i++) { //for each box in the obstacle
                     //check if player is in the y space of each box
-                    if (p.getYPos() + 5 < this.getYPos() - (i*boxHeight) + boxHeight - 20 && p.getYPos() - 5 + p.getHeight() > this.getYPos() - (i * boxHeight) + 20){
+                    if (p.getYPos() + 10 < this.getYPos() + (i*boxHeight) + boxHeight - 20 && p.getYPos() - 10 + p.getHeight() > this.getYPos() + (i * boxHeight) + 20){
                         //check if player is in x space of each box
-                        if (p.getXPos() + 5 < this.getXPos() + (i*boxHeight) + boxHeight - 20 && p.getXPos() - 5 + p.getHeight() > this.getXPos() + (i * boxHeight) + 20){
+                        if (p.getXPos() + 10 < this.getXPos() + (width - i*boxHeight) + boxHeight - 20 && p.getXPos() - 10 + p.getHeight() > this.getXPos() + (width - i * boxHeight) + 20){
                             System.out.println(xPos + "  :  " + yPos);
                             return true;
                         }
