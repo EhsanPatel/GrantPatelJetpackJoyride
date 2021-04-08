@@ -277,7 +277,10 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
                 
                 if (oCollision){ //if the player has collided with the obstacle
                         gamestate = "gameover";
-                        audioPlayer.stop();
+                        if(audioPlayer != null){
+                            audioPlayer.stop();
+                        }
+                        
                         playSFX(zapperAudio, filepathZapper);
                         //wait before going to end screen
                         try {
