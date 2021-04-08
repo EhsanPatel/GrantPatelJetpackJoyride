@@ -8,6 +8,7 @@ package grantpateljetpackjoyride;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -24,6 +25,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
@@ -79,9 +81,12 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     //collision boolean variables
     private boolean cCollision, oCollision;
     
-    //drawing text to screen
-    Font abel;
-    FontMetrics metrics;
+    //input stream to read the font file
+    private static InputStream is = LoadingGUI.class.getResourceAsStream("fonts/Abel-Regular.ttf");
+    //font variables
+    private Font abel;
+    private static Font scaledAbel1, scaledAbel2, scaledAbel3;
+    private FontMetrics metrics;
     
     
     
@@ -156,9 +161,18 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         DiagonalObstacle.loadImages();
         Coin.loadImages();
         
-        //randomize the obstacles
-        randomizeObstacles();
-        randomizeCoins();
+        
+        //loads in a font to use for the text
+        try{
+            this.abel = Font.createFont(Font.TRUETYPE_FONT, is);
+        }catch(FontFormatException | IOException e){
+            System.out.println(e);
+        }
+        
+        //sets fonts
+        scaledAbel1 = abel.deriveFont(80f);
+        scaledAbel2 = abel.deriveFont(50f);
+        scaledAbel3 = abel.deriveFont(60f);
         
     }
     
@@ -250,7 +264,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
                 
                 if (oCollision){ //if the player has collided with the obstacle
                         gamestate = "gameover";
-                        endRun(); //reset variables and write to file
+                        audioPlayer.stop();
                         //wait before going to end screen
                         try {
                             Thread.sleep(1000);
@@ -292,19 +306,23 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             
             //displaying statistics from run
             //setting font and color
-            g2d.setColor(Color.black);
-            abel = new Font("Abel-Regular", Font.PLAIN, 75);
-            g2d.setFont(abel);
-            metrics = g2d.getFontMetrics(abel);
-            //centre text
+            g2d.setColor(Color.white);
+            g2d.setFont(scaledAbel1);
+            metrics = g2d.getFontMetrics(scaledAbel1);
+            
+            //drawing text to screen
             g2d.drawString("You died", (B_WIDTH - metrics.stringWidth("You died")) / 2 , 150);
             
-            g2d.setFont(new Font("Abel-Regular", Font.PLAIN, 40));
-            abel = new Font("Abel-Regular", Font.PLAIN, 40);
-            metrics = g2d.getFontMetrics(abel);
+            //changing font
+            g2d.setFont(scaledAbel2);
+            metrics = g2d.getFontMetrics(scaledAbel2);
             
             g2d.drawString("Score: " + (int)(player.getScore()), (B_WIDTH - metrics.stringWidth("Score: " + (int)(player.getScore()))) / 2, 250);
             g2d.drawString("Coins: " + player.getCoins(), (B_WIDTH - metrics.stringWidth("Coins: " + player.getCoins())) / 2, 350);
+            
+            //changing font
+            g2d.setFont(scaledAbel3);
+            metrics = g2d.getFontMetrics(scaledAbel3);
             
             
             
@@ -387,16 +405,29 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             menuMusicPlaying = false;
         }
         
+        //randomize the game objects
+        randomizeObstacles();
+        randomizeCoins();
+        
     }
     
     public void endRun(){
-        //display score on a rectangle that covers the screen
-        //stop frames from moving
-        //reset all game variables
-        //add coins to counter
-        //add score to highscores txt file
-        //save coins to achievements file
-        //save any other settings
+        //resetting game variables
+        startingBGX = 0;
+        holdEvent = false;
+        oXPos = 1500;
+        cXPos = 1500;
+        increase = 1.2;
+        cCollision = false;
+        oCollision = false;
+        for(int i = 0; i < panelScrollX.length; ++i){
+            panelScrollX[i] = 4860+ i*1809;
+        }
+        
+        //making new player object
+        player = new Player();
+        
+        //write all game statistics to files
     }
     
         

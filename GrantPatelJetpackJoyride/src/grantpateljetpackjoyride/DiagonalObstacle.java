@@ -80,7 +80,7 @@ public class DiagonalObstacle extends AbstractObstacle{
      * @return true if it has collided, else false
      */
     public boolean hasCollided(Player p){
-        int boxHeight = width / 100; //height of one of the boxes
+        int boxHeight = width / 100; //height and width of one of the boxes
         
         //if obstacle is within 500 pixels, eliminate some processing
         if (Math.abs(this.getXPos() - p.getXPos()) < 500) {
@@ -91,17 +91,16 @@ public class DiagonalObstacle extends AbstractObstacle{
                     if (p.getYPos() + 10 < this.getYPos() + (i*boxHeight) + boxHeight - 20 && p.getYPos() - 10 + p.getHeight() > this.getYPos() + (i * boxHeight) + 20){
                         //check if player is in x space of each box
                         if (p.getXPos() + 10 < this.getXPos() + (i*boxHeight) + boxHeight - 20 && p.getXPos() - 10 + p.getHeight() > this.getXPos() + (i * boxHeight) + 20){
-                            System.out.println(xPos + "  :  " + yPos);
                             return true;
                         }
                     }
                 }
             } else { //obstacle is facing right /
-                for (int i = 0; i < 100; i++) { //for each box in the obstacle
+                for (int i = 5; i < 95; i++) { //for each box in the obstacle
                     //check if player is in the y space of each box
                     if (p.getYPos() + 10 < this.getYPos() + (i*boxHeight) + boxHeight - 20 && p.getYPos() - 10 + p.getHeight() > this.getYPos() + (i * boxHeight) + 20){
                         //check if player is in x space of each box
-                        if (p.getXPos() + 10 < this.getXPos() + (width - i*boxHeight) + boxHeight - 20 && p.getXPos() - 10 + p.getHeight() > this.getXPos() + (width - i * boxHeight) + 20){
+                        if (p.getXPos() + 10 < this.getXPos() + (width - i*boxHeight) + boxHeight - 35 && p.getXPos() - 10 + p.getHeight() > this.getXPos() + (width - i * boxHeight) + 35){
                             return true;
                         }
                     }
