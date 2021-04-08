@@ -43,6 +43,7 @@ public class DiagonalObstacle extends AbstractObstacle{
      */
     public DiagonalObstacle(int xPos, int yPos, int height, int width, String type, boolean left){
         super(xPos, yPos, height, width, type);
+        this.left = left;
         //determine if big obstacle, resize the images
         if ((int)(Math.random()*2 + 1) == 1){ //determine which set of images to use
             this.setWidth(BIG_WIDTH);
@@ -71,7 +72,6 @@ public class DiagonalObstacle extends AbstractObstacle{
             this.setYPos(310 - (this.width / 2)); //middle of screen
         }
         
-        
     }
     
     /**
@@ -80,8 +80,36 @@ public class DiagonalObstacle extends AbstractObstacle{
      * @return true if it has collided, else false
      */
     public boolean hasCollided(Player p){
-        //do this later
-        return true; //just so there aren't any errors
+        int boxHeight = width / 10; //height of one of the boxes
+        
+        //if obstacle is within 500 pixels, eliminate some processing
+        if (Math.abs(this.getXPos() - p.getXPos()) < 500) {
+            //if the obstacle is facing left, looks like \
+            if (left) {
+                for (int i = 0; i < 10; i++) { //for each box in the obstacle
+                    //check if player is in the y space of each box
+                    if (p.getYPos() + 5 < this.getYPos() + (i*boxHeight) + boxHeight && p.getYPos() - 5 + p.getHeight() > this.getYPos() + (i * boxHeight)){
+                        //check if player is in x space of each box
+                        if (p.getXPos() + 5 < this.getXPos() + (i*boxHeight) + boxHeight && p.getXPos() - 5 + p.getHeight() > this.getXPos() + (i * boxHeight)){
+                            return true;
+                        }
+                    }
+                }
+            } else { //obstacle is facing right /
+                for (int i = 0; i < 6; i++) { //for each box in the obstacle
+                    //check if player is in the y space of each box
+                    if (p.getYPos() + 5 < this.getYPos() - (i*boxHeight) + boxHeight - 20 && p.getYPos() - 5 + p.getHeight() > this.getYPos() - (i * boxHeight) + 20){
+                        //check if player is in x space of each box
+                        if (p.getXPos() + 5 < this.getXPos() + (i*boxHeight) + boxHeight - 20 && p.getXPos() - 5 + p.getHeight() > this.getXPos() + (i * boxHeight) + 20){
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        
+        //no collision has happened
+        return false;
     }
     
     /**

@@ -199,7 +199,6 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
                 if(panelScrollX[i] <= -1809){
                     panelScrollX[i] = 1809;
                 }
-                System.out.println(panelScrollX[i]);
             }
 
             //infinite scrolling backgrounds - not infinite yet
@@ -230,16 +229,23 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             for (int i = 0; i < obstacles.size(); i++) {
                 obstacles.get(i).setXPos(obstacles.get(i).getXPos() - (int)(0.3*dt*increase));
                 
-                //determine which type of obstacle it is in order to cast and draw
+                //determine which type of obstacle it is in order to cast and draw and checks collisions
                 if (obstacles.get(i).getType().equals("vertical")){
-                    notDiagonalOCollisions(i);
+                    oCollision = obstacles.get(i).notDiagonalOCollisions(player);
                     ((VerticalObstacle)(obstacles.get(i))).draw(this, g);
+                    
                 } else if (obstacles.get(i).getType().equals("horizontal")){
-                    notDiagonalOCollisions(i);
+                    oCollision = obstacles.get(i).notDiagonalOCollisions(player);
                     ((HorizontalObstacle)(obstacles.get(i))).draw(this, g);
+                    
                 } else {
+                    oCollision = ((DiagonalObstacle)(obstacles.get(i))).hasCollided(player);
                     ((DiagonalObstacle)(obstacles.get(i))).draw(this, g);
                 }
+                
+                if (oCollision){ //if the player has collided with the obstacle
+                        JOptionPane.showMessageDialog(null, "You died!");
+                    }
             }   
             
             
@@ -248,11 +254,12 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             for (int i = 0; i < coins.size(); i++) {
                 coins.get(i).setXPos(coins.get(i).getXPos() - (int)(0.3*dt*increase));
                 //check if coins have collided with player
-                coinCollisions(i);
+                cCollision = coins.get(i).coinCollisions(player);
                 if (!(cCollision)){ //if the coin has not been hit, draw the coin
                     coins.get(i).draw(this, g);
                 } else { //remove the coin
                     coins.remove(i);
+                    player.updateTotalCoins();
                 }
             }
             
@@ -273,46 +280,6 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         Toolkit.getDefaultToolkit().sync();
     }
     
-    /**
-     * checks if the player has collided with a horizontal or vertical obstacle
-     * @param i the index of the obstacle in the arrayList
-     */
-    public void notDiagonalOCollisions(int i){
-        //eliminate some obstacles to eliminate processing
-        if (Math.abs(obstacles.get(i).getXPos() - player.getXPos()) < 500){ //if obstacle is within 500 pixels on either side of the player
-            //check if player is in correct y space
-            if (player.getYPos() + 5 < obstacles.get(i).getYPos() + obstacles.get(i).getHeight() - 40 && player.getYPos() - 5 + player.getHeight() > obstacles.get(i).getYPos() + 40){
-                //check if player is in correct x space
-                if (player.getXPos() + 5 < obstacles.get(i).getXPos() + obstacles.get(i).getWidth() - 40 && player.getXPos() + player.getWidth() > obstacles.get(i).getXPos() + 40){
-                    JOptionPane.showMessageDialog(null, "You died!"); //change later to screen with end credits in method endrun
-                    endRun();
-                }
-            }
-        }
-    }
-    
-    /**
-     * detects coin collisions between the player and a coin
-     * @param i the array index of the coin being checked
-     */
-    public void coinCollisions(int i){
-        //set coin collisions equal to false, collision has not happened yet
-        cCollision = false;
-
-        //if the x distance between the coin and player is less than 100 on either side
-        if (Math.abs(coins.get(i).getXPos() - player.getXPos()) < 100) { //eliminates many coins to speed up processing
-
-            //check if player is in the right y space
-            if (player.getYPos() + 5 < coins.get(i).getYPos() + coins.get(i).getHeight() && player.getYPos() + player.getHeight() - 5 > coins.get(i).getYPos()) {
-                //check if player is in the right x space
-                if (player.getXPos() + 5 < coins.get(i).getXPos() + coins.get(i).getWidth() && player.getXPos() + player.getWidth() - 5 > coins.get(i).getXPos()) {
-                    cCollision = true;
-                    player.updateTotalCoins(); //add one to coins
-                }
-            }
-        }
-
-    }
     
     /**
      * generates an arrayList of coins
@@ -336,7 +303,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         int change = 0;
         //add obstacles to an array
         while (obstacles.size() < 15) {
-            if ((int)(Math.random() * 4) + 1 == 1 || change == 240){ //1 in 4 chance of an obstacle appearing
+            if ((int)(Math.random() * 5) + 1 == 1 || change == 400){ //1 in 5 chance of an obstacle appearing each 100 pixels, always generates after 400 pixels
                 //determine which type of obstacle
                 if((int)(Math.random() * 3) + 1 == 1){
                     obstacles.add(new VerticalObstacle(oXPos, 0, 0, 0, "vertical"));
@@ -358,8 +325,8 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             }
             //if generating has finished, no increment is added
             if (obstacles.size() != 15){
-                oXPos += 60;
-                change += 60;
+                oXPos += 100;
+                change += 100;
             }
             
         }
@@ -368,8 +335,6 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         }
         
         oXPos = oXPosDiff + 100;
-        //oXPosDiff = oXPos - oXPosDiff;
-        //oXPos = oXPos - oXPosDiff + obstacles.get(9).getWidth();
     
     }
     

@@ -48,22 +48,28 @@ public class Coin extends AbstractGameObject {
     public Coin(int xPos, int yPos, int height, int width, int value) {
         super(xPos, yPos, height, width);
 
-        //determining if coin already has a value, if it is cloned it will have a value, else make a new value
-        if (value == 0) {
-            value = (int) (Math.random() * 20) + 1;
-
-            //determining what the value of the coin will be
-            if (value == 1) {
-                value = 5;
-            } else {
-                value = 1;
-            }
-            
-        }
-        this.setValue(1);
+        this.setValue(1); //value will always be 1
         
         //making random y position for the coin
         this.setYPos((int)(Math.random() * 470) + 50);
+    }
+    
+    public boolean coinCollisions(Player p){
+
+        //if the x distance between the coin and player is less than 100 on either side
+        if (Math.abs(this.getXPos() - p.getXPos()) < 100) { //eliminates many coins to speed up processing
+
+            //check if player is in the right y space
+            if (p.getYPos() + 5 < this.getYPos() + this.getHeight() && p.getYPos() + p.getHeight() - 5 > this.getYPos()) {
+                //check if player is in the right x space
+                if (p.getXPos() + 5 < this.getXPos() + this.getWidth() && p.getXPos() + p.getWidth() - 5 > this.getXPos()) {
+                    return true;
+                }
+            }
+        }
+        
+        //collision did not happen
+        return false;
     }
 
     /**
