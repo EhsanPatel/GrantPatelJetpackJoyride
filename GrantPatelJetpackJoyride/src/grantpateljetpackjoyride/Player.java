@@ -5,6 +5,8 @@
  */
 package grantpateljetpackjoyride;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -90,6 +92,18 @@ public class Player extends AbstractGameObject {
         
         //draws the character on the window at the x,y coordinates
         g2d.drawImage(imageToDraw,xPos,yPos,m);
+        
+        //set colour of the graphics
+        g2d.setColor(Color.white);
+        
+        //set font of graphics
+        g2d.setFont(new Font("Abel-Regular", Font.PLAIN, 50));
+        
+        //draws the score total
+        g2d.drawString("" + score, 10, 50);
+        
+        //draws coin total
+        g2d.drawString("" + coins, 1025, 50);
     }
     
     /**

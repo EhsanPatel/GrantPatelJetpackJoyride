@@ -5,6 +5,7 @@
  */
 package grantpateljetpackjoyride;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -96,6 +97,10 @@ public class Coin extends AbstractGameObject {
         } else {
             g2d.drawImage(coinImage2, xPos, yPos, m);
         }
+        
+        //draws a coin in the corner to count coins
+        g2d.drawImage(coinImage1, 975, 10, m);
+        
     }
 
     /**
