@@ -7,10 +7,14 @@ package grantpateljetpackjoyride;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Scanner;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class StatisticsGUI extends javax.swing.JFrame {
     //input stream to read the font file
@@ -24,15 +28,19 @@ public class StatisticsGUI extends javax.swing.JFrame {
     //stores the save address
     private String saveAddress;
     
+    private int[] allCoins;
+    private int[] allScores;
+    
+    private int totalDistTravelled;
+    private int totalCoinsCollected;
+    
     
     /**
      * Creates new form StatisticsGUI
      */
     public StatisticsGUI(MainGUI m, String saveAddress) {
         //stores the save address location
-        this.saveAddress = saveAddress;
-        //formatting to display the number of coins
-        
+        this.saveAddress = saveAddress;        
         
         //loads in a font to use for the text
         try{
@@ -45,6 +53,7 @@ public class StatisticsGUI extends javax.swing.JFrame {
         //stores the window to go back to
         mainWindow = m;
         initComponents();
+        
         //changes attributes of the display window containing the form
         setTitle("FULLBRICK STUDIOS: Jetpack Joyride");
         ImageIcon icon = new ImageIcon(getClass().getResource("imageResources/costume1/running2.png"));
@@ -52,6 +61,8 @@ public class StatisticsGUI extends javax.swing.JFrame {
         setLocationRelativeTo(null);        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
+        totalDistTravelled = 0;
+        totalCoinsCollected = 0;
     }
 
     /**
@@ -64,14 +75,16 @@ public class StatisticsGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        backToMenuLabel = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        leaderBoardTextArea = new javax.swing.JTextArea();
+        totalDistanceLabel = new javax.swing.JLabel();
+        avgDistanceLabel = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        totalCoinsLabel = new javax.swing.JLabel();
+        mostCoinsLabel = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -79,14 +92,24 @@ public class StatisticsGUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(new java.awt.Dimension(1110, 600));
+        addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                formFocusGained(evt);
+            }
+        });
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(109, 118, 136));
         jPanel1.setPreferredSize(new java.awt.Dimension(1110, 600));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/grantpateljetpackjoyride/imageResources/buttons/backFromStats.png"))); // NOI18N
-        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+        backToMenuLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/grantpateljetpackjoyride/imageResources/buttons/backFromStats.png"))); // NOI18N
+        backToMenuLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel1MouseClicked(evt);
+                backToMenuLabelMouseClicked(evt);
             }
         });
 
@@ -99,13 +122,28 @@ public class StatisticsGUI extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Leaderboard");
 
+        leaderBoardTextArea.setEditable(false);
+        leaderBoardTextArea.setBackground(new java.awt.Color(109, 118, 136));
+        leaderBoardTextArea.setColumns(20);
+        leaderBoardTextArea.setFont(scaledAbelFont);
+        leaderBoardTextArea.setForeground(new java.awt.Color(255, 255, 255));
+        leaderBoardTextArea.setLineWrap(true);
+        leaderBoardTextArea.setRows(5);
+        leaderBoardTextArea.setAutoscrolls(false);
+        leaderBoardTextArea.setBorder(null);
+        leaderBoardTextArea.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        leaderBoardTextArea.setFocusable(false);
+        jScrollPane1.setViewportView(leaderBoardTextArea);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -113,26 +151,28 @@ public class StatisticsGUI extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addComponent(jLabel2)
-                .addContainerGap(271, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("Total Distance Travelled: 0");
+        totalDistanceLabel.setForeground(new java.awt.Color(255, 255, 255));
+        totalDistanceLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        totalDistanceLabel.setText("Total Distance Travelled: 0");
 
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Average Distance Travelled: 0");
+        avgDistanceLabel.setForeground(new java.awt.Color(255, 255, 255));
+        avgDistanceLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        avgDistanceLabel.setText("Average Distance Travelled: 0");
 
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("Total Coins Collected: 0");
+        totalCoinsLabel.setForeground(new java.awt.Color(255, 255, 255));
+        totalCoinsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        totalCoinsLabel.setText("Total Coins Collected: 0");
 
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("Most Coins Collected: 0");
+        mostCoinsLabel.setForeground(new java.awt.Color(255, 255, 255));
+        mostCoinsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        mostCoinsLabel.setText("Most Coins Collected: 0");
 
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -160,19 +200,19 @@ public class StatisticsGUI extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(45, 45, 45)
-                .addComponent(jLabel1)
+                .addComponent(backToMenuLabel)
                 .addContainerGap(764, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(avgDistanceLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(totalDistanceLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(411, 411, 411)
                         .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(totalCoinsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(mostCoinsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -184,20 +224,20 @@ public class StatisticsGUI extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addComponent(jLabel1)
+                .addComponent(backToMenuLabel)
                 .addGap(44, 44, 44)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addComponent(jLabel10)
                         .addGap(29, 29, 29)
-                        .addComponent(jLabel3)
+                        .addComponent(totalDistanceLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel4)
+                        .addComponent(avgDistanceLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel6)
+                        .addComponent(totalCoinsLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel7)
+                        .addComponent(mostCoinsLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel5)
                         .addGap(22, 22, 22)
@@ -224,26 +264,173 @@ public class StatisticsGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+    private void backToMenuLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backToMenuLabelMouseClicked
         ((JFrame)mainWindow.getRootPane().getParent()).setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jLabel1MouseClicked
+    }//GEN-LAST:event_backToMenuLabelMouseClicked
 
+    private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained
+        updateForm();
+    }//GEN-LAST:event_formFocusGained
 
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        if(!this.hasFocus()){
+            updateForm();
+        }
+    }//GEN-LAST:event_formComponentShown
 
+    private void updateForm(){
+        allScores = readNumberFile("allScores.jjrs");
+        allCoins = readNumberFile("allCoins.jjrs");
+        totalDistTravelled = 0;
+        totalCoinsCollected = 0;
+
+        if (allScores != null) {
+            quikDescending(allScores, 0, allScores.length - 1);
+            int numRuns = 0;
+            for (int i = 0; i < allScores.length; ++i) {
+                System.out.println(allScores[i]);
+                totalDistTravelled += allScores[i];
+                ++numRuns;
+            }
+            totalDistanceLabel.setText("Total Distance Travelled: " + totalDistTravelled);
+            avgDistanceLabel.setText("Average Distance Travelled: " + (totalDistTravelled / numRuns));
+
+            int numLeaderboardValues = (allScores.length > 10) ? 10 : allScores.length;
+            String leaderboardMsg = "";
+            for (int i = 0; i < numLeaderboardValues; ++i) {
+                leaderboardMsg += (i+1)+". "+allScores[i]+ "\n";
+            }
+            leaderBoardTextArea.setText(leaderboardMsg);
+
+        } else {
+            JOptionPane.showMessageDialog(null, "There was a problem reading the file");
+            ((JFrame) mainWindow.getRootPane().getParent()).setVisible(true);
+            this.dispose();
+        }
+
+        if (allCoins != null) {
+            quikDescending(allCoins, 0, allCoins.length - 1);
+            for (int i = 0; i < allCoins.length; ++i) {
+                System.out.println(allCoins[i]);
+                totalCoinsCollected += allCoins[i];
+            }
+            totalCoinsLabel.setText("Total Coins Collected: " + totalCoinsCollected);
+            mostCoinsLabel.setText("Most Coins Collected: " + allCoins[0]);
+        } else {
+            JOptionPane.showMessageDialog(null, "There was a problem reading the file");
+            ((JFrame) mainWindow.getRootPane().getParent()).setVisible(true);
+            this.dispose();
+        }
+    }
+    
+    /**
+     * Reads the save file and updates the store accordingly
+     * @param saveAddress - where the root folder of the save files is located
+     */
+    private int[] readNumberFile(String fileName){
+        //arraylist to store the contents of file - different number of bought costumes will affect which line items are on
+        ArrayList<Integer> fileContents = new ArrayList();
+        
+        //reads the save file
+        try {
+            //new input stream for the auto save file
+            FileInputStream in = new FileInputStream(saveAddress + fileName);
+            //scanner to read the input stream
+            Scanner scanner = new Scanner(in);
+            
+            //adds contents of file into arraylist
+            while(scanner.hasNextLine()){
+                fileContents.add(Integer.parseInt(scanner.nextLine()));                
+            }
+            //stores where the end of the costumes that are bought are as the user may have 1, 2, or 3 costumes
+            int endOfBought = 0;
+            
+            if(fileContents.isEmpty()){
+                return new int[]{0};
+            }
+            
+            int[] nums = new int[fileContents.size()];
+            for (int i = 0; i < fileContents.size(); ++i) {
+                nums[i] = fileContents.get(i);
+            }
+            return nums;
+        //if the input stream cannot be read
+        } catch (IOException e) {
+            //show user the error
+            JOptionPane.showMessageDialog(null, e);
+        }
+        return null;
+    }
+
+    /**
+     * Uses a quiksort algorithm to arrange items from an array into descending order
+     * @param nums - the array to rearrange
+     * @param left - the left boundary to sort
+     * @param right - the right boundary to sort
+     * @param loopCounter - the array of counters to increment for the number of loops executed
+     * @return an array that been sorted into descending order
+     */
+    private static int[] quikDescending(int[] nums, int left, int right){
+        //exit condition to prevent more method calls
+        if(left >= right){
+            return nums;
+        }
+        
+        //store the left and right in another variable to use and change for looping
+        int i = left;
+        int j = right;
+        
+        //the midpoint to switch the values around
+        int pivot = nums[(left + right) /2];
+        
+        //continues to loop until the left and right meet
+        while(i < j){
+            //increments the left side until the midpoint
+            while(nums[i] > pivot){
+                //increments the number times a loop was executed
+                ++i;
+            }
+            //increments the right side until the midpoint
+            while(nums[j] < pivot){
+                //increments the number times a loop was executed
+                --j;
+            }
+            
+            //makes a switch if the left is less than the right
+            if(i <= j){
+                int temp = nums[i];
+                nums[i] = nums[j];
+                nums[j] = temp;
+                //increments i and j so that the sides can meet and the while loop can finish
+                ++i;
+                --j;
+            }
+        }
+
+        //quiksorts both sides of the pivot - each element in partition is only sorted relative to pivot value, not to other elements in partition
+        quikDescending(nums, left, j);
+        quikDescending(nums,i, right);
+        
+        //method must have a garunteed return value, if this point is reached, the list will have been sorted
+        return nums;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel avgDistanceLabel;
+    private javax.swing.JLabel backToMenuLabel;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea leaderBoardTextArea;
+    private javax.swing.JLabel mostCoinsLabel;
+    private javax.swing.JLabel totalCoinsLabel;
+    private javax.swing.JLabel totalDistanceLabel;
     // End of variables declaration//GEN-END:variables
 }

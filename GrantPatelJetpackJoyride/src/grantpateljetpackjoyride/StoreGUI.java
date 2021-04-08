@@ -75,12 +75,6 @@ public class StoreGUI extends javax.swing.JFrame {
         setIconImage(icon.getImage());
         setLocationRelativeTo(null);        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        //clears all labels to start with no equipped or price labels
-        clearLabels();
-        
-        //search save file for which costumes are bought and update store labels
-        readAutoSave();
     }
 
     /**
@@ -109,13 +103,18 @@ public class StoreGUI extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1110, 600));
         setSize(new java.awt.Dimension(1110, 600));
-
-        mainContainerPanel.setBackground(new java.awt.Color(109, 118, 136));
-        mainContainerPanel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                mainContainerPanelMouseEntered(evt);
+        addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                formFocusGained(evt);
             }
         });
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
+
+        mainContainerPanel.setBackground(new java.awt.Color(109, 118, 136));
 
         backToMenuLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/grantpateljetpackjoyride/imageResources/buttons/backFromStore.png"))); // NOI18N
         backToMenuLabel.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -285,15 +284,6 @@ public class StoreGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_backToMenuLabelMouseClicked
 
     /**
-     * Updates the window if the mouse enters - easy for testing the save file and when the user returns from the jOptionPane
-     * @param evt - the click event
-     */
-    private void mainContainerPanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainContainerPanelMouseEntered
-        clearLabels();
-        readAutoSave();
-    }//GEN-LAST:event_mainContainerPanelMouseEntered
-
-    /**
      * When the third costume image is clicked, chooses to prompt to buy or equip the costume
      * @param evt - the click event 
      */
@@ -333,6 +323,29 @@ public class StoreGUI extends javax.swing.JFrame {
     private void costumeImg1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_costumeImg1MouseClicked
         switchOrEquip(1, 0);
     }//GEN-LAST:event_costumeImg1MouseClicked
+
+    /**
+     * Updates the window upon opening - easy for testing the save file and when the user returns from the jOptionPane
+     * @param evt - the click event
+     */
+    private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained
+        //clears all labels to start with no equipped or price labels
+        clearLabels();
+        //search save file for which costumes are bought and update store labels
+        readAutoSave();
+    }//GEN-LAST:event_formFocusGained
+    /**
+     * Updates the window upon showing if focus is not gained - easy for testing the save file and when the user returns from the jOptionPane
+     * @param evt - the click event
+     */
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        if(!this.hasFocus()){
+            //clears all labels to start with no equipped or price labels
+            clearLabels();
+            //search save file for which costumes are bought and update store labels
+            readAutoSave();
+        }
+    }//GEN-LAST:event_formComponentShown
 
     /**
      * Either equips the new costume or goes to the buy sequence if the the item has not been bought
