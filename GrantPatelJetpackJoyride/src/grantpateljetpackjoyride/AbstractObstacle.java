@@ -8,6 +8,7 @@ package grantpateljetpackjoyride;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -40,6 +41,20 @@ abstract public class AbstractObstacle extends AbstractGameObject{
         this.type = type;
         
         
+    }
+    
+    public boolean notDiagonalOCollisions(Player p){
+        //eliminate some obstacles to eliminate processing
+        if (Math.abs(this.getXPos() - p.getXPos()) < 500){ //if obstacle is within 500 pixels on either side of the player
+            //check if player is in correct y space
+            if (p.getYPos() + 5 < this.getYPos() + this.getHeight() - 40 && p.getYPos() - 5 + p.getHeight() > this.getYPos() + 40){
+                //check if player is in correct x space
+                if (p.getXPos() + 5 < this.getXPos() + this.getWidth() - 40 && p.getXPos() + p.getWidth() > this.getXPos() + 40){
+                    return true;
+                }
+            }
+        }
+        return false; //no collision occurred
     }
     
     /**
