@@ -31,6 +31,8 @@ public class StoreGUI extends javax.swing.JFrame {
     private static JLabel[] equippedLabels;
     private static JLabel[] priceLabels;
     private String equippedCostume;
+    private int coins;
+    private String music;
     private String saveAddress;
     /**
      * Creates new form StoreGUI
@@ -82,6 +84,8 @@ public class StoreGUI extends javax.swing.JFrame {
         priceLabel2 = new javax.swing.JLabel();
         priceLabel3 = new javax.swing.JLabel();
         priceLabel1 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        coinsLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1110, 600));
@@ -154,6 +158,11 @@ public class StoreGUI extends javax.swing.JFrame {
         priceLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         priceLabel1.setText("0 Coins");
 
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/grantpateljetpackjoyride/imageResources/coinScaled.png"))); // NOI18N
+
+        coinsLabel.setFont(scaledAbelFont);
+        coinsLabel.setForeground(new java.awt.Color(255, 255, 255));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -161,32 +170,46 @@ public class StoreGUI extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(45, 45, 45)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(159, 159, 159)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(priceLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(equippedLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(equippedLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(priceLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(equippedLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(equippedLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(45, 45, 45)
+                        .addComponent(jLabel1)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(priceLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(equippedLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(159, Short.MAX_VALUE))
+                            .addComponent(equippedLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(159, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(coinsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(32, 32, 32))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jLabel1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(coinsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -253,17 +276,21 @@ public class StoreGUI extends javax.swing.JFrame {
 
     private void buyShopItem(int price, int costumeNum){
         DecimalFormat num = new DecimalFormat("#,##0");
-        if (JOptionPane.showConfirmDialog(null, "Are you sure want to buy this for "+num.format(price)+" coins?", "Confirm Purchase",
-                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-            
-            //subtract from coins here
-            
-            priceLabels[costumeNum-1].setVisible(false);
-            equippedCostume = costumeNum+"";
-            //write to file
-            writeToSave();
-            //read file
-            readAutoSave();
+        if(coins>=price){
+            if (JOptionPane.showConfirmDialog(null, "Are you sure want to buy this for "+num.format(price)+" coins?", "Confirm Purchase",
+                    JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+
+                //subtract from coins here
+                coins -= price;
+                priceLabels[costumeNum-1].setVisible(false);
+                equippedCostume = costumeNum+"";
+                //write to file
+                writeToSave();
+                //read file
+                readAutoSave();
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Sorry, it looks like you don't have enough coins to buy that");
         }
     }
     
@@ -292,7 +319,7 @@ public class StoreGUI extends javax.swing.JFrame {
                     boughtCostumes += (i+1)+"\n";
                 }
             }
-            myWriter.write("Coins\n0\nBought Costumes\n"+boughtCostumes+"Equipped Costume\n"+equippedCostume);
+            myWriter.write("Music\n"+music+"\nCoins\n"+coins+"\nBought Costumes\n"+boughtCostumes+"Equipped Costume\n"+equippedCostume);
             myWriter.close();
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, e);
@@ -325,6 +352,11 @@ public class StoreGUI extends javax.swing.JFrame {
                     equippedCostume = autosaveContents.get(i + 1);
                     equippedLabels[Integer.parseInt(equippedCostume)-1].setVisible(true);
                     endOfBought = i-1;
+                }else if(autosaveContents.get(i).equals("Coins")){
+                    coins = Integer.parseInt(autosaveContents.get(i + 1));
+                    coinsLabel.setText(""+coins);
+                }else if(autosaveContents.get(i).equals("Music")){
+                    music = autosaveContents.get(i + 1);
                 }
                 
             }
@@ -344,6 +376,7 @@ public class StoreGUI extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel coinsLabel;
     private javax.swing.JLabel equippedLabel1;
     private javax.swing.JLabel equippedLabel2;
     private javax.swing.JLabel equippedLabel3;
@@ -351,6 +384,7 @@ public class StoreGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel priceLabel1;
     private javax.swing.JLabel priceLabel2;
