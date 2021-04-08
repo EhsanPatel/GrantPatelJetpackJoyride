@@ -74,8 +74,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     private final String filepathCoin = "audio/coin.wav";
     private final String filepathZapper = "audio/zapper.wav";
     private AudioPlayer audioPlayer;
-    private AudioPlayer coinAudio;
-    private AudioPlayer zapperAudio;
+    private AudioPlayer sfxPlayer;
     
     //arrayLists containing game objects
     ArrayList<AbstractObstacle> obstacles = new ArrayList();
@@ -281,7 +280,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
                             audioPlayer.stop();
                         }
                         
-                        playSFX(zapperAudio, filepathZapper);
+                        playSFX(filepathZapper);
                         //wait before going to end screen
                         try {
                             Thread.sleep(800);
@@ -301,7 +300,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
                 if (!(cCollision)){ //if the coin has not been hit, draw the coin
                     coins.get(i).draw(this, g);
                 } else { //remove the coin
-                    playSFX(coinAudio, filepathCoin);
+                    playSFX(filepathCoin);
                     coins.remove(i);
                     player.updateTotalCoins();
                 }
@@ -623,15 +622,14 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     
     /**
      * plays the sfx using the audioplayer object
-     * @param audioPlayer - which sfx object to use
      */
-    public void playSFX(AudioPlayer audioPlayer, String filepath){
-        if(audioPlayer != null){
-            audioPlayer.stop();
+    public void playSFX(String filepath){
+        if(sfxPlayer != null){
+            sfxPlayer.stop();
         }
         if(isSFXOn){
             try{
-                audioPlayer = new AudioPlayer(filepath, false);
+                sfxPlayer = new AudioPlayer(filepath, false);
 
             } catch (Exception e){
                 JOptionPane.showMessageDialog(null, e);
