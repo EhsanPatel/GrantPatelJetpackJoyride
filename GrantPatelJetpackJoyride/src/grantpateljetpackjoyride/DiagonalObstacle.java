@@ -86,7 +86,7 @@ public class DiagonalObstacle extends AbstractObstacle{
         if (Math.abs(this.getXPos() - p.getXPos()) < 500) {
             //if the obstacle is facing left, looks like \
             if (left) {
-                for (int i = 0; i < 100; i++) { //for each box in the obstacle
+                for (int i = 5; i < 100; i++) { //for each box in the obstacle
                     //check if player is in the y space of each box
                     if (p.getYPos() + 10 < this.getYPos() + (i*boxHeight) + boxHeight - 20 && p.getYPos() - 10 + p.getHeight() > this.getYPos() + (i * boxHeight) + 20){
                         //check if player is in x space of each box
@@ -96,7 +96,7 @@ public class DiagonalObstacle extends AbstractObstacle{
                     }
                 }
             } else { //obstacle is facing right /
-                for (int i = 5; i < 95; i++) { //for each box in the obstacle
+                for (int i = 5; i < 88; i++) { //for each box in the obstacle
                     //check if player is in the y space of each box
                     if (p.getYPos() + 10 < this.getYPos() + (i*boxHeight) + boxHeight - 20 && p.getYPos() - 10 + p.getHeight() > this.getYPos() + (i * boxHeight) + 20){
                         //check if player is in x space of each box

@@ -343,10 +343,10 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         //add coins to the array list of coins
         for (int i = 0; i < 20; i++) { //add 10 coins to the list
             coins.add(new Coin(cXPos, 0, 40, 40, 1));
-            cXPos += 150;
+            cXPos += 175;
         }
         
-        cXPos = 1650;
+        cXPos = 1875;
 
     }
     

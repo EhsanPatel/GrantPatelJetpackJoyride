@@ -51,7 +51,7 @@ public class Coin extends AbstractGameObject {
         this.setValue(1); //value will always be 1
         
         //making random y position for the coin
-        this.setYPos((int)(Math.random() * 470) + 50);
+        this.setYPos((int)(Math.random() * 450) + 60);
     }
     
     public boolean coinCollisions(Player p){
