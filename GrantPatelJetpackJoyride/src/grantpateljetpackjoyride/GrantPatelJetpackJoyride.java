@@ -6,9 +6,12 @@
 package grantpateljetpackjoyride;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -27,6 +30,7 @@ public class GrantPatelJetpackJoyride extends JFrame {
         findSaveFile(saveAddress, "autosave.jjrs");
         findSaveFile(saveAddress, "allCoins.jjrs");
         findSaveFile(saveAddress, "allScores.jjrs");
+        verifyAutoSave(saveAddress);
         add(new MainGUI(saveAddress));
         
         setResizable(false);
@@ -73,10 +77,50 @@ public class GrantPatelJetpackJoyride extends JFrame {
     private void writeSaveDefaults(String saveAddress){
         try{
             FileWriter myWriter = new FileWriter(saveAddress+"autosave.jjrs");
-            myWriter.write("Coins\n0\nBought Costumes\n1\nEquipped Costume\n1");
+            myWriter.write("Music\non\nCoins\n0\nBought Costumes\n1\nEquipped Costume\n1");
             myWriter.close();
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, e);
         }
     }
+    
+    /**
+     * Reads the autosave file and changes the game setup accordingly
+     * @param saveAddress - where the root folder of the save files is located
+     */
+    private void verifyAutoSave(String saveAddress){
+        ArrayList<String> autosaveContents = new ArrayList();
+        //reads the save file
+        try {
+            //new input stream for the auto save file
+            FileInputStream in = new FileInputStream(saveAddress + "autosave.jjrs");
+            //scanner to read the input stream
+            Scanner scanner = new Scanner(in);
+            
+            //adds contents of file into arraylist
+            while(scanner.hasNextLine()){
+                autosaveContents.add(scanner.nextLine());                
+            }
+            
+            int savePropertyCount = 0;
+            //linear search through auto save file contents - different number of bought costumes will affect which line items are on
+            for(int i = 0; i < autosaveContents.size(); ++i){
+                if(autosaveContents.get(i).equals("Music")
+                    || autosaveContents.get(i).equals("Coins")
+                    || autosaveContents.get(i).equals("Bought Costumes")
+                    || autosaveContents.get(i).equals("Equipped Costume"))
+                {
+                    savePropertyCount++;
+                }
+            }
+            
+            if(savePropertyCount != 4){
+                System.out.println("Fixing Save File");
+                writeSaveDefaults(saveAddress);
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+
 }
