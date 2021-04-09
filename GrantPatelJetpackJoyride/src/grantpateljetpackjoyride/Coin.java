@@ -17,14 +17,6 @@ import javax.swing.ImageIcon;
  */
 public class Coin extends AbstractGameObject {
 
-    /**
-     * Some things in this class don't function yet due to the image variable
-     * not being added in yet
-     *
-     *
-     *
-     *
-     */
     //instance variables
     private int value;
     private static Image coinImage1, coinImage2;
@@ -36,8 +28,7 @@ public class Coin extends AbstractGameObject {
     }
 
     /**
-     * constructs coin with specified attributes, 1/20 chance of getting a coin
-     * with a value of 5
+     * constructs coin with specified attributes
      *
      * @param xPos the x position of the coin
      * @param yPos the y position of the coin
@@ -48,12 +39,17 @@ public class Coin extends AbstractGameObject {
     public Coin(int xPos, int yPos, int height, int width, int value) {
         super(xPos, yPos, height, width);
 
-        this.setValue(1); //value will always be 1
+        this.value = 1; //value will always be 1
         
         //making random y position for the coin
-        this.setYPos((int)(Math.random() * 450) + 60);
+        this.yPos = (int)(Math.random() * 450) + 60;
     }
     
+    /**
+     * detects collisions between a coin and player
+     * @param p the player
+     * @return true if collided, else false
+     */
     public boolean coinCollisions(Player p){
 
         //if the x distance between the coin and player is less than 100 on either side
@@ -92,7 +88,10 @@ public class Coin extends AbstractGameObject {
 
     /**
      * draws the coin
+     * @param m the main GUI
+     * @param g the graphics component
      */
+    @Override
     public void draw(MainGUI m, Graphics g) {
         //casts the graphics object to the better 2d version
         Graphics2D g2d = (Graphics2D) g;
@@ -123,6 +122,7 @@ public class Coin extends AbstractGameObject {
      *
      * @return the string
      */
+    @Override
     public String toString() { //add coin image variable in too when it is ready
         String str = super.toString() + "\nValue:\t" + value;
         return str;
@@ -143,6 +143,7 @@ public class Coin extends AbstractGameObject {
      *
      * @return the cloned coin
      */
+    @Override
     public Coin clone() {
         return new Coin(xPos, yPos, height, width, value);
     }

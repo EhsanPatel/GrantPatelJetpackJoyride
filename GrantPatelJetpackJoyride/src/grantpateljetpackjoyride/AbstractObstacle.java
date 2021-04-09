@@ -43,6 +43,11 @@ abstract public class AbstractObstacle extends AbstractGameObject{
         
     }
     
+    /**
+     * checks for collisions between the player and a horizontal or vertical obstacle
+     * @param p the player
+     * @return true if they collided, else false
+     */
     public boolean notDiagonalOCollisions(Player p){
         //eliminate some obstacles to eliminate processing
         if (Math.abs(this.getXPos() - p.getXPos()) < 500){ //if obstacle is within 500 pixels on either side of the player
@@ -104,6 +109,7 @@ abstract public class AbstractObstacle extends AbstractGameObject{
      * puts attributes of object in a string
      * @return the string
      */
+    @Override
     public String toString(){
         String str = super.toString() + "\nType:\t" + type;
         return str;
