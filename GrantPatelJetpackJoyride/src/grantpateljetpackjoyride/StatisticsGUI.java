@@ -16,6 +16,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+/**
+ * Creates a new Jframe for showing stats
+ */
 public class StatisticsGUI extends javax.swing.JFrame {
     //input stream to read the font file
     private static InputStream is = LoadingGUI.class.getResourceAsStream("fonts/Abel-Regular.ttf");
@@ -295,6 +298,9 @@ public class StatisticsGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_formComponentShown
 
+    /**
+     * updates the form based on the file contents
+     */
     private void updateForm(){
         //reads the file contents (just a lot of numbers) into an array
         allScores = readNumberFile("allScores.jjrs");
