@@ -489,6 +489,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         addCoinsToSave(player.getCoins());
         appendToSaveFile("allCoins.jjrs", player.getCoins());
         appendToSaveFile("allScores.jjrs", (int)player.getScore());
+        
         //resetting game variables
         startingBGX = 0;
         holdEvent = false;
@@ -500,6 +501,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         for(int i = 0; i < panelScrollX.length; ++i){
             panelScrollX[i] = 4860+ i*1809;
         }
+        
         //remove all obstacles and coins
         obstacles.clear();
         coins.clear();
@@ -512,37 +514,56 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     
     
     //mouse and keyboard functions
+    
+    /**
+     * What to do when the user presses a mouse button
+     * @param e - the click event
+     */
     @Override
     public void mousePressed(MouseEvent e) {
-        //what to do when mouse is clicked
+        //if the click happens in the menu screen
         if(gamestate.equals("menu")){
+            //check the menu buttons for clicks
             for(int i = 0; i < menuButtons.length; ++i){
                 if(menuButtons[i].buttonAction(e.getX(), e.getY(), this)){
-                    return;
+                    return;//prevents starting game
                 }   
             }
+            //checks the music toggle
             if(e.getX() > 50 && e.getX() < 170 && e.getY() > 480 && e.getY() < 600){
+                //toggles music
                 isMusicOn = !isMusicOn;
                 playMusic(filepathMenu);
-                writeToAutoSave();
-                return;
+                //updates save file
+                soundAutoSave();
+                return;//prevents starting game
+            //checks the sfx toggle
             }else if(e.getX() > 170 && e.getX() < 290 && e.getY() > 480 && e.getY() < 600){
                 isSFXOn = !isSFXOn;
-                writeToAutoSave();
-                return;
+                //updates the save file
+                soundAutoSave();
+                return;//prevents starting game
             }
+            //plays the game if nothing else was clicked and exits out before
             playGame();
+            
+        //if the game is being played, each click triggers the jetpack
         }else if(gamestate.equals("playing")){
             holdEvent = true;
         } 
     }
     
-    
+    /**
+     * If the mouse is released
+     * @param e - the click event
+     */
     @Override
     public void mouseReleased(MouseEvent e) {
         //what to do when mouse is released in gameplay
         if(gamestate.equals("playing")){
+            //stops jetpack
             holdEvent = false;
+        //if the mouse is released on the gameover screen
         } else if (gamestate.equals("gameover")){
             //check if mouse is in correct y space
             if (e.getY() > 465 && e.getY() < 535){
@@ -550,11 +571,14 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
                 if(metrics == null){
                     return;
                 }
+                //checks of the menu button was clicked
                 if (e.getX() > (B_WIDTH - metrics.stringWidth("Main Menu")) / 4  - 5 && e.getX() < ((B_WIDTH - metrics.stringWidth("Main Menu")) / 4) + metrics.stringWidth("Main Menu") + 5){
                     //menu button was clicked
                     endRun(); //reset variables and write to file
                     gamestate = "menu";
                     playMusic(filepathMenu);
+                    
+                //checks if the play again button was clicked
                 } else if (e.getX() > ((B_WIDTH - metrics.stringWidth("Play Again")) / 4) * 3 - 5 && e.getX() < ((B_WIDTH - metrics.stringWidth("Play Again")) / 4) * 3 + (B_WIDTH - metrics.stringWidth("Play Again")) + 5){
                     endRun();
                     playGame(); //restart game
@@ -567,23 +591,32 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
 
     
     //functions to implement keylistener
+    /**
+     * event for if a key was released
+     * @param k - the key event
+     */
     @Override
     public void keyReleased(KeyEvent k){
         //what to do when a key is released
-        if(k.getKeyChar() == ' '){
+        if(k.getKeyChar() == ' '){//checks if the key was the spacebar
             if (gamestate.equals("playing")) {
                 holdEvent = false;
             }
         }
     }
     
-    
+    /**
+     * event that is triggered upon a key being pressed
+     * @param k - the key event
+     */
     @Override
     public void keyPressed(KeyEvent k){
+        //if the spacebar was pressed
         if(k.getKeyChar() == ' '){
+            //if the game was on the menu screen
             if(gamestate.equals("menu")){
                 playGame(); 
-
+            //if the game was on the play screen
             }else if(gamestate.equals("playing")){
                 holdEvent = true;
             }
@@ -592,9 +625,9 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     
     /**
      * Reads the autosave file and changes the game setup accordingly
-     * @param saveAddress - where the root folder of the save files is located
      */
     private void readAutoSave(){
+        //clears previous contents
         autosaveContents.clear();
         //reads the save file
         try {
@@ -610,7 +643,9 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             
             //linear search through auto save file contents - different number of bought costumes will affect which line items are on
             for(int i = 0; i < autosaveContents.size(); ++i){
+                //checks for the music header
                 if(autosaveContents.get(i).equals("Music")){
+                    //toggles the music based on the value
                     if(autosaveContents.get(i+1).equals("on")){
                         isMusicOn = true;
                         playMusic(filepathMenu); 
@@ -624,7 +659,9 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
                     player.setCostumeNum(Integer.parseInt(autosaveContents.get(i+1)));
                     //reload the correct images
                     player.loadImages();
+                //finds the sfx header
                 }else if(autosaveContents.get(i).equals("SFX")){
+                    //toggles the sfx being on based on the value
                     if(autosaveContents.get(i+1).equals("on")){
                         isSFXOn = true;
                         playMusic(filepathMenu); 
@@ -632,43 +669,70 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
                         isSFXOn = false;
                     }
                 }
-                
             }
+            //closes the scanner and its input stream
+            scanner.close();
+            in.close();
+            
+        //catches if the file couldn't be read
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, e);
         }
     }
 
+    /**
+     * adds the coins from the run to the save file
+     * @param newCoins - the coins to add
+     */
     private void addCoinsToSave(int newCoins){
+        //attempts to write to file
         try{
+            //selects the autosave file
             FileWriter myWriter = new FileWriter(saveAddress+"autosave.jjrs");
+            //stores the unchanged autosave properties
             String restOfAutoSave = "";
+            //adds properties after the 6th line to the storage variable
             for(int i = 6; i < autosaveContents.size(); ++i){
                 restOfAutoSave += autosaveContents.get(i) + "\n";
             }
+            //stores the music and sfx variables
             String music = "off";
             String sfx = "off";
+            //convert to on/off from true/false
             if(isMusicOn){
                 music = "on";
             }
             if(isSFXOn){
                 sfx = "on";
             }
+            //gets the old amount of coins from the save file
             int oldCoins = Integer.parseInt(autosaveContents.get(5));
+            //writes to the file with the updated values
             myWriter.write("Music\n"+music+"\nSFX\n"+sfx+"\nCoins\n"+(oldCoins+newCoins)+"\n"+restOfAutoSave.trim());
+            //closes the writer
             myWriter.close();
+            
+        //displays if the file couldn't be written to
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, e);
         }
     }
     
-    private void writeToAutoSave(){
+    /**
+     * writes to the autosave about the music, the 
+     */
+    private void soundAutoSave(){
+        //attempts to open the file
         try{
+            //opens file autosave.jjrs
             FileWriter myWriter = new FileWriter(saveAddress+"autosave.jjrs");
+            //stores the unused properties
             String restOfAutoSave = "";
+            //iterates through the unused portion
             for(int i = 4; i < autosaveContents.size(); ++i){
                 restOfAutoSave += autosaveContents.get(i) + "\n";
             }
+            //converts true/false from on/off
             String music = "off";
             String sfx = "off";
             if(isMusicOn){
@@ -677,18 +741,28 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             if(isSFXOn){
                 sfx = "on";
             }
+            //writes changes to the file
             myWriter.write("Music\n"+music+"\nSFX\n"+sfx+"\n"+restOfAutoSave.trim());
             myWriter.close();
+        //displays if there was an error
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, e);
         }
     }
 
-    
+    /**
+     * adds a score or coins collected in a run to the end of a file
+     * @param filename - which file to append to
+     * @param value - the value to add to the end of the file
+     */
     private void appendToSaveFile(String filename, int value){
+        //attempts to open the file
         try{
+            //opens filewriter in append mode
             FileWriter myWriter = new FileWriter(saveAddress+filename, true);
+            //writes the value and a newline
             myWriter.write(value+"\n");
+            //closes the file
             myWriter.close();
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, e);
@@ -700,13 +774,16 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
      * @param filepath - the path to the audio file to play
      */
     private void playMusic(String filepath){
+        //stops current player
         if(audioPlayer != null){
             audioPlayer.stop();
         }
+        //plays if the music is toggled on
         if(isMusicOn){
             try{
                 audioPlayer = new AudioPlayer(filepath, true);
 
+            //shows error otherwise
             } catch (Exception e){
                 JOptionPane.showMessageDialog(null, e);
             }
@@ -718,13 +795,15 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
      * plays the sfx using the audioplayer object
      */
     private void playSFX(String filepath){
+        //stops current player
         if(sfxPlayer != null){
             sfxPlayer.stop();
         }
+        //plays sfx if the sfx is toggled on
         if(isSFXOn){
             try{
                 sfxPlayer = new AudioPlayer(filepath, false);
-
+            //output the error
             } catch (Exception e){
                 JOptionPane.showMessageDialog(null, e);
             }
@@ -739,8 +818,11 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     public void paintComponent(Graphics g) {
         //calls the parent class' drawing method to setup for drawing
         super.paintComponent(g);
+        //stores the last frame time
         t2 = t1;
+        //gets the current frame time
         t1 = System.currentTimeMillis();
+        //draws the game depending on the state
         drawLoop(g, (int)(t1-t2));
         
     }
@@ -766,26 +848,31 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         ImageIcon iiMainBG = new ImageIcon(getClass().getResource("imageResources/mainPanelBG.png"));
         ImageIcon iiRandomBG = new ImageIcon(getClass().getResource("imageResources/randomPanelBG.png"));
         
+        //converts image icons to images to store
         startBG = iiStartBG.getImage().getScaledInstance(4509, B_HEIGHT, Image.SCALE_FAST);
         panel1 = iiMainBG.getImage().getScaledInstance(1809, B_HEIGHT, Image.SCALE_FAST);
         panel2 = iiRandomBG.getImage().getScaledInstance(1809, B_HEIGHT, Image.SCALE_FAST);
         
-        //menu buttons          
+        //menu button image icons are loaded
         ImageIcon iiStoreButton = new ImageIcon(getClass().getResource("imageResources/buttons/storeButton.png"));
         ImageIcon iiStatsButton = new ImageIcon(getClass().getResource("imageResources/buttons/statsButton.png"));
         ImageIcon iiTutorialButton = new ImageIcon(getClass().getResource("imageResources/buttons/tutorialButton.png"));
         ImageIcon iiCreditButton = new ImageIcon(getClass().getResource("imageResources/buttons/creditsButton.png"));
+        
+        //music toggle button icons
         ImageIcon iiMusicToggleOff = new ImageIcon(getClass().getResource("imageResources/buttons/musicToggleOff.png"));
         ImageIcon iiMusicToggleOn = new ImageIcon(getClass().getResource("imageResources/buttons/musicToggleOn.png"));
         ImageIcon iiSFXToggleOn = new ImageIcon(getClass().getResource("imageResources/buttons/SFXToggleOn.png"));
         ImageIcon iiSFXToggleOff = new ImageIcon(getClass().getResource("imageResources/buttons/SFXToggleOff.png"));
 
+        //create an array of menu buttons using the icons
         menuButtons = new MenuButton[4];
         menuButtons[0] = new MenuButton(15, 120, 320, 66, "Redirect", iiStoreButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH), new StoreGUI(this,saveAddress));
         menuButtons[1] = new MenuButton(15, 210, 320, 66, "Redirect", iiStatsButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH), new StatisticsGUI(this,saveAddress));
         menuButtons[2] = new MenuButton(15, 300, 320, 66, "Redirect", iiTutorialButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH), new TutorialGUI(this));
         menuButtons[3] = new MenuButton(15, 390, 320, 66, "Redirect", iiCreditButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH), new CreditsGUI(this));
         
+        //music toggle button images
         SFXToggleOff = iiSFXToggleOff.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
         SFXToggleOn = iiSFXToggleOn.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
         MusicToggleOff = iiMusicToggleOff.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
