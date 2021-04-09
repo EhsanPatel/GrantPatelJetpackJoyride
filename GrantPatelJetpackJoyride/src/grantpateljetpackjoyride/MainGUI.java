@@ -319,15 +319,16 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
                         audioPlayer.stop();
                     }
                     playSFX(filepathZapper);
-                    if(sfxPlayer != null){
-                        sfxPlayer.stop();
-                    }
+                    
 
                     //wait before going to end screen
                     try {
                         Thread.sleep(800);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
+                    }
+                    if(sfxPlayer != null){
+                        sfxPlayer.stop();
                     }
                 }
             }   
