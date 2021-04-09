@@ -240,7 +240,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             //controls the player's frame, movement, then draws
             player.nextFrame(0.010*dt);
             player.move(holdEvent, dt);            
-            player.draw(g, B_HEIGHT, this);
+            player.draw(g, this);
             
             
             //checks if first obstacle has already been passed and should be deleted
@@ -429,6 +429,8 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     }
     
     public void endRun(){
+        //write all game statistics to files
+        addCoinsToSave(player.getCoins());
         //resetting game variables
         startingBGX = 0;
         holdEvent = false;
@@ -446,8 +448,6 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         
         //making new player object
         player = new Player();
-        
-        //write all game statistics to files
     }
     
         
@@ -578,6 +578,29 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         }
     }
 
+    private void addCoinsToSave(int newCoins){
+        try{
+            FileWriter myWriter = new FileWriter(saveAddress+"autosave.jjrs");
+            String restOfAutoSave = "";
+            for(int i = 6; i < autosaveContents.size(); ++i){
+                restOfAutoSave += autosaveContents.get(i) + "\n";
+            }
+            String music = "off";
+            String sfx = "off";
+            if(isMusicOn){
+                music = "on";
+            }
+            if(isSFXOn){
+                sfx = "on";
+            }
+            int oldCoins = Integer.parseInt(autosaveContents.get(5));
+            myWriter.write("Music\n"+music+"\nSFX\n"+sfx+"\nCoins\n"+(oldCoins+newCoins)+"\n"+restOfAutoSave.trim());
+            myWriter.close();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+    
     private void writeToAutoSave(){
         try{
             FileWriter myWriter = new FileWriter(saveAddress+"autosave.jjrs");
