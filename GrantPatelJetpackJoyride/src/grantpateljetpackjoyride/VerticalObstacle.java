@@ -115,6 +115,7 @@ public class VerticalObstacle extends AbstractObstacle{
      * @param m the screen
      * @param g the graphics component
      */
+    @Override
     public void draw(MainGUI m, Graphics g){
             super.draw(m, g, frames); //draw obstacle
 
@@ -124,6 +125,7 @@ public class VerticalObstacle extends AbstractObstacle{
      * puts attributes of obstacle into string
      * @return the string
      */
+    @Override
     public String toString(){
         return super.toString();
     }
@@ -141,6 +143,7 @@ public class VerticalObstacle extends AbstractObstacle{
      * clones the vertical obstacle
      * @return the clone
      */
+    @Override
     public VerticalObstacle clone(){
         return new VerticalObstacle(xPos, yPos, height, width, type);
     }
