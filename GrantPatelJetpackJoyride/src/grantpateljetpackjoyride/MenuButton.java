@@ -40,7 +40,6 @@ public class MenuButton {
      * @param image - image to display
      */
     public MenuButton(int x, int y, int width, int height, String type, Image image){
-        this();
         this.x = x;
         this.y = y;
         this.width = width;
