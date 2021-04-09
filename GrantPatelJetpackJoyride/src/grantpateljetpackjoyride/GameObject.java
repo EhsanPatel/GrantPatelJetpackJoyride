@@ -37,8 +37,9 @@ public interface GameObject {
     public void setWidth(int w);
     
     //draws the images onto the screen
-//    public void draw(Graphics g);
+    public void draw(MainGUI m, Graphics g);
     
     //sends attributes of the object to a string
+    @Override
     public String toString();
 }

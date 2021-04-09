@@ -71,14 +71,13 @@ public class Player extends AbstractGameObject {
     /**
      * A method that draws the character on the screen
      * @param g - the graphics library to use for drawing
-     * @param windowHeight - how tall the window is
      * @param m - the JPanel to draw onto
      */
-    public void draw(Graphics g, int windowHeight, MainGUI m){
+    public void draw(MainGUI m, Graphics g){
         //casts the graphics object to the better 2d version
         Graphics2D g2d = (Graphics2D) g;
         //stores the y position on the window which is different from the height off of what appears to be the ground on the background image
-        yPos = (int)(windowHeight-(0.25*windowHeight)) - (int)heightOffGround;
+        yPos = (int)(600-(0.25*600)) - (int)heightOffGround;
         
         //Selects which image to draw
         Image imageToDraw = runningFrames[(int)frame];
