@@ -312,6 +312,11 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
                     //switch the game state to the end screen so nothing in the gameplay state is drawn
                     gamestate = "gameover";
                     
+                    //write all game statistics to files
+                    addCoinsToSave(player.getCoins());
+                    appendToSaveFile("allCoins.jjrs", player.getCoins());
+                    appendToSaveFile("allScores.jjrs", (int)player.getScore());
+                    
                     //stops all audio players
                     if(audioPlayer != null){
                         audioPlayer.stop();
@@ -485,10 +490,6 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     public void endRun(){
         //suggests using java garbage collector to free memory
         System.gc();
-        //write all game statistics to files
-        addCoinsToSave(player.getCoins());
-        appendToSaveFile("allCoins.jjrs", player.getCoins());
-        appendToSaveFile("allScores.jjrs", (int)player.getScore());
         
         //resetting game variables
         startingBGX = 0;
@@ -550,21 +551,8 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         //if the game is being played, each click triggers the jetpack
         }else if(gamestate.equals("playing")){
             holdEvent = true;
-        } 
-    }
-    
-    /**
-     * If the mouse is released
-     * @param e - the click event
-     */
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        //what to do when mouse is released in gameplay
-        if(gamestate.equals("playing")){
-            //stops jetpack
-            holdEvent = false;
         //if the mouse is released on the gameover screen
-        } else if (gamestate.equals("gameover")){
+        }else if (gamestate.equals("gameover")){
             //check if mouse is in correct y space
             if (e.getY() > 465 && e.getY() < 535){
                 //check if mouse click is on either button
@@ -586,6 +574,19 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
                 }
             }
             
+        }
+    }
+    
+    /**
+     * If the mouse is released
+     * @param e - the click event
+     */
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        //what to do when mouse is released in gameplay
+        if(gamestate.equals("playing")){
+            //stops jetpack
+            holdEvent = false;
         }
     }
 

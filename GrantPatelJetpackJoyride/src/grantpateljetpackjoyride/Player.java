@@ -357,8 +357,8 @@ public class Player extends AbstractGameObject {
      * @return the clone
      */
     @Override
-    public AbstractGameObject clone(){
-        return this;
+    public Player clone(){
+        return new Player(xPos,yPos,width,height,costumeNum);
     }
 
 }

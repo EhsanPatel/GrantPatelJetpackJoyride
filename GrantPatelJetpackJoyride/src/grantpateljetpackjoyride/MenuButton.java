@@ -220,6 +220,7 @@ public class MenuButton {
         return (x == mb.getX() && y == mb.getY() && width == mb.getWidth() && height == mb.getHeight() && image == mb.getImage() && destination.equals(mb.getDestination()) && type.equals(mb.getType()));
     }
     
+    @Override
     public MenuButton clone(){
         return new MenuButton(x,y,width,height,type,image,destination);
     }
