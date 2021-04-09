@@ -200,4 +200,28 @@ public class MenuButton {
     public void setType(String type){
         this.type = type;
     }
+    
+    @Override
+    public String toString(){
+        return "x: " + x
+                + "y: " + y
+                + "width: " + width
+                + "height: " + height
+                + "image: " + image
+                + "type: " + type
+                + "destination: " + destination;
+    }
+    
+    /**
+     * compares this menu button with the inputted button
+     * @param mb - the inputted menu button
+     * @return if they are the same
+     */
+    public boolean equals(MenuButton mb){
+        return (x == mb.getX() && y == mb.getY() && width == mb.getWidth() && height == mb.getHeight() && image == mb.getImage() && destination.equals(mb.getDestination()) && type.equals(mb.getType()));
+    }
+    
+    public MenuButton clone(){
+        return new MenuButton(x,y,width,height,type,image,destination);
+    }
 }
