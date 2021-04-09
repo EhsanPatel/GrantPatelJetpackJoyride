@@ -49,8 +49,10 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     private Image panel1;
     private Image panel2;
     
-    private Image MusicToggle;
-    private Image SFXToggle;
+    private Image MusicToggleOn;
+    private Image MusicToggleOff;
+    private Image SFXToggleOn;
+    private Image SFXToggleOff;
     
     private MenuButton[] menuButtons;
     
@@ -213,8 +215,16 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             for(int i = 0; i < menuButtons.length; ++i){
                 menuButtons[i].draw(g2d, this);
             }
-            g2d.drawImage(MusicToggle,50,480,this);
-            g2d.drawImage(SFXToggle,180,480,this);
+            if(isMusicOn){
+                g2d.drawImage(MusicToggleOn, 50, 480, this);
+            }else{
+                g2d.drawImage(MusicToggleOff, 50, 480, this);
+            }
+            if(isSFXOn){
+                g2d.drawImage(SFXToggleOn, 180, 480, this);
+            }else{
+                g2d.drawImage(SFXToggleOff, 180, 480, this);
+            }
 
         }else if(gamestate.equals("playing")){
             //infinite scrolling backgrounds - not infinite yet
@@ -491,6 +501,9 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             //check if mouse is in correct y space
             if (e.getY() > 465 && e.getY() < 535){
                 //check if mouse click is on either button
+                if(metrics == null){
+                    return;
+                }
                 if (e.getX() > (B_WIDTH - metrics.stringWidth("Main Menu")) / 4  - 5 && e.getX() < ((B_WIDTH - metrics.stringWidth("Main Menu")) / 4) + metrics.stringWidth("Main Menu") + 5){
                     //menu button was clicked
                     endRun(); //reset variables and write to file
@@ -716,8 +729,10 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         ImageIcon iiStatsButton = new ImageIcon(getClass().getResource("imageResources/buttons/statsButton.png"));
         ImageIcon iiTutorialButton = new ImageIcon(getClass().getResource("imageResources/buttons/tutorialButton.png"));
         ImageIcon iiCreditButton = new ImageIcon(getClass().getResource("imageResources/buttons/creditsButton.png"));
-        ImageIcon iiMusicToggleButton = new ImageIcon(getClass().getResource("imageResources/buttons/musicToggle.png"));
-        ImageIcon iiSFXToggleButton = new ImageIcon(getClass().getResource("imageResources/buttons/SFXToggle.png"));
+        ImageIcon iiMusicToggleOff = new ImageIcon(getClass().getResource("imageResources/buttons/musicToggleOff.png"));
+        ImageIcon iiMusicToggleOn = new ImageIcon(getClass().getResource("imageResources/buttons/musicToggleOn.png"));
+        ImageIcon iiSFXToggleOn = new ImageIcon(getClass().getResource("imageResources/buttons/SFXToggleOn.png"));
+        ImageIcon iiSFXToggleOff = new ImageIcon(getClass().getResource("imageResources/buttons/SFXToggleOff.png"));
 
         menuButtons = new MenuButton[4];
         menuButtons[0] = new MenuButton(15, 120, 320, 66, "Redirect", iiStoreButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH), new StoreGUI(this,saveAddress));
@@ -725,8 +740,10 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         menuButtons[2] = new MenuButton(15, 300, 320, 66, "Redirect", iiTutorialButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH), new TutorialGUI(this));
         menuButtons[3] = new MenuButton(15, 390, 320, 66, "Redirect", iiCreditButton.getImage().getScaledInstance(320, 66, Image.SCALE_SMOOTH), new CreditsGUI(this));
         
-        SFXToggle = iiSFXToggleButton.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
-        MusicToggle = iiMusicToggleButton.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+        SFXToggleOff = iiSFXToggleOff.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+        SFXToggleOn = iiSFXToggleOn.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+        MusicToggleOff = iiMusicToggleOff.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+        MusicToggleOn = iiMusicToggleOn.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
 
     }
     
