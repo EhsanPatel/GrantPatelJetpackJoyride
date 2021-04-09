@@ -5,7 +5,6 @@
  */
 package grantpateljetpackjoyride;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -39,7 +38,7 @@ public class Coin extends AbstractGameObject {
     public Coin(int xPos, int yPos, int height, int width, int value) {
         super(xPos, yPos, height, width);
 
-        this.value = 1; //value will always be 1
+        this.value = 1; //value will always be 1 - may later be more for scalability
         
         //making random y position for the coin
         this.yPos = (int)(Math.random() * 450) + 60;

@@ -1,7 +1,7 @@
 /*
- * Ehsan Patel
+ * Ehsan Patel and Colin Grant
  * 1-Apr-2021
- * and open the template in the editor.
+ * Displays a brief tutorial for the user to understand how to play the game
  */
 package grantpateljetpackjoyride;
 
@@ -15,9 +15,11 @@ import javax.swing.JFrame;
  * @author ehsan
  */
 public class TutorialGUI extends javax.swing.JFrame {
+    //font resources
     private static InputStream is = LoadingGUI.class.getResourceAsStream("fonts/Abel-Regular.ttf");
     private static Font abelFont;
     private static Font scaledAbelFont;
+    //reference to main window
     private static MainGUI mainWindow;
     /**
      * Creates new form TutorialGUI
@@ -30,6 +32,7 @@ public class TutorialGUI extends javax.swing.JFrame {
         }catch(Exception e){
             System.out.println(e);
         }
+        //stores the reference to the main window
         mainWindow = m;
         initComponents();
         //changes attributes of the display window containing the form

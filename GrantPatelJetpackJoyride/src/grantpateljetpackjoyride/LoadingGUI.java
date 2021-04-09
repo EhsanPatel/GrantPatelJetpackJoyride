@@ -1,7 +1,7 @@
 /*
  * Ehsan Patel and Colin Grant
  * 1-Apr-2021
- * and open the template in the editor.
+ * Displays a splash screen with the logo and developers
  */
 package grantpateljetpackjoyride;
 
@@ -10,17 +10,19 @@ import java.io.InputStream;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
-/**
- *
- * @author ehsan
- */
 
 public class LoadingGUI extends javax.swing.JFrame {
+    //gets the font resource
     private static InputStream is = LoadingGUI.class.getResourceAsStream("fonts/Abel-Regular.ttf");
     private static Font abelFont;
     private static Font scaledAbelFont;
+    
+    //reference to main JFrame
     private static GrantPatelJetpackJoyride mainGUI;
+    
+    //reference to itself as l
     private static LoadingGUI l = new LoadingGUI();
+    
     /**
      * Creates new form LoadingGUI
      */
