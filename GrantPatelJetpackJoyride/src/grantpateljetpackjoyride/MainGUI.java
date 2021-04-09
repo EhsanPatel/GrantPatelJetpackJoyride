@@ -431,6 +431,8 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     public void endRun(){
         //write all game statistics to files
         addCoinsToSave(player.getCoins());
+        appendToSaveFile("allCoins.jjrs", player.getCoins());
+        appendToSaveFile("allScores.jjrs", (int)player.getScore());
         //resetting game variables
         startingBGX = 0;
         holdEvent = false;
@@ -624,11 +626,21 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     }
 
     
+    private void appendToSaveFile(String filename, int value){
+        try{
+            FileWriter myWriter = new FileWriter(saveAddress+filename, true);
+            myWriter.write(value+"\n");
+            myWriter.close();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+    
     /**
      * plays the music using the audioplayer object
      * @param filepath - the path to the audio file to play
      */
-    public void playMusic(String filepath){
+    private void playMusic(String filepath){
         if(audioPlayer != null){
             audioPlayer.stop();
         }
@@ -646,7 +658,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     /**
      * plays the sfx using the audioplayer object
      */
-    public void playSFX(String filepath){
+    private void playSFX(String filepath){
         if(sfxPlayer != null){
             sfxPlayer.stop();
         }
