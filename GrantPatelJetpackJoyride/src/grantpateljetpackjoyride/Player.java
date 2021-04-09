@@ -19,7 +19,7 @@ public class Player extends AbstractGameObject {
     private double score;
     private int coins;
     private Image[] runningFrames;
-    private Image[] flyingFrames;
+    private Image[] flyingFrames; 
     private Image fallingFrame;
     private double frame;
     private int heightOffGround;
@@ -261,6 +261,56 @@ public class Player extends AbstractGameObject {
     }
     
     /**
+     * gets the flying frames
+     * @return the flying frames
+     */
+    public Image[] getFlyingFrames(){
+        return flyingFrames;
+    }
+    
+    /**
+     * sets the flying frames
+     * @param flyingFrames new flying frames
+     */
+    public void setFlyingFrames(Image[] flyingFrames){
+        this.flyingFrames = flyingFrames;
+    }
+    
+    /**
+     * gets the falling frame
+     * @return the falling frame
+     */
+    public Image getFallingFrame(){
+        return fallingFrame;
+    }
+    
+    /**
+     * sets the falling frame
+     * @param fallingFrame new falling frame
+     */
+    public void setFallingFrame(Image fallingFrame){
+        this.fallingFrame = fallingFrame;
+    }
+    
+    /**
+     * gets if player is falling
+     * @return if player is falling
+     */
+    public boolean getIsFalling(){
+        return isFalling;
+    }
+    
+    /**
+     * sets if the player is falling
+     * @param isFalling if player is falling
+     */
+    public void setIsFalling(boolean isFalling){
+        this.isFalling = isFalling;
+    }
+    
+    
+    
+    /**
      * loads the images into an array of frames to use for drawing
      */
     public void loadImages(){
@@ -289,12 +339,24 @@ public class Player extends AbstractGameObject {
      * provides the values of the player variables collected in a string
      * @return the values of the player grouped in a string
      */
+    @Override
     public String toString(){
-        return "";
+        return super.toString() + "\nCostume Number:\t" + costumeNum;
     }
-    public boolean equals(AbstractGameObject p){
-        return true;
+    
+    /**
+     * determines if two players are the same
+     * @param p the second player
+     * @return true if the same, else false
+     */
+    public boolean equals(Player p){
+        return super.equals(p) && this.costumeNum == p.getCostumeNum();
     }
+    /**
+     * clones a player object
+     * @return the clone
+     */
+    @Override
     public AbstractGameObject clone(){
         return this;
     }
