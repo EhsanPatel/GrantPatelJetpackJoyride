@@ -49,20 +49,29 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     private Image panel1;
     private Image panel2;
     
+    //music and sfx toggle images
     private Image MusicToggleOn;
     private Image MusicToggleOff;
     private Image SFXToggleOn;
     private Image SFXToggleOff;
     
+    //menu buttons for redirecting
     private MenuButton[] menuButtons;
     
+    //panel x positions
     private int[] panelScrollX;
     private int startingBGX;
+    
+    //variable for what stage of the game
     private String gamestate;    
+    
+    //if the user is holding down mouse or spacebar
     boolean holdEvent;
     
+    //the player
     private Player player;
     
+    //for calculating delta time
     private long t1;
     private long t2;
     
@@ -81,6 +90,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     //arrayLists containing game objects
     ArrayList<AbstractObstacle> obstacles = new ArrayList();
     ArrayList<Coin> coins = new ArrayList();
+    
     //game object x position
     private int oXPos;
     private int cXPos;
@@ -98,6 +108,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     private static Font scaledAbel1, scaledAbel2, scaledAbel3;
     private FontMetrics metrics, metricsAbel3;
     
+    //arraylist for accessing saved content
     private ArrayList<String> autosaveContents = new ArrayList();
 
     
@@ -112,16 +123,12 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         initPanel();
         
         //reads the autosaved file and updates game objects
-        readAutoSave();
-        
-        //allows the window to recieve keyboard input
-        addKeyListener(this);
-        setFocusable(true);
-        setFocusTraversalKeysEnabled(false);
-        
+        readAutoSave();        
     }
 
-    
+    /**
+     * initializes variables listeners and timers that would be in constructor
+     */
     private void initPanel() {
         //load the image resources to use
         loadImages();
@@ -146,18 +153,26 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         t1 = 0;
         t2 = 0;
         
+        //stores the background panel x positions
         panelScrollX = new int[2];
-        //game variables
         for(int i = 0; i < panelScrollX.length; ++i){
             panelScrollX[i] = 4860+ i*1809;
         }
-        
         startingBGX = 0;
+        
+        //start the game at the main menu
         gamestate = "menu";
+        
+        //start with the player not holding down
         holdEvent = false;
+        
+        //start the obstacles and coins offscreen
         oXPos = 1500;
         cXPos = 1500;
+        //increase the speed of the game
         increase = 1.2;
+        
+        //start with no collisions
         cCollision = false;
         oCollision = false;
         
@@ -195,12 +210,14 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         //prevents unexpected dt from changing game function
         if(dt<=0){
             dt = 1;
+        //caps the dt at 20
         }else if(dt > 20){
             dt = 20;
         }
         
         //casts the regular graphics object into the updated 2d graphics object
         Graphics2D g2d = (Graphics2D) g;
+        
         //draws background color and image
         g2d.setColor(new Color(123,133,146));//light grey/blue color
         g2d.fillRect(0, 0, B_WIDTH, B_HEIGHT);
@@ -214,9 +231,13 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         if(gamestate.equals("menu")){
             //default value for metrics if it isn't added later
             metrics = g2d.getFontMetrics(scaledAbel1);
+            
+            //draws all menu buttons in array
             for(int i = 0; i < menuButtons.length; ++i){
                 menuButtons[i].draw(g2d, this);
             }
+            
+            //selects which music and SFX images to display based on if the user is listening or not
             if(isMusicOn){
                 g2d.drawImage(MusicToggleOn, 50, 480, this);
             }else{
@@ -228,8 +249,9 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
                 g2d.drawImage(SFXToggleOff, 180, 480, this);
             }
 
+        //if the gamestate is in the actual game mode
         }else if(gamestate.equals("playing")){
-            //infinite scrolling backgrounds - not infinite yet
+            //infinite scrolling backgrounds are drawn
             g2d.drawImage(panel1,(int)panelScrollX[0]-10,0,this);
             g2d.drawImage(panel2,(int)panelScrollX[1]-10,0,this);
             
@@ -239,6 +261,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             //scrolling starting background
             startingBGX -= 0.3*dt*increase;
 
+            //scrolls all the background panels
             for(int i = 0; i < panelScrollX.length; ++i){
                 panelScrollX[i] -= (int)(0.3*dt*increase);
                 if(panelScrollX[i] <= -1809){
@@ -286,20 +309,24 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
                     ((DiagonalObstacle)(obstacles.get(i))).draw(this, g);
                 }
                 
-                if (oCollision){ //if the player has collided with the obstacle
-                        gamestate = "gameover";
-                        if(audioPlayer != null){
-                            audioPlayer.stop();
-                        }
-                        
-                        playSFX(filepathZapper);
-                        //wait before going to end screen
-                        try {
-                            Thread.sleep(800);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                //if the player has collided with the obstacle
+                if (oCollision){
+                    gamestate = "gameover";
+                    if(audioPlayer != null){
+                        audioPlayer.stop();
                     }
+                    if(sfxPlayer != null){
+                        sfxPlayer.stop();
+                    }
+
+                    playSFX(filepathZapper);
+                    //wait before going to end screen
+                    try {
+                        Thread.sleep(800);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
             }   
             
             
