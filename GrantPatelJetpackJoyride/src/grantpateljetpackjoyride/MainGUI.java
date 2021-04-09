@@ -78,8 +78,6 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
     //music variables
     private boolean isMusicOn;
     private boolean isSFXOn;
-    boolean mainMusicPlaying = false;
-    boolean menuMusicPlaying = true;
     private final String filepathMain = "audio/JetpackJoyrideOST-MainTheme.wav";
     private final String filepathMenu = "audio/JetpackJoyrideOST-Home.wav";
     private final String filepathCoin = "audio/coin.wav";
@@ -318,8 +316,8 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
                     if(audioPlayer != null){
                         audioPlayer.stop();
                     }
+                    //plays the zap sound
                     playSFX(filepathZapper);
-                    
 
                     //wait before going to end screen
                     try {
@@ -327,6 +325,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                    //closes the audio player that was opened
                     if(sfxPlayer != null){
                         sfxPlayer.stop();
                     }
@@ -335,7 +334,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             
             
             
-            //drawing coins
+            //drawing all the coins in the coin arraylist
             for (int i = 0; i < coins.size(); i++) {
                 coins.get(i).setXPos(coins.get(i).getXPos() - (int)(0.3*dt*increase));
                 //check if coins have collided with player
@@ -404,9 +403,10 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         //add coins to the array list of coins
         for (int i = 0; i < 20; i++) { //add 10 coins to the list
             coins.add(new Coin(cXPos, 0, 40, 40, 1));
+            //moves the position where a coin can be placed over
             cXPos += 175;
         }
-        
+        //resets coin potential position
         cXPos = 1875;
 
     }
@@ -415,12 +415,13 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
      * generates an array list of obstacles
      */
     public void randomizeObstacles(){
+        //initialize with starting values
         int oXPosDiff = 0;
         int change = 0;
         //add obstacles to an array
         while (obstacles.size() < 15) {
             if ((int)(Math.random() * 5) + 1 == 1 || change == 400){ //1 in 5 chance of an obstacle appearing each 100 pixels, always generates after 400 pixels
-                //determine which type of obstacle
+                //determine which type of obstacle and adds a new one to the arraylist
                 if((int)(Math.random() * 3) + 1 == 1){
                     obstacles.add(new VerticalObstacle(oXPos, 0, 0, 0, "vertical"));
                 } else if((int)(Math.random() * 3) + 1 == 2){
@@ -446,24 +447,31 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             }
             
         }
+        //loops obstacles 10-14
         for (int i = 9; i < 14; i++) {
+            //adds to the change between the one after - the current x
             oXPosDiff += obstacles.get(i + 1).getXPos() - obstacles.get(i).getXPos();
         }
         
+        //reset the xpos to the new difference
         oXPos = oXPosDiff + 100;
     
     }
     
     
-
+    /**
+     * what to do when the user clicks to play the game
+     */
     public void playGame(){
+        //suggests running java garbage collector to free memory
+        System.gc();
+        //read the save file for the costume changes
         readAutoSave();
+        //change gamestate to update what to draw
         gamestate = "playing";
+        
         //play music
-       
         playMusic(filepathMain);
-        mainMusicPlaying = true;
-        menuMusicPlaying = false;
         
         //randomize the game objects
         randomizeObstacles();
@@ -471,7 +479,12 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         
     }
     
+    /**
+     * what to do at the end of the run
+     */
     public void endRun(){
+        //suggests using java garbage collector to free memory
+        System.gc();
         //write all game statistics to files
         addCoinsToSave(player.getCoins());
         appendToSaveFile("allCoins.jjrs", player.getCoins());
