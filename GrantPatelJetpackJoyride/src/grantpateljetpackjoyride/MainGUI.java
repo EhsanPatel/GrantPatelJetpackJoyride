@@ -212,6 +212,8 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
         
         //changing what to draw based on the state of the game
         if(gamestate.equals("menu")){
+            //default value for metrics if it isn't added later
+            metrics = g2d.getFontMetrics(scaledAbel1);
             for(int i = 0; i < menuButtons.length; ++i){
                 menuButtons[i].draw(g2d, this);
             }
