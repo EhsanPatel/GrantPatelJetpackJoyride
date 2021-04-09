@@ -67,8 +67,9 @@ public class AudioPlayer {
         //stops the clip
         audioClip.stop();
         
-        //closes the clip
+        //closes the clip without freezing the game
         Runnable runnable =() -> {audioClip.close();};
+        new Thread(runnable).start();
         
         try{
             //closes the stream to free resources
