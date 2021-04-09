@@ -1,7 +1,7 @@
 /*
  * Ehsan Patel and Colin Grant
  * 1-Apr-2021
- * and open the template in the editor.
+ * displays the credits screen
  */
 package grantpateljetpackjoyride;
 
@@ -11,9 +11,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 public class CreditsGUI extends javax.swing.JFrame {
+    //input stream for font
     private static InputStream is = LoadingGUI.class.getResourceAsStream("fonts/Abel-Regular.ttf");
     private static Font abelFont;
     private static Font scaledAbelFont;
+    
+    //reference to main window
     private static MainGUI mainWindow;
     /**
      * Creates new form CreditsGUI
@@ -26,8 +29,11 @@ public class CreditsGUI extends javax.swing.JFrame {
         }catch(Exception e){
             System.out.println(e);
         }
+        //stores reference
         mainWindow = m;
+        
         initComponents();
+        
         //changes attributes of the display window containing the form
         setTitle("FULLBRICK STUDIOS: Jetpack Joyride");
         ImageIcon icon = new ImageIcon(getClass().getResource("imageResources/costume1/running2.png"));
@@ -173,8 +179,14 @@ public class CreditsGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Returns to the main screen when the label is clicked
+     * @param evt 
+     */
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        //makes main window visible again
         ((JFrame)mainWindow.getRootPane().getParent()).setVisible(true);
+        //clears the current screen from memory
         this.dispose();
     }//GEN-LAST:event_jLabel2MouseClicked
 
