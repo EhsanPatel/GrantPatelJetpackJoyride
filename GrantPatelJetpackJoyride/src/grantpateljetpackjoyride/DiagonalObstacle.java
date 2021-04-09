@@ -159,6 +159,7 @@ public class DiagonalObstacle extends AbstractObstacle{
      * @param m the screen
      * @param g the graphics component
      */
+    @Override
     public void draw(MainGUI m, Graphics g){
             super.draw(m, g, frames); //draw obstacle
 
@@ -168,6 +169,7 @@ public class DiagonalObstacle extends AbstractObstacle{
      * puts attributes of obstacle into string
      * @return the string
      */
+    @Override
     public String toString(){
         return super.toString();
     }
@@ -185,6 +187,7 @@ public class DiagonalObstacle extends AbstractObstacle{
      * clones the diagonal obstacle
      * @return the clone
      */
+    @Override
     public DiagonalObstacle clone(){
         return new DiagonalObstacle(xPos, yPos, height, width, type, left);
     }

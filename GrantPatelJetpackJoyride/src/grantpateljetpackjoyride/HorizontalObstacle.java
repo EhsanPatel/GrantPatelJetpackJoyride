@@ -42,7 +42,7 @@ public class HorizontalObstacle extends AbstractObstacle{
         super(xPos, yPos, height, width, type);
         //make either a big or small obstacle
         if ((int)(Math.random()* 2 + 1) == 1){ //determine which set of images to use
-            this.height = BIG_HEIGHT;
+            this.height = BIG_HEIGHT; //big horizontal obstacle has a different height and width than small obstacle
             this.width = 450;
             resizeImages(framesMedium);
         } else {
@@ -67,16 +67,11 @@ public class HorizontalObstacle extends AbstractObstacle{
      */
     public static void loadImages(){
         //for each frame for small obstacles
-        for (int i = 0; i < framesSmall.length; i++) {
+        for (int i = 0; i < framesSmall.length; i++) { //arrays of images have same length
             framesSmall[i] = new ImageIcon(HorizontalObstacle.class.getResource("imageResources/obstacles/smallHorizontal/obstacle" + (i + 1) + ".png"));
-            
-        }
-        
-        //add medium obstacles
-        //for each frame
-        for (int i = 0; i < framesMedium.length; i++) {
             framesMedium[i] = new ImageIcon(HorizontalObstacle.class.getResource("imageResources/obstacles/medHorizontal/obstacle" + (i + 1) + ".png"));
         }
+        
     }
     
     /**
@@ -111,6 +106,7 @@ public class HorizontalObstacle extends AbstractObstacle{
      * @param m the screen
      * @param g the graphics component
      */
+    @Override
     public void draw(MainGUI m, Graphics g){
             super.draw(m, g, frames); //draw obstacle
 
@@ -120,6 +116,7 @@ public class HorizontalObstacle extends AbstractObstacle{
      * puts attributes of obstacle into string
      * @return the string
      */
+    @Override
     public String toString(){
         return super.toString();
     }
@@ -137,6 +134,7 @@ public class HorizontalObstacle extends AbstractObstacle{
      * clones the horizontal obstacle
      * @return the clone
      */
+    @Override
     public HorizontalObstacle clone(){
         return new HorizontalObstacle(xPos, yPos, height, width, type);
     }

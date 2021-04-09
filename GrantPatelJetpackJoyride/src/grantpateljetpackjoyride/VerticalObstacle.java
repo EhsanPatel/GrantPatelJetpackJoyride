@@ -67,14 +67,9 @@ public class VerticalObstacle extends AbstractObstacle{
      * loads the image of the obstacle
      */
     public static void loadImages(){
-        //for each frame for small obstacles
-        for (int i = 0; i < framesSmall.length; i++) {
+        //for each frame for obstacles
+        for (int i = 0; i < framesSmall.length; i++) { //each array is the same length
             framesSmall[i] = new ImageIcon(VerticalObstacle.class.getResource("imageResources/obstacles/smallVertical/obstacle" + (i + 1) + ".png"));
-        }
-
-        //add medium obstacles
-        //for each frame
-        for (int i = 0; i < framesMedium.length; i++) {
             framesMedium[i] = new ImageIcon(VerticalObstacle.class.getResource("imageResources/obstacles/medVertical/obstacle" + (i + 1) + ".png"));
         }
         

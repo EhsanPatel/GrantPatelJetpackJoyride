@@ -22,9 +22,18 @@ import javax.swing.JOptionPane;
  */
 public class AudioPlayer {
     
+    //instance variables
     private Clip audioClip;
     private AudioInputStream audioStream;
     
+    /**
+     * creates audioPlayer with specified attributes
+     * @param filepath the filepath of the .wav file
+     * @param isRepeating if the file will loop or not
+     * @throws UnsupportedAudioFileException
+     * @throws IOException
+     * @throws LineUnavailableException 
+     */
     public AudioPlayer(String filepath, boolean isRepeating)
             throws UnsupportedAudioFileException,
         IOException, LineUnavailableException 
