@@ -240,7 +240,7 @@ public class MainGUI extends JPanel implements ActionListener, KeyListener, Mous
             //controls the player's frame, movement, then draws
             player.nextFrame(0.010*dt);
             player.move(holdEvent, dt);            
-            player.draw(g, this);
+            player.draw(this, g);
             
             
             //checks if first obstacle has already been passed and should be deleted
