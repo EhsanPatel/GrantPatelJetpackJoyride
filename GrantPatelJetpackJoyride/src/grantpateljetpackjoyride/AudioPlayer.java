@@ -58,6 +58,7 @@ public class AudioPlayer {
         //stops the clip
         audioClip.stop();
         
+        //closes the clip
         Runnable runnable =() -> {audioClip.close();};
         
         try{

@@ -41,6 +41,7 @@ public abstract class AbstractGameObject implements GameObject{
      * gets the x position of the object
      * @return the x position
      */
+    @Override
     public int getXPos(){
         return xPos;
     }
@@ -49,6 +50,7 @@ public abstract class AbstractGameObject implements GameObject{
      * sets the x position
      * @param xPos the new x position
      */
+    @Override
     public void setXPos(int xPos){
         this.xPos = xPos;
     }
@@ -57,14 +59,16 @@ public abstract class AbstractGameObject implements GameObject{
      * gets the y position of the object
      * @return the y position
      */
+    @Override
     public int getYPos(){
         return yPos;
     }
     
     /**
      * sets the y position
-     * @param xPos the new y position
+     * @param yPos the new y position
      */
+    @Override
     public void setYPos(int yPos){
         this.yPos = yPos;
     }    
@@ -73,6 +77,7 @@ public abstract class AbstractGameObject implements GameObject{
      * gets the height of the object
      * @return the height
      */
+    @Override
     public int getHeight(){
         return height;
     }
@@ -81,6 +86,7 @@ public abstract class AbstractGameObject implements GameObject{
      * sets the height
      * @param h the new height
      */
+    @Override
     public void setHeight(int h){
         height = h;
     }
@@ -89,6 +95,7 @@ public abstract class AbstractGameObject implements GameObject{
      * gets the width of the object
      * @return the width
      */
+    @Override
     public int getWidth(){
         return width;
     }
@@ -97,6 +104,7 @@ public abstract class AbstractGameObject implements GameObject{
      * sets the width
      * @param w the new width
      */
+    @Override
     public void setWidth(int w){
         width = w;
     }
@@ -119,12 +127,14 @@ public abstract class AbstractGameObject implements GameObject{
     
     
     //draws the images onto the screen
-//    abstract public void draw(Graphics g);
+    @Override
+    abstract public void draw(MainGUI m, Graphics g); //cannot code for in abstract classes
     
     /**
      * sends attributes of object to a string
      * @return the string
      */
+    @Override
     public String toString(){
         String str = "X Position:\t" + xPos + "\n" + 
                 "Y Position:\t" + yPos + "\n" + 
