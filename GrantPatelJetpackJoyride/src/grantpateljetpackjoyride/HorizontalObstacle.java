@@ -8,7 +8,6 @@ package grantpateljetpackjoyride;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 
 /**
  *
